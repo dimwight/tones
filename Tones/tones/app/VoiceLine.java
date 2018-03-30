@@ -155,7 +155,9 @@ final public class VoiceLine extends Tracer{
 				new Context(voice.midNote,voice.octave,DURATION_NONE));
 		return contexts;
 	}
-	final static public Bars newBars(Set<VoiceLine>voiceLines){
+	final static public Bars newBars(String[]codeLines){
+		Set<VoiceLine>voiceLines=new HashSet();
+		for(String lines:codeLines)voiceLines.add(new VoiceLine(lines));
 		int barAt=0,measure=0;
 		List<Bar>bars=new ArrayList();
 		Incipit i;

@@ -52,9 +52,7 @@ final public class TonesEdit extends ViewerContenter{
 	}
 	@Override
 	protected ViewableFrame newContentViewable(Object source){
-		Set<VoiceLine>voices=new HashSet();
-		for(String lines:(String[])source)voices.add(new VoiceLine(lines));
-		Bars bars=VoiceLine.newBars(voices);
+		Bars bars=VoiceLine.newBars((String[])source);
 		if(false)trace(".newContentViewable: bars=",VoiceLine.newCodeLines(bars));
 		return new TonesViewable(bars);
 	}

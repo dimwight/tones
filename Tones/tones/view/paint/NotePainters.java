@@ -65,8 +65,8 @@ public final class NotePainters extends PagePainters{
 		return true?newBeadPainters(!note.content.tags.isEmpty()?Shades.cyan:Shades.red)
 				:new Painter[]{true?unscaledText(text,x,y,-1):tooltipText(text,x,y,-1)};
 	}
-	public static PagePainters newVoiceNotePainters(StavePageView page,final StaveVoiceNotes notes,
-			PainterSource p){
+	public static PagePainters newVoiceNotePainters(StavePageView page,
+			StaveVoiceNotes notes,PainterSource p){
 		return new PagePainters(page,p){
 			public Painter[]newViewPainters(boolean selected){
 				ItemList<Painter>painters=new ItemList(Painter.class);
