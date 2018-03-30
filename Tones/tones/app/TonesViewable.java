@@ -13,7 +13,7 @@ import facets.util.Debug;
 import tones.bar.Bar;
 import tones.bar.Bars;
 import tones.view.StavePageView;
-import tones.view.StaveItem.StaveNote;
+import tones.view.stave.StaveNote;
 final class TonesViewable extends ViewableFrame{
 	private int barAt;
 	TonesViewable(Bars tones){

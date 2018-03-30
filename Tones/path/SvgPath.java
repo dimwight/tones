@@ -1,36 +1,16 @@
 package path;
-import static facets.util.Doubles.*;
 import static facets.util.Regex.*;
 import static facets.util.Strings.*;
-import static facets.util.tree.Nodes.*;
 import facets.core.app.avatar.PainterMaster.Outlined;
-import facets.core.app.avatar.PainterMaster.Scaling;
-import facets.core.superficial.SIndexing;
 import facets.util.Debug;
-import facets.util.Doubles;
-import facets.util.FileSpecifier;
 import facets.util.Strings;
-import facets.util.TextLines;
-import facets.util.Tracer;
-import facets.util.Util;
-import facets.util.geom.Point;
 import facets.util.geom.Vector;
 import facets.util.shade.Shade;
-import facets.util.tree.Nodes;
-import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
-import facets.util.tree.XmlDocRoot;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 public final class SvgPath extends SvgShape{
 	public static boolean printArguments=false;
 	public SvgPath(ValueNode values){

@@ -1,15 +1,11 @@
 package tones.bar;
-import facets.core.app.avatar.AvatarContent;
-import facets.util.Debug;
 import facets.util.Titled;
 import facets.util.Tracer;
 import facets.util.tree.DataNode;
 import facets.util.tree.NodeList;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import tones.Tone;
 import tones.Tone.Tag;

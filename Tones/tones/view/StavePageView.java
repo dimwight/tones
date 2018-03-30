@@ -1,16 +1,14 @@
 package tones.view;
 import static facets.util.Util.*;
-import facets.core.app.AppSpecifier;
 import facets.core.app.avatar.PlaneViewWorks;
 import facets.core.superficial.SFrameTarget;
 import facets.core.superficial.SIndexing;
+import facets.core.superficial.SIndexing.Coupler;
 import facets.core.superficial.SNumeric;
 import facets.core.superficial.STarget;
 import facets.core.superficial.SToggling;
-import facets.core.superficial.SIndexing.Coupler;
 import facets.util.Debug;
 import facets.util.NumberPolicy;
-import facets.util.Util;
 import facets.util.app.AppValues;
 import facets.util.geom.Vector;
 import facets.util.shade.Shades;

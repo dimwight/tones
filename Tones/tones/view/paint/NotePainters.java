@@ -10,10 +10,10 @@ import facets.util.shade.Shades;
 import path.SvgPath;
 import tones.ScaleNote;
 import tones.bar.Bar;
-import tones.view.StaveItem;
 import tones.view.StavePageView;
-import tones.view.StaveItem.StaveNote;
-import tones.view.StaveItem.StaveVoiceNotes;
+import tones.view.stave.StaveBar.StaveVoiceNotes;
+import tones.view.stave.StaveItem;
+import tones.view.stave.StaveNote;
 public final class NotePainters extends PagePainters{
 	private static final Shade SHADE_NOTE=Shades.blue;
 	private static final SvgPath Empty=new SvgPath("Empty","",0),

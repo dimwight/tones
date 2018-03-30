@@ -1,14 +1,13 @@
 package tones.view.paint;
-import static tones.view.StaveItem.*;
+import static tones.view.stave.StaveItem.*;
 import facets.core.app.avatar.Painter;
 import facets.core.app.avatar.PainterSource;
 import facets.util.ItemList;
 import facets.util.geom.Line;
 import facets.util.shade.Shades;
 import tones.Clef;
-import tones.view.StaveItem;
 import tones.view.StavePageView;
-import tones.view.StaveItem.StaveBar;
+import tones.view.stave.StaveBar;
 public final class BarPainters extends PagePainters{
 	private final int at;
 	private final double rise,height,width,x,trebleY,bassY;

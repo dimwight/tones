@@ -1,20 +1,19 @@
 package tones.view.paint;
 import static facets.util.shade.Shades.*;
-import static tones.view.StaveItem.StaveTie.TieType.*;
+import static tones.view.stave.StaveGroup.TieType.*;
 import facets.core.app.avatar.Painter;
-import facets.core.app.avatar.PainterSource;
 import facets.core.app.avatar.PainterMaster.Outlined;
+import facets.core.app.avatar.PainterSource;
 import facets.core.app.avatar.PainterSource.Transform;
 import facets.util.Debug;
 import facets.util.geom.Vector;
 import facets.util.shade.Shade;
 import path.SvgPath;
 import tones.bar.Bar;
-import tones.view.StaveItem;
 import tones.view.StavePageView;
-import tones.view.StaveItem.StaveGroup;
-import tones.view.StaveItem.StaveTie;
-import tones.view.StaveItem.StaveTie.TieType;
+import tones.view.stave.StaveGroup;
+import tones.view.stave.StaveGroup.StaveTie;
+import tones.view.stave.StaveGroup.TieType;
 public final class GroupPainters extends PagePainters{
 	private static final SvgPath 
 		TieFromTo=new SvgPath("TieFromTo","M213.0 72.13c7.665,7.444 1.127,13.46 -6.062,6.475 -22.96,-18.09 -48.72,-30.72 -98.74,-31.47 -50.02,0.7481 -75.77,13.38 -98.74,31.47 -7.203,6.997 -13.67,0.9138 -6.062,-6.475 26.2,-29.19 66.25,-42.94 104.8,-42.56 38.75,0.0 78.4,13.15 104.8,42.56z",2),

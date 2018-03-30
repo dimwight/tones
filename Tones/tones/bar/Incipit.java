@@ -1,5 +1,4 @@
 package tones.bar;
-import static tones.Tone.*;
 import facets.util.Debug;
 import facets.util.Tracer;
 import java.util.Arrays;

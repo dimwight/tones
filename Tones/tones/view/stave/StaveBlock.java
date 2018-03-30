@@ -1,17 +1,15 @@
-package tones.view;
+package tones.view.stave;
 import static tones.view.StavePageView.*;
 import facets.util.ItemList;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import tones.bar.Annotation;
+import tones.bar.Annotation.Group;
 import tones.bar.Bar;
 import tones.bar.Bars;
-import tones.bar.Annotation.Group;
-import tones.view.StaveItem.StaveBar;
-final class StaveBlock{
+import tones.view.StavePageView;
+public final class StaveBlock{
 	private static final double STAVE_X_SCALE_DEFAULT=1.5;
 	private final List<Bar>bars=new ArrayList();
 	private final List<Group>groups=new ArrayList();
@@ -41,10 +39,10 @@ final class StaveBlock{
 			items.addItems(staveBar.items());
 			staveX+=staveBar.staveWidth;
 		}
-		for(Group g:groups)items.addItems(StaveItem.newGroupItems(g,staveBars));
+		for(Group g:groups)items.addItems(StaveGroup.newGroupItems(g,staveBars));
 		return items.items();
 	}
-	public static StaveItem[]newItems(Bars content,StavePageView page){
+	public static StaveItem[]newPageItems(Bars content,StavePageView page){
 		Iterator<Bar>bars=content.barsFrom(page.barAt()).iterator();
 		final double staveWidth=page.showWidth()-2*INSET,
 			useHeight=page.showHeight()-2*INSET,

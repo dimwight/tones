@@ -16,19 +16,21 @@ import facets.util.ArrayPath;
 import facets.util.Debug;
 import facets.util.shade.Shades;
 import tones.bar.Bars;
-import tones.view.StaveItem.StaveBar;
-import tones.view.StaveItem.StaveGroup;
-import tones.view.StaveItem.StaveNote;
-import tones.view.StaveItem.StaveVoiceNotes;
 import tones.view.paint.BarPainters;
 import tones.view.paint.GroupPainters;
 import tones.view.paint.NotePainters;
 import tones.view.paint.PagePainters;
+import tones.view.stave.StaveBar;
+import tones.view.stave.StaveBar.StaveVoiceNotes;
+import tones.view.stave.StaveBlock;
+import tones.view.stave.StaveGroup;
+import tones.view.stave.StaveItem;
+import tones.view.stave.StaveNote;
 final class StavePagePolicies extends AvatarPolicies{
 	@Override
 	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){
 		Object content=viewable.content();
-		StaveItem[]items=StaveBlock.newItems((Bars)content,(StavePageView)viewer.view());
+		StaveItem[]items=StaveBlock.newPageItems((Bars)content,(StavePageView)viewer.view());
 		Object selected=viewable.single();
 		if(selected==content||selected instanceof SView)
 			return PathSelection.newMinimal(items);
