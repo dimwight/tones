@@ -1,4 +1,4 @@
-package tones.view;
+package tones.view.paint;
 import static facets.util.Util.*;
 import static tones.Tone.*;
 import facets.core.app.avatar.Painter;
@@ -10,9 +10,11 @@ import facets.util.shade.Shades;
 import path.SvgPath;
 import tones.ScaleNote;
 import tones.bar.Bar;
+import tones.view.StaveItem;
+import tones.view.StavePageView;
 import tones.view.StaveItem.StaveNote;
 import tones.view.StaveItem.StaveVoiceNotes;
-final class NotePainters extends PagePainters{
+public final class NotePainters extends PagePainters{
 	private static final Shade SHADE_NOTE=Shades.blue;
 	private static final SvgPath Empty=new SvgPath("Empty","",0),
 		Double=new SvgPath("Double","M68.6174 -39.5421c15.8781,-10.4427 44.6966,-4.21473 59.6674,15.5225 14.9707,19.7372 15.6271,54.3268 -0.118545,64.4808 -15.7457,10.1541 -45.0672,3.33459 -59.103,-15.5223 -14.0357,-18.8571 -16.3239,-54.0384 -0.445739,-64.4814zm-78.1195 -13.6518c-4.20299,0.0 -7.64183,3.43882 -7.64183,7.64183l0.0 92.9195c0.0,4.20299 3.43882,7.64183 7.64183,7.64183l5.15872 0.0c4.20299,0.0 7.64183,-3.43882 7.64183,-7.64183l0.0 -33.1629c12.9095,31.341 68.3402,40.1608 95.26,40.2947 26.1969,-0.130281 79.4014,-8.48277 94.1375,-37.8144l0.0 30.6826c0.0,4.20299 3.43882,7.64183 7.64183,7.64183l5.15872 0.0c4.20299,0.0 7.64183,-3.43882 7.64183,-7.64183l0.0 -92.9195c0.0,-4.20299 -3.43882,-7.64183 -7.64183,-7.64183l-5.15872 0.0c-4.20299,0.0 -7.64183,3.43882 -7.64183,7.64183l0.0 29.6698c-14.7358,-29.3316 -67.9403,-37.6841 -94.1375,-37.8144 -26.92,0.133861 -82.3508,8.95377 -95.26,40.2947l0.0 -32.1501c0.0,-4.20299 -3.43882,-7.64183 -7.64183,-7.64183l-5.15872 0.0z",2),
@@ -24,7 +26,7 @@ final class NotePainters extends PagePainters{
 	private final double x,y,width,height;
 	static boolean firstInBar;
 	private final StaveNote note;
-	NotePainters(StavePageView page,StaveNote note,PainterSource p){
+	public NotePainters(StavePageView page,StaveNote note,PainterSource p){
 		super(page,p);
 		this.note=note;
 		width=Bar.WIDTH_NOTE*unitWidth;
@@ -34,7 +36,7 @@ final class NotePainters extends PagePainters{
 		if(false&&firstInBar)Util.printOut("NotePainters: ",note+", x="+fx(x)+", y="+fx(y));
 		firstInBar=false;
 	}
-	Painter[]newViewPainters(boolean selected){
+	public Painter[]newViewPainters(boolean selected){
 		ItemList<Painter>painters=new ItemList(Painter.class);
 		if(note.content.pitch!=ScaleNote.PITCH_REST){
 			if(note.ledgerLines!=0)painters.addItems(staveLinePainters(
@@ -58,22 +60,22 @@ final class NotePainters extends PagePainters{
 		},true,painters);
 		return painters;
 	}
-	Painter[]newPickPainters(){
+	public Painter[]newPickPainters(){
 		String text=note.toString();
 		return true?newBeadPainters(!note.content.tags.isEmpty()?Shades.cyan:Shades.red)
 				:new Painter[]{true?unscaledText(text,x,y,-1):tooltipText(text,x,y,-1)};
 	}
-	static PagePainters newVoiceNotePainters(StavePageView page,final StaveVoiceNotes notes,
+	public static PagePainters newVoiceNotePainters(StavePageView page,final StaveVoiceNotes notes,
 			PainterSource p){
 		return new PagePainters(page,p){
-			Painter[]newViewPainters(boolean selected){
+			public Painter[]newViewPainters(boolean selected){
 				ItemList<Painter>painters=new ItemList(Painter.class);
 				for(StaveItem content:notes.items)
 					painters.addItems(new NotePainters(page,(StaveNote)content,p
 							).newViewPainters(true));
 				return painters.items();
 			}
-			Painter[]newPickPainters(){
+			public Painter[]newPickPainters(){
 				return new Painter[]{};
 			}
 		};

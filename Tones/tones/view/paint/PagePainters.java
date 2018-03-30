@@ -1,11 +1,12 @@
-package tones.view;
+package tones.view.paint;
 import facets.core.app.avatar.Painter;
 import facets.core.app.avatar.PainterSource;
 import facets.util.ItemList;
 import facets.util.Tracer;
 import facets.util.geom.Line;
 import facets.util.shade.Shades;
-abstract class PagePainters extends Tracer{
+import tones.view.StavePageView;
+public abstract class PagePainters extends Tracer{
 	static final int TEXT_POINTS=13;
 	final StavePageView page;
 	final PainterSource p;
@@ -16,8 +17,8 @@ abstract class PagePainters extends Tracer{
 		pitchHeight=page.pitchHeight();
 		unitWidth=pitchHeight*page.widthForPitch();
 	}
-	abstract Painter[]newViewPainters(boolean selected);
-	abstract Painter[]newPickPainters();
+	public abstract Painter[]newViewPainters(boolean selected);
+	public abstract Painter[]newPickPainters();
 	final protected Painter unscaledText(String text,double x,double y,double dropFactor){
 		double scaledPoints=TEXT_POINTS/page.scale(),
 			textDrop=scaledPoints*dropFactor;

@@ -1,4 +1,4 @@
-package tones.view;
+package tones.view.paint;
 import static tones.view.StaveItem.*;
 import facets.core.app.avatar.Painter;
 import facets.core.app.avatar.PainterSource;
@@ -6,11 +6,13 @@ import facets.util.ItemList;
 import facets.util.geom.Line;
 import facets.util.shade.Shades;
 import tones.Clef;
+import tones.view.StaveItem;
+import tones.view.StavePageView;
 import tones.view.StaveItem.StaveBar;
-final class BarPainters extends PagePainters{
+public final class BarPainters extends PagePainters{
 	private final int at;
 	private final double rise,height,width,x,trebleY,bassY;
-	BarPainters(StavePageView page,StaveBar bar,PainterSource p){
+	public BarPainters(StavePageView page,StaveBar bar,PainterSource p){
 		super(page,p);
 		at=bar.content.at;
 		x=bar.staveX*unitWidth;
@@ -21,7 +23,7 @@ final class BarPainters extends PagePainters{
 		height=(rise+STAVE_GRID*2+bar.staveGap+bar.content.fall)*pitchHeight;
 		NotePainters.firstInBar=true;
 	}
-	Painter[]newViewPainters(boolean selected){
+	public Painter[]newViewPainters(boolean selected){
 		ItemList<Painter>painters=new ItemList(Painter.class);
 		if(false)painters.addItem(unscaledText(at+"",x,trebleY,.7));
 		painters.addItems(staveLinePainters(x,trebleY,width,STAVE_GRID/2));
@@ -35,7 +37,7 @@ final class BarPainters extends PagePainters{
 		return p.line(new Line(new double[]{x+width,y,x+width,bassY+8*pitchHeight}),Shades.lightGray,
 				PainterSource.HAIRLINE,false);
 	}
-	Painter[]newPickPainters(){
+	public Painter[]newPickPainters(){
 		return new Painter[]{p.rectangle(x,trebleY-rise*pitchHeight,width,height,Shades.green)};
 	}
 }

@@ -23,7 +23,7 @@ import tones.view.StaveItem.StaveBar;
 import tones.view.StaveItem.StaveTie.TieType;
 public class StaveItem extends Tracer implements AvatarContent{
 	public abstract static class StaveGroup extends StaveItem{}
-	static final int STAVE_GRID=11;
+	public static final int STAVE_GRID=11;
 	public static final class StaveTie extends StaveGroup{
 		public enum TieType{FromTo,From,To,ToFrom}
 		public final TieGroup content;

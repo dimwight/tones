@@ -1,4 +1,4 @@
-package tones.view;
+package tones.view.paint;
 import static facets.util.shade.Shades.*;
 import static tones.view.StaveItem.StaveTie.TieType.*;
 import facets.core.app.avatar.Painter;
@@ -10,10 +10,12 @@ import facets.util.geom.Vector;
 import facets.util.shade.Shade;
 import path.SvgPath;
 import tones.bar.Bar;
+import tones.view.StaveItem;
+import tones.view.StavePageView;
 import tones.view.StaveItem.StaveGroup;
 import tones.view.StaveItem.StaveTie;
 import tones.view.StaveItem.StaveTie.TieType;
-final class GroupPainters extends PagePainters{
+public final class GroupPainters extends PagePainters{
 	private static final SvgPath 
 		TieFromTo=new SvgPath("TieFromTo","M213.0 72.13c7.665,7.444 1.127,13.46 -6.062,6.475 -22.96,-18.09 -48.72,-30.72 -98.74,-31.47 -50.02,0.7481 -75.77,13.38 -98.74,31.47 -7.203,6.997 -13.67,0.9138 -6.062,-6.475 26.2,-29.19 66.25,-42.94 104.8,-42.56 38.75,0.0 78.4,13.15 104.8,42.56z",2),
 		TieFromLong=new SvgPath("TieFromLong","M173.4 58.53c-16.6,-6.798 -37.06,-10.98 -65.2,-11.4 -50.02,0.7481 -75.77,13.38 -98.74,31.47 -7.203,6.997 -13.67,0.9138 -6.062,-6.475 26.2,-29.19 66.25,-42.94 104.8,-42.56 23.01,0.0 46.33,4.635 67.01,14.56l-1.816 14.41z",2),
@@ -21,13 +23,14 @@ final class GroupPainters extends PagePainters{
 		TieTo=new SvgPath("TieTo","M0.0 29.57c38.55,-0.3749 78.6,13.37 104.8,42.56 7.609,7.389 1.141,13.47 -6.062,6.475 -22.96,-18.09 -48.72,-30.72 -98.74,-31.47l0.0 -17.57z",2);
 	private final double noteWidth,noteHeight;
 	private final StaveGroup group;
-	GroupPainters(StavePageView page,StaveGroup group,PainterSource p){
+	public GroupPainters(StavePageView page,StaveGroup group,PainterSource p){
 		super(page,p);
 		this.group=group;
 		noteWidth=Bar.WIDTH_NOTE*unitWidth;
 		noteHeight=pitchHeight*2;
 	}
 	@Override
+	public
 	Painter[]newViewPainters(boolean selected){
 		StaveTie tie=(StaveTie)group;
 		return tie.type==ToFrom?new Painter[]{}:new Painter[]{
@@ -62,7 +65,7 @@ final class GroupPainters extends PagePainters{
 		},true,painter);
 		return painter;
 	}
-	Painter[]newPickPainters(){
+	public Painter[]newPickPainters(){
 		throw new RuntimeException("Not implemented in "+Debug.info(this));
 	}
 }

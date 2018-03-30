@@ -20,6 +20,10 @@ import tones.view.StaveItem.StaveBar;
 import tones.view.StaveItem.StaveGroup;
 import tones.view.StaveItem.StaveNote;
 import tones.view.StaveItem.StaveVoiceNotes;
+import tones.view.paint.BarPainters;
+import tones.view.paint.GroupPainters;
+import tones.view.paint.NotePainters;
+import tones.view.paint.PagePainters;
 final class StavePagePolicies extends AvatarPolicies{
 	@Override
 	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){
