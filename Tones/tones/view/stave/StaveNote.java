@@ -24,7 +24,7 @@ public abstract class StaveNote extends StaveItem{
 		ledgerLines=beyondStave<=0?0
 				:beyondStave/2*(aboveMidPitch?1:-1);
 		ledgerLineShift=aboveMidPitch?beyondStave%2+1:(beyondStave+1)%2;
-		dotAt=content.duration%3!=0?DOT_NONE:stavePitch%2==0?DOT_BELOW:DOT_LEVEL;
+		dotAt=content.eighths%3!=0?DOT_NONE:stavePitch%2==0?DOT_BELOW:DOT_LEVEL;
 		debugString=content.pitchNote()+
 			" stavePitch="+stavePitch+" aboveMidPitch="+aboveMidPitch
 			+" beyondStave="+beyondStave;
@@ -41,6 +41,6 @@ public abstract class StaveNote extends StaveItem{
 		return this==that||Arrays.equals(intValues(),that.intValues());
 	}
 	private int[]intValues(){
-		return new int[]{content.pitch,content.duration};
+		return new int[]{content.pitch,content.eighths};
 	}
 }

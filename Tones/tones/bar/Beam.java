@@ -14,7 +14,7 @@ final class Beam extends Tracer{
 	}
 	Beam readTone(Tone tone,Incipit incipit){
 		if(tone.voice!=voice)return this;
-		boolean adding=tone.duration<Tone.DURATION_QUARTER;
+		boolean adding=tone.eighths<Tone.EIGHTHS_QUARTER;
 		if(adding){
 			if(tones.isEmpty())this.incipit=incipit;
 			tones.add(tone);

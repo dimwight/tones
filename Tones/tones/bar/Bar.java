@@ -52,7 +52,7 @@ public class Bar extends Tracer{
 				for(Tone i:incipit.tones)voices.add(i.voice);
 				int barAt=furthestAt(voices,incipit.eighthAt);
 				incipit.barAt=barAt;
-				for(Tone i:incipit.tones)ats.put(i.voice,barAt+i.duration*WIDTH_NOTE);
+				for(Tone i:incipit.tones)ats.put(i.voice,barAt+i.eighths*WIDTH_NOTE);
 			}
 		}
 		VoiceAts starts=new VoiceAts();

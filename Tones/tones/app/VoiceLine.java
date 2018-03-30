@@ -74,12 +74,12 @@ final public class VoiceLine extends Tracer{
 	//		+""
 		};
 	protected void encode(Tone tone){
-		int duration=context.duration;
+		int eighths=context.eighths;
 		for(Tag tag:tone.tags)if(tag instanceof Context){
 				context=(Context)tag;
-				if(context.duration==DURATION_NONE)throw new IllegalStateException(
-						"Invalid duration in context="+context);
-				else if(duration!=context.duration)codes.add(""+(duration=context.duration));
+				if(context.eighths==EIGHTHS_NONE)throw new IllegalStateException(
+						"Invalid eighths in context="+context);
+				else if(eighths!=context.eighths)codes.add(""+(eighths=context.eighths));
 			}
 		codes.add(tone.pitchNote().name());
 	}
@@ -121,38 +121,38 @@ final public class VoiceLine extends Tracer{
 	private final static class Context implements Tone.Tag{
 		final ScaleNote scaleNote;
 		final Octave octave;
-		final int eighths=16,duration;
-		Context(ScaleNote scaleNote,Octave octave,int duration){
+		final int barEighths=16,eighths;
+		Context(ScaleNote scaleNote,Octave octave,int eighths){
 			if(scaleNote==null)throw new IllegalArgumentException(
 					"Null keyPitch in "+Debug.info(this));
 			else if(octave==null)throw new IllegalArgumentException(
 					"Null octave in "+Debug.info(this));
-			else if(duration<DURATION_NONE)throw new IllegalArgumentException(
-					"Invalid duration in "+Debug.info(this));
+			else if(eighths<EIGHTHS_NONE)throw new IllegalArgumentException(
+					"Invalid eighths in "+Debug.info(this));
 			this.scaleNote=scaleNote;
 			this.octave=octave;
-			this.duration=duration;
+			this.eighths=eighths;
 		}
 		@Override
 		public boolean equals(Object o){
 			Context that=(Context)o;
 			return that.scaleNote==scaleNote&&that.octave==octave
-				&&that.eighths==eighths&&that.duration==duration;
+				&&that.barEighths==barEighths&&that.eighths==eighths;
 		}
 		public boolean resembles(Context that){
 			return that.scaleNote==scaleNote&&that.octave==octave
-				&&that.eighths==eighths;
+				&&that.barEighths==barEighths;
 		}
 		@Override
 		public String toString(){
-			return "<"+octave+","+scaleNote+//","+duration+
+			return "<"+octave+","+scaleNote+//","+eighths+
 			">";
 		}
 	}
 	private static Map<Voice,Context>newDefaultContexts(){
 		Map<Voice,Context>contexts=new HashMap();
 		for(Voice voice:Voice.values())contexts.put(voice,
-				new Context(voice.midNote,voice.octave,DURATION_NONE));
+				new Context(voice.midNote,voice.octave,EIGHTHS_NONE));
 		return contexts;
 	}
 	final static public Bars newBars(String[]codeLines){
@@ -165,17 +165,17 @@ final public class VoiceLine extends Tracer{
 			Map<Integer,Incipit>incipits=new HashMap();
 			for(VoiceLine line:voiceLines){
 				List<Tone>tones=line.nextBarTones(barAt);
-				int duration=tones.remove(MEASURE_AT).duration;
+				int eighths=tones.remove(MEASURE_AT).eighths;
 				if(tones.isEmpty())continue;
-				else if(eighth>0&&duration!=eighth)throw new IllegalStateException(
-						"Mismatched eighth="+eighth+", duration="+duration+" in "+Debug.info(line));
-				else eighth=duration;
+				else if(eighth>0&&eighths!=eighth)throw new IllegalStateException(
+						"Mismatched eighth="+eighth+", eighths="+eighths+" in "+Debug.info(line));
+				else eighth=eighths;
 				int eighthAt=0;
 				for(Tone tone:tones){
 					if((i=incipits.get(eighthAt))==null)
 						incipits.put(eighthAt,i=new Incipit(eighthAt));
 					i.addTone(tone);
-					eighthAt+=tone.duration;
+					eighthAt+=tone.eighths;
 				}
 			}
 			if(incipits.isEmpty())break;
@@ -188,9 +188,9 @@ final public class VoiceLine extends Tracer{
 		Context context=this.context==null?newDefaultContexts().get(voice):this.context;
 		ScaleNote scaleNote=context.scaleNote;
 		Octave octave=context.octave;
-		int duration=context.duration,eighthAt=0;
-		final int eighth=context.eighths;
-		while(eighthAt<eighth){
+		int eighths=context.eighths,eighthAt=0;
+		final int barEighths=context.barEighths;
+		while(eighthAt<barEighths){
 			int[]toneValues=null;
 			Set<Tag>tags=new HashSet();
 			while(toneValues==null&&codeAt<codes.size()){
@@ -204,14 +204,14 @@ final public class VoiceLine extends Tracer{
 				else if(firstChar==CODE_OCTAVE_UP)octave=octave.above();
 				else if(firstChar==CODE_OCTAVE_DOWN)octave=octave.below();
 				else if(isDigit(firstChar))
-					duration=Integer.valueOf(code)*DURATION_MIN;
+					eighths=Integer.valueOf(code)*EIGHTHS_MIN;
 				else if(CODES_NOTE.contains(""+firstChar)){
 					ScaleNote toneNote=codeNote(firstChar);
 					if(false)Util.printOut("VoiceLine.readCodes: toneNote=",toneNote);
 					int octaved=toneNote.octaved(octave),
 						tonePitch=toneNote==REST?PITCH_REST
 							:octaved+(toneNote.pitch<scaleNote.pitch?Octave.pitches:0);
-					toneValues=new int[]{tonePitch,duration};
+					toneValues=new int[]{tonePitch,eighths};
 				}
 				if(isUpperCase(secondChar))for(char c:code.substring(1).toCharArray()){
 					Tag tag=c==CODE_TIE?Tag.Tie:c=='B'?Tag.Beam:null;
@@ -220,18 +220,18 @@ final public class VoiceLine extends Tracer{
 			}
 			if(toneValues==null){
 				if(padBar&&eighthAt>0)
-					toneValues=new int[]{PITCH_REST,eighth-eighthAt+1};
+					toneValues=new int[]{PITCH_REST,barEighths-eighthAt+1};
 				else break;
 			}
-			if(duration<=DURATION_NONE)throw new IllegalStateException(
-					"Invalid duration in context="+context);
-			context=new Context(scaleNote,octave,duration);
+			if(eighths<=EIGHTHS_NONE)throw new IllegalStateException(
+					"Invalid eighths in context="+context);
+			context=new Context(scaleNote,octave,eighths);
 			if(this.context==null||!context.resembles(this.context))tags.add(context);
 			this.context=context;
 			tones.add(new Tone(voice,barAt,eighthAt,(byte)toneValues[0],(short)toneValues[1],tags));
 			eighthAt+=toneValues[1];
 		}		
-		tones.add(0,new Tone(null,barAt,-1,(byte)-1,(short)eighth,null));
+		tones.add(0,new Tone(null,barAt,-1,(byte)-1,(short)barEighths,null));
 		return tones;
 	}
 	private ScaleNote codeNote(char noteChar){

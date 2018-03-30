@@ -46,10 +46,10 @@ public final class NotePainters extends PagePainters{
 		return painters.items();
 	}
 	private Painter[]newBeadPainters(Shade shade){
-		double at=note.dotAt,time=note.content.duration;
-		if(false&&time<DURATION_QUARTER)shade=Shades.gray;
+		double at=note.dotAt,time=note.content.eighths;
+		if(false&&time<EIGHTHS_QUARTER)shade=Shades.gray;
 		SvgPath dot=at==StaveNote.DOT_NONE?Empty:at==StaveNote.DOT_BELOW?DotBelow:DotLevel,
-				bead=time<DURATION_HALF?Solid:time<DURATION_WHOLE?Half:time<DURATION_DOUBLE?Whole:Double;
+				bead=time<EIGHTHS_HALF?Solid:time<EIGHTHS_WHOLE?Half:time<EIGHTHS_DOUBLE?Whole:Double;
 		Painter[]painters={
 			p.mastered(dot.newOutlined(shade,null,false)),
 			p.mastered(bead.newOutlined(shade,null,true)),
