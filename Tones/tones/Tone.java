@@ -16,17 +16,20 @@ public final class Tone extends Tracer{
 	public static final short DURATION_WHOLE=8,DURATION_HALF=DURATION_WHOLE/2,
 		DURATION_QUARTER=DURATION_WHOLE/4,DURATION_EIGHT=DURATION_WHOLE/8,
 		DURATION_DOUBLE=DURATION_WHOLE*2,DURATION_MIN=DURATION_EIGHT,DURATION_NONE=0;
-	public final int barAt,measureAt;
+	public final int barAt,eighthAt;
 	public final Voice voice;
 	public final byte pitch;
 	public final short duration;
 	public final Collection<Tag>tags=new HashSet();
-	public Tone(Voice voice,int barAt,int measureAt,byte pitch,short duration,Set<Tag>tags){
+	private final int[]intValues;
+	public Tone(Voice voice,int barAt,int eighthAt,byte pitch,short duration,
+			Set<Tag>tags){
 		this.voice=voice;
 		this.barAt=barAt;
-		this.measureAt=measureAt;
+		this.eighthAt=eighthAt;
 		this.pitch=pitch;
 		this.duration=duration;
+		intValues=new int[]{barAt,eighthAt,pitch,duration};
 		if(tags!=null)this.tags.addAll(tags);
 		if(false&&tags.size()>0)trace(".Tone: ",this);
 	}
@@ -39,13 +42,10 @@ public final class Tone extends Tracer{
 		return ScaleNote.pitchNote(pitch);
 	}
 	public int hashCode(){
-		return Arrays.hashCode(intValues());
+		return Arrays.hashCode(intValues);
 	}
 	public boolean equals(Object o){
 		Tone that=(Tone)o;
-		return voice==that.voice&&Arrays.equals(intValues(),that.intValues());
-	}
-	private int[]intValues(){
-		return new int[]{barAt,measureAt,pitch,duration};
+		return voice==that.voice&&Arrays.equals(intValues,that.intValues);
 	}
 }

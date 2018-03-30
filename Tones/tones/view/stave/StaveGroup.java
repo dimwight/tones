@@ -44,19 +44,19 @@ public abstract class StaveGroup extends StaveItem{
 			this.fromAt=fromAt;this.toAt=toAt;
 		}
 	}
-	static StaveItem[]newGroupItems(Group g,List<StaveBar>bars){
+	static StaveItem[]newBarItems(Group group,List<StaveBar>bars){
 		StaveBar copy=null;
 		ItemList<StaveItem>items=new ItemList(StaveItem.class);
 		for(StaveBar bar:bars){
-			if(g instanceof TieGroup){
-				TieGroup tie=(TieGroup)g;
-				if(bar.content==g.bar||bar.content==tie.end.bar)
+			if(group instanceof TieGroup){
+				TieGroup tie=(TieGroup)group;
+				if(bar.content==group.bar||bar.content==tie.end.bar)
 					items.addItem(new StaveTie(tie,bar,bars));
 			}
-			else if(g instanceof BeamGroup){
-				BeamGroup beam=(BeamGroup)g;
-				if(bar.content==g.bar)
-					Util.printOut("StaveItem.newGroupItems: beam="+beam);
+			else if(group instanceof BeamGroup){
+				BeamGroup beam=(BeamGroup)group;
+				if(bar.content==group.bar)
+					Util.printOut("StaveGroup.newBarItems: beam="+beam);
 			}
 		}
 		return items.items();

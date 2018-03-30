@@ -20,7 +20,7 @@ public abstract class StavePageView extends PlaneViewWorks{
 	public static final String KEY_HEIGHT="pageHeight",
 		KEY_HEIGHT_SETS="pageHeightSets";
 	public static final int TARGET_BAR=0,TARGET_HEIGHT_SETS_PAGE=1,
-		TARGET_TIME=2,TARGET_MEASURES=3;
+		TARGET_TIME=2,TARGET_BAR_SIZE=3;
 	private int barAt;
 	StavePageView(String title,double width,double height,StavePagePolicies policies){
 		super(title,width,height,new Vector(-width/2+INSET,INSET),policies);
@@ -46,7 +46,7 @@ public abstract class StavePageView extends PlaneViewWorks{
 				spec.trace(".indexSet: i=",i.indexed());
 			}
 		}),
-		measures=new SIndexing("Measures per Bar",new Object[]{1,2,4},0,new Coupler(){
+		barSize=new SIndexing("Whole Notes per Bar",new Object[]{1,2,4},3,new Coupler(){
 			public void indexSet(SIndexing i){
 				spec.trace(".indexSet: i=",i.indexed());
 			}
@@ -97,7 +97,7 @@ public abstract class StavePageView extends PlaneViewWorks{
 		view.barAt=barFrom-1;
 		return new SFrameTarget(view){
 			protected STarget[]lazyElements(){
-				return new STarget[]{barAt,resizeSetsPage,time,measures};
+				return new STarget[]{barAt,resizeSetsPage,time,barSize};
 			}
 		};
 	}

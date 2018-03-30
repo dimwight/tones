@@ -39,7 +39,7 @@ public final class StaveBlock{
 			items.addItems(staveBar.items());
 			staveX+=staveBar.staveWidth;
 		}
-		for(Group g:groups)items.addItems(StaveGroup.newGroupItems(g,staveBars));
+		for(Group group:groups)items.addItems(StaveGroup.newBarItems(group,staveBars));
 		return items.items();
 	}
 	public static StaveItem[]newPageItems(Bars content,StavePageView page){

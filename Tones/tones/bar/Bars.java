@@ -38,7 +38,7 @@ public final class Bars extends Tracer implements Titled{
 			barsList.add(barList.parent);
 			for(Incipit incipit:bar.incipits){
 				NodeList incipitList=new NodeList(new DataNode(Incipit.class.getSimpleName(),
-						""+incipit.measureAt),true);
+						""+incipit.eighthAt),true);
 				barList.add(incipitList.parent);
 				List<Tone>sortTones=new ArrayList(incipit.tones);
 				Collections.sort(sortTones,new Comparator<Tone>(){

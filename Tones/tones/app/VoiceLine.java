@@ -121,7 +121,7 @@ final public class VoiceLine extends Tracer{
 	private final static class Context implements Tone.Tag{
 		final ScaleNote scaleNote;
 		final Octave octave;
-		final int measure=16,duration;
+		final int eighths=16,duration;
 		Context(ScaleNote scaleNote,Octave octave,int duration){
 			if(scaleNote==null)throw new IllegalArgumentException(
 					"Null keyPitch in "+Debug.info(this));
@@ -137,11 +137,11 @@ final public class VoiceLine extends Tracer{
 		public boolean equals(Object o){
 			Context that=(Context)o;
 			return that.scaleNote==scaleNote&&that.octave==octave
-				&&that.measure==measure&&that.duration==duration;
+				&&that.eighths==eighths&&that.duration==duration;
 		}
 		public boolean resembles(Context that){
 			return that.scaleNote==scaleNote&&that.octave==octave
-				&&that.measure==measure;
+				&&that.eighths==eighths;
 		}
 		@Override
 		public String toString(){
@@ -158,7 +158,7 @@ final public class VoiceLine extends Tracer{
 	final static public Bars newBars(String[]codeLines){
 		Set<VoiceLine>voiceLines=new HashSet();
 		for(String lines:codeLines)voiceLines.add(new VoiceLine(lines));
-		int barAt=0,measure=0;
+		int barAt=0,eighth=0;
 		List<Bar>bars=new ArrayList();
 		Incipit i;
 		while(true){
@@ -167,19 +167,19 @@ final public class VoiceLine extends Tracer{
 				List<Tone>tones=line.nextBarTones(barAt);
 				int duration=tones.remove(MEASURE_AT).duration;
 				if(tones.isEmpty())continue;
-				else if(measure>0&&duration!=measure)throw new IllegalStateException(
-						"Mismatched measure="+measure+", duration="+duration+" in "+Debug.info(line));
-				else measure=duration;
-				int measureAt=0;
+				else if(eighth>0&&duration!=eighth)throw new IllegalStateException(
+						"Mismatched eighth="+eighth+", duration="+duration+" in "+Debug.info(line));
+				else eighth=duration;
+				int eighthAt=0;
 				for(Tone tone:tones){
-					if((i=incipits.get(measureAt))==null)
-						incipits.put(measureAt,i=new Incipit(measureAt));
+					if((i=incipits.get(eighthAt))==null)
+						incipits.put(eighthAt,i=new Incipit(eighthAt));
 					i.addTone(tone);
-					measureAt+=tone.duration;
+					eighthAt+=tone.duration;
 				}
 			}
 			if(incipits.isEmpty())break;
-			else bars.add(new Bar(barAt++,incipits.values(),measure));
+			else bars.add(new Bar(barAt++,incipits.values(),eighth));
 		}
 		return new Bars(bars);
 	}
@@ -188,9 +188,9 @@ final public class VoiceLine extends Tracer{
 		Context context=this.context==null?newDefaultContexts().get(voice):this.context;
 		ScaleNote scaleNote=context.scaleNote;
 		Octave octave=context.octave;
-		int duration=context.duration,measureAt=0;
-		final int measure=context.measure;
-		while(measureAt<measure){
+		int duration=context.duration,eighthAt=0;
+		final int eighth=context.eighths;
+		while(eighthAt<eighth){
 			int[]toneValues=null;
 			Set<Tag>tags=new HashSet();
 			while(toneValues==null&&codeAt<codes.size()){
@@ -219,8 +219,8 @@ final public class VoiceLine extends Tracer{
 				}
 			}
 			if(toneValues==null){
-				if(padBar&&measureAt>0)
-					toneValues=new int[]{PITCH_REST,measure-measureAt+1};
+				if(padBar&&eighthAt>0)
+					toneValues=new int[]{PITCH_REST,eighth-eighthAt+1};
 				else break;
 			}
 			if(duration<=DURATION_NONE)throw new IllegalStateException(
@@ -228,10 +228,10 @@ final public class VoiceLine extends Tracer{
 			context=new Context(scaleNote,octave,duration);
 			if(this.context==null||!context.resembles(this.context))tags.add(context);
 			this.context=context;
-			tones.add(new Tone(voice,barAt,measureAt,(byte)toneValues[0],(short)toneValues[1],tags));
-			measureAt+=toneValues[1];
+			tones.add(new Tone(voice,barAt,eighthAt,(byte)toneValues[0],(short)toneValues[1],tags));
+			eighthAt+=toneValues[1];
 		}		
-		tones.add(0,new Tone(null,barAt,-1,(byte)-1,(short)measure,null));
+		tones.add(0,new Tone(null,barAt,-1,(byte)-1,(short)eighth,null));
 		return tones;
 	}
 	private ScaleNote codeNote(char noteChar){

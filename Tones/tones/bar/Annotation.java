@@ -14,7 +14,7 @@ public class Annotation extends Tracer{
 	}
 	@Override
 	public String toString(){
-		return getClass().getSimpleName()+" bar="+bar.at+" incipit="+incipit.measureAt+" tone="+tone;
+		return getClass().getSimpleName()+" bar="+bar.at+" incipit="+incipit.eighthAt+" tone="+tone;
 	}
 	public static abstract class Group extends Annotation{
 		Group(Bar bar,Incipit incipit,Tone tone){
@@ -28,7 +28,7 @@ public class Annotation extends Tracer{
 			Annotation end=null;
 			Bar search=bar;
 			for(Incipit i:search.incipits)
-				if(end==null&&i.measureAt>incipit.measureAt)for(Tone t:i.tones)
+				if(end==null&&i.eighthAt>incipit.eighthAt)for(Tone t:i.tones)
 						if(end!=null)break;
 						else if(t.pitch==tone.pitch)end=new Annotation(bar,i,t);
 			if(end==null)search=bars.get(bar.at+1);

@@ -118,7 +118,7 @@ final public class TonesEdit extends ViewerContenter{
 			view=area.view(),views[]=view.elements(),
 			heightSetsPage=views[TARGET_HEIGHT_SETS_PAGE],
 			time=views[TARGET_TIME],
-			measures=views[TARGET_MEASURES];
+			barSize=views[TARGET_BAR_SIZE];
 		return new FacetFactory(app.ff){
 			@Override
 			public SFacet[]header(){
@@ -132,7 +132,7 @@ final public class TonesEdit extends ViewerContenter{
 						togglingButtons(heightSetsPage,HINT_BARE)):
 					rowPanel(selection,textualField(code,50,HINT_NONE),
 						indexingDropdownList(time,HINT_NONE),
-						indexingDropdownList(measures,HINT_NONE));
+						indexingDropdownList(barSize,HINT_NONE));
 			}
 			@Override
 			public SurfaceServices services(){
