@@ -10,10 +10,10 @@ import facets.util.shade.Shades;
 import path.SvgPath;
 import tones.ScaleNote;
 import tones.bar.Bar;
-import tones.view.StavePageView;
-import tones.view.stave.StaveBar.StaveVoiceNotes;
-import tones.view.stave.StaveItem;
-import tones.view.stave.StaveNote;
+import tones.view.PageView;
+import tones.view.pane.PaneItem;
+import tones.view.pane.PaneNote;
+import tones.view.pane.PaneBar.StaveVoiceNotes;
 public final class NotePainters extends PagePainters{
 	private static final Shade SHADE_NOTE=Shades.blue;
 	private static final SvgPath Empty=new SvgPath("Empty","",0),
@@ -25,8 +25,8 @@ public final class NotePainters extends PagePainters{
 		DotLevel=new SvgPath("DotLevel","M203.764 -21.0603c12.1479,0.0 21.9993,9.85141 21.9993,21.9993 0.0,12.1479 -9.85141,21.9993 -21.9993,21.9993 -12.1479,0.0 -21.9993,-9.85141 -21.9993,-21.9993 0.0,-12.1479 9.85141,-21.9993 21.9993,-21.9993z",2);
 	private final double x,y,width,height;
 	static boolean firstInBar;
-	private final StaveNote note;
-	public NotePainters(StavePageView page,StaveNote note,PainterSource p){
+	private final PaneNote note;
+	public NotePainters(PageView page,PaneNote note,PainterSource p){
 		super(page,p);
 		this.note=note;
 		width=Bar.WIDTH_NOTE*unitWidth;
@@ -47,9 +47,9 @@ public final class NotePainters extends PagePainters{
 	}
 	private Painter[]newBeadPainters(Shade shade){
 		double at=note.dotAt,time=note.content.eighths;
-		if(false&&time<EIGHTHS_QUARTER)shade=Shades.gray;
-		SvgPath dot=at==StaveNote.DOT_NONE?Empty:at==StaveNote.DOT_BELOW?DotBelow:DotLevel,
-				bead=time<EIGHTHS_HALF?Solid:time<EIGHTHS_WHOLE?Half:time<EIGHTHS_DOUBLE?Whole:Double;
+		if(false&&time<NOTE_QUARTER)shade=Shades.gray;
+		SvgPath dot=at==PaneNote.DOT_NONE?Empty:at==PaneNote.DOT_BELOW?DotBelow:DotLevel,
+				bead=time<NOTE_HALF?Solid:time<NOTE_WHOLE?Half:time<NOTE_DOUBLE?Whole:Double;
 		Painter[]painters={
 			p.mastered(dot.newOutlined(shade,null,false)),
 			p.mastered(bead.newOutlined(shade,null,true)),
@@ -65,13 +65,13 @@ public final class NotePainters extends PagePainters{
 		return true?newBeadPainters(!note.content.tags.isEmpty()?Shades.cyan:Shades.red)
 				:new Painter[]{true?unscaledText(text,x,y,-1):tooltipText(text,x,y,-1)};
 	}
-	public static PagePainters newVoiceNotePainters(StavePageView page,
+	public static PagePainters newVoiceNotePainters(PageView page,
 			StaveVoiceNotes notes,PainterSource p){
 		return new PagePainters(page,p){
 			public Painter[]newViewPainters(boolean selected){
 				ItemList<Painter>painters=new ItemList(Painter.class);
-				for(StaveItem content:notes.items)
-					painters.addItems(new NotePainters(page,(StaveNote)content,p
+				for(PaneItem content:notes.items)
+					painters.addItems(new NotePainters(page,(PaneNote)content,p
 							).newViewPainters(true));
 				return painters.items();
 			}

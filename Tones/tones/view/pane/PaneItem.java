@@ -1,8 +1,8 @@
-package tones.view.stave;
+package tones.view.pane;
 import facets.core.app.avatar.AvatarContent;
 import facets.util.Debug;
 import facets.util.Tracer;
-public abstract class StaveItem extends Tracer implements AvatarContent{
+public abstract class PaneItem extends Tracer implements AvatarContent{
 	public static final int STAVE_GRID=11;
 	protected boolean marking(){
 		return false;

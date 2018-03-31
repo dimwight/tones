@@ -1,7 +1,7 @@
 package tones.app;
 import static facets.facet.FacetFactory.*;
 import static facets.facet.app.FacetPreferences.*;
-import static tones.view.StavePageView.*;
+import static tones.view.PageView.*;
 import facets.core.app.ActionViewerTarget;
 import facets.core.app.AppSurface.ContentStyle;
 import facets.core.app.AreaRoot;
@@ -41,7 +41,7 @@ import facets.util.tree.ValueNode;
 import java.util.HashSet;
 import java.util.Set;
 import tones.bar.Bars;
-import tones.view.StavePageView;
+import tones.view.PageView;
 final public class TonesEdit extends ViewerContenter{
 	public static final String ARG_BAR_FROM="barFrom",ARG_RESCALE="rescale";
 	private final FacetAppSurface app;
@@ -58,7 +58,7 @@ final public class TonesEdit extends ViewerContenter{
 	}
 	@Override
 	protected FacetedTarget[]newContentViewers(ViewableFrame viewable){
-		SFrameTarget page=StavePageView.newFramed(8,app.spec,((Bars)viewable.framed).barCount()),
+		SFrameTarget page=PageView.newFramed(8,app.spec,((Bars)viewable.framed).barCount()),
 		debug=new SFrameTarget(new TreeView("Debug"){
 			@Override
 			public boolean hideRoot(){
@@ -91,7 +91,7 @@ final public class TonesEdit extends ViewerContenter{
 						:new ViewerAreaMaster(){
 					protected SFacet newViewTools(STargeter viewTargeter){
 						return ff.toolGroups(viewTargeter,HINT_NONE,ff.spacerWide(8),true?null:ff.spacerTall(45),
-					  		ff.numericSliders(viewTargeter.elements()[StavePageView.TARGET_BAR],
+					  		ff.numericSliders(viewTargeter.elements()[PageView.TARGET_BAR],
 					  				200,HINT_SLIDER_TICKS+HINT_SLIDER_LABELS+HINT_SLIDER_LOCAL));
 					}
 					protected String hintString(){

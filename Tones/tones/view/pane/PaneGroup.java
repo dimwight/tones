@@ -1,5 +1,5 @@
-package tones.view.stave;
-import static tones.view.stave.StaveGroup.TieType.*;
+package tones.view.pane;
+import static tones.view.pane.PaneGroup.TieType.*;
 import facets.util.ItemList;
 import facets.util.Util;
 import facets.util.geom.Vector;
@@ -10,14 +10,14 @@ import tones.bar.Annotation.BeamGroup;
 import tones.bar.Annotation.Group;
 import tones.bar.Annotation.TieGroup;
 import tones.bar.Incipit;
-public abstract class StaveGroup extends StaveItem{
+public abstract class PaneGroup extends PaneItem{
 	public enum TieType{FromTo,From,To,ToFrom}
-	public static final class StaveTie extends StaveGroup{
+	public static final class StaveTie extends PaneGroup{
 		public final TieGroup content;
-		public final StaveBar bar;
+		public final PaneBar bar;
 		public final Vector fromAt,toAt;
 		public final TieType type;
-		StaveTie(TieGroup tie,StaveBar bar,List<StaveBar>bars){
+		StaveTie(TieGroup tie,PaneBar bar,List<PaneBar>bars){
 			this.content=tie;
 			this.bar=bar;
 			Vector fromAt=null,toAt=null;
@@ -31,10 +31,10 @@ public abstract class StaveGroup extends StaveItem{
 				boolean isFrom=bar.content==tie.bar;
 				Vector thisAt=bar.newAnnotationAt(isFrom?tie:tie.end),otherAt=null;
 				int barCount=bars.size(),staveThisAt=0;
-				for(StaveBar b:bars)if(b==bar)break;else staveThisAt++;
+				for(PaneBar b:bars)if(b==bar)break;else staveThisAt++;
 				int staveOtherAt=isFrom&&staveThisAt<barCount-1?staveThisAt+1
 						:!isFrom&&staveThisAt>0?staveThisAt-1:-1;
-				StaveBar otherBar=staveOtherAt<0?null:bars.get(staveOtherAt);
+				PaneBar otherBar=staveOtherAt<0?null:bars.get(staveOtherAt);
 				if(otherBar!=null)for(Annotation a:otherBar.content.annotations)
 					if(a==tie)otherAt=otherBar.newAnnotationAt(isFrom?tie.end:tie);
 				fromAt=isFrom?thisAt:otherAt;
@@ -44,10 +44,10 @@ public abstract class StaveGroup extends StaveItem{
 			this.fromAt=fromAt;this.toAt=toAt;
 		}
 	}
-	static StaveItem[]newBarItems(Group group,List<StaveBar>bars){
-		StaveBar copy=null;
-		ItemList<StaveItem>items=new ItemList(StaveItem.class);
-		for(StaveBar bar:bars){
+	static PaneItem[]newBarItems(Group group,List<PaneBar>bars){
+		PaneBar copy=null;
+		ItemList<PaneItem>items=new ItemList(PaneItem.class);
+		for(PaneBar bar:bars){
 			if(group instanceof TieGroup){
 				TieGroup tie=(TieGroup)group;
 				if(bar.content==group.bar||bar.content==tie.end.bar)
@@ -55,7 +55,7 @@ public abstract class StaveGroup extends StaveItem{
 			}
 			else if(group instanceof BeamGroup){
 				BeamGroup beam=(BeamGroup)group;
-				if(bar.content==group.bar)
+				if(false&&bar.content==group.bar)
 					Util.printOut("StaveGroup.newBarItems: beam="+beam);
 			}
 		}

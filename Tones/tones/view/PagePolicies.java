@@ -1,5 +1,5 @@
 package tones.view;
-import static tones.view.StavePageView.*;
+import static tones.view.PageView.*;
 import facets.core.app.PathSelection;
 import facets.core.app.SView;
 import facets.core.app.SViewer;
@@ -20,25 +20,25 @@ import tones.view.paint.BarPainters;
 import tones.view.paint.GroupPainters;
 import tones.view.paint.NotePainters;
 import tones.view.paint.PagePainters;
-import tones.view.stave.StaveBar;
-import tones.view.stave.StaveBar.StaveVoiceNotes;
-import tones.view.stave.StaveBlock;
-import tones.view.stave.StaveGroup;
-import tones.view.stave.StaveItem;
-import tones.view.stave.StaveNote;
-final class StavePagePolicies extends AvatarPolicies{
+import tones.view.pane.PaneBar;
+import tones.view.pane.PaneBlock;
+import tones.view.pane.PaneGroup;
+import tones.view.pane.PaneItem;
+import tones.view.pane.PaneNote;
+import tones.view.pane.PaneBar.StaveVoiceNotes;
+final class PagePolicies extends AvatarPolicies{
 	@Override
 	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){
 		Object content=viewable.content();
-		StaveItem[]items=StaveBlock.newPageItems((Bars)content,(StavePageView)viewer.view());
+		PaneItem[]items=PaneBlock.newPageItems((Bars)content,(PageView)viewer.view());
 		Object selected=viewable.single();
 		if(selected==content||selected instanceof SView)
 			return PathSelection.newMinimal(items);
-		StaveBar matchBar=null;
-		for(StaveItem item:items)
+		PaneBar matchBar=null;
+		for(PaneItem item:items)
 			if(matchBar!=null)break;
-			else if(item instanceof StaveBar&&((StaveBar)item).content==selected)
-				matchBar=(StaveBar)item;
+			else if(item instanceof PaneBar&&((PaneBar)item).content==selected)
+				matchBar=(PaneBar)item;
 		if(true||matchBar==null)throw new IllegalStateException(
 				"Null matchBar in "+Debug.info(this));
 		return new PathSelection(items,new ArrayPath(items,matchBar));
@@ -46,14 +46,14 @@ final class StavePagePolicies extends AvatarPolicies{
 	@Override
 	public AvatarPolicy avatarPolicy(SViewer viewer,final AvatarContent content,
 			final PainterSource p){
-		StavePageView view=(StavePageView)viewer.view();
-		final PagePainters painters=content instanceof StaveGroup?
-				new GroupPainters(view,(StaveGroup)content,p)
-			:content instanceof StaveNote?
-				new NotePainters(view,(StaveNote)content,p)
+		PageView view=(PageView)viewer.view();
+		final PagePainters painters=content instanceof PaneGroup?
+				new GroupPainters(view,(PaneGroup)content,p)
+			:content instanceof PaneNote?
+				new NotePainters(view,(PaneNote)content,p)
 			:content instanceof StaveVoiceNotes?NotePainters.newVoiceNotePainters(view,
 						(StaveVoiceNotes)content,p)
-			:new BarPainters(view,(StaveBar)content,p);
+			:new BarPainters(view,(PaneBar)content,p);
 		return new AvatarPolicy(){
 			public Painter[]newViewPainters(boolean selected,boolean active){
 				return painters.newViewPainters(selected);

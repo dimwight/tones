@@ -1,18 +1,18 @@
-package tones.view.stave;
+package tones.view.pane;
 
 import java.util.Arrays;
 import tones.Clef;
 import tones.Tone;
 import tones.bar.Incipit;
 
-public abstract class StaveNote extends StaveItem{
+public abstract class PaneNote extends PaneItem{
 	public static final int DOT_NONE=0,DOT_LEVEL=1,DOT_BELOW=-1;
 	public final double staveX,staveY,ledgerLineShift,dotAt;
 	public final Tone content;
 	public final Incipit incipit;
 	public final int ledgerLines;
 	private final String debugString;
-	StaveNote(Tone content,StaveIncipit i,double barStaveY,Clef clef){
+	PaneNote(Tone content,PaneIncipit i,double barStaveY,Clef clef){
 		this.content=content;
 		incipit=i.content;
 		staveX=i.scaledStaveX(content);
@@ -37,7 +37,7 @@ public abstract class StaveNote extends StaveItem{
 	}
 	public boolean equals(Object obj){
 		if(true)throw new RuntimeException("Untested");
-		StaveNote that=(StaveNote)obj;
+		PaneNote that=(PaneNote)obj;
 		return this==that||Arrays.equals(intValues(),that.intValues());
 	}
 	private int[]intValues(){

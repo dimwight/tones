@@ -22,7 +22,7 @@ public class Bar extends Tracer{
 	final Set<Beam>beams=new HashSet();
 	public final Set<Annotation>annotations=new HashSet();
 	private Voice selectedVoice;
-	public Bar(int barAt,Iterable<Incipit>incipits,final int eighth){
+	public Bar(int barAt,Iterable<Incipit>incipits,int sizeInEighths){
 		at=barAt;
 		if(incipits==null)throw new IllegalStateException(
 				"Null incipits in "+Debug.info(this));
@@ -36,9 +36,9 @@ public class Bar extends Tracer{
 				for(Voice voice:satb)ats.put(voice,START_AT);
 			}
 			int furthestAt(Iterable<Voice>voices,int eighthAt){
-				eighthAt%=eighth;
+				eighthAt%=sizeInEighths;
 				int gap=eighthAt-eighthLastAt;
-				if(gap<0)gap+=eighth;
+				if(gap<0)gap+=sizeInEighths;
 				int spaces=gap<=1?0:gap-1;
 				for(Voice voice:satb)
 					ats.put(voice,ats.get(voice)-WIDTH_SPACE_SHRINK*spaces);
@@ -79,7 +79,7 @@ public class Bar extends Tracer{
 		this.rise=rise;
 		this.staveGap=staveGap;
 		this.fall=fall;
-		width=starts.furthestAt(Arrays.asList(satb),eighth);
+		width=starts.furthestAt(Arrays.asList(satb),sizeInEighths);
 	}
 	private Bar(int at,Set<Incipit>incipits,int rise,int staveGap,int fall,int width){
 		this.at=at;this.incipits=incipits;

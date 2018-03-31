@@ -24,7 +24,7 @@ public enum Octave{Above(0),AboveTwo(1),AboveThree(2),
 		case Above:return Below;
 		case AboveTwo:return Above;
 		case AboveThree:return AboveTwo;
-		default:throw new IllegalStateException("No octave above "+this);
+		default:throw new IllegalStateException("No octave below "+this);
 		}
 	}
 	public Octave above(){

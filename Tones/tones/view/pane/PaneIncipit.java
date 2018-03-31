@@ -1,14 +1,14 @@
-package tones.view.stave;
+package tones.view.pane;
 
 import facets.util.Debug;
 import tones.Tone;
 import tones.bar.Bar;
 import tones.bar.Incipit;
-final class StaveIncipit extends StaveItem{
+final class PaneIncipit extends PaneItem{
 	public final Incipit content;
 	private final double barStaveX;
 	private double scaledStaveX=-1;
-	StaveIncipit(Incipit content,double barStaveX){
+	PaneIncipit(Incipit content,double barStaveX){
 		this.content=content;
 		this.barStaveX=barStaveX;
 	}

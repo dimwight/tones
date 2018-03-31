@@ -13,9 +13,9 @@ public final class Tone extends Tracer{
 			public String toString(){return "Group";}
 		};
 	}
-	public static final short EIGHTHS_WHOLE=8,EIGHTHS_HALF=EIGHTHS_WHOLE/2,
-		EIGHTHS_QUARTER=EIGHTHS_WHOLE/4,EIGHTHS_EIGHT=EIGHTHS_WHOLE/8,
-		EIGHTHS_DOUBLE=EIGHTHS_WHOLE*2,EIGHTHS_MIN=EIGHTHS_EIGHT,EIGHTHS_NONE=0;
+	public static final short NOTE_WHOLE=8,NOTE_HALF=NOTE_WHOLE/2,
+		NOTE_QUARTER=NOTE_WHOLE/4,NOTE_EIGHTH=NOTE_WHOLE/8,
+		NOTE_DOUBLE=NOTE_WHOLE*2,NOTE_NONE=0;
 	public final int barAt,eighthAt;
 	public final Voice voice;
 	public final byte pitch;

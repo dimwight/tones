@@ -1,6 +1,6 @@
 package tones.view.paint;
 import static facets.util.shade.Shades.*;
-import static tones.view.stave.StaveGroup.TieType.*;
+import static tones.view.pane.PaneGroup.TieType.*;
 import facets.core.app.avatar.Painter;
 import facets.core.app.avatar.PainterMaster.Outlined;
 import facets.core.app.avatar.PainterSource;
@@ -10,10 +10,10 @@ import facets.util.geom.Vector;
 import facets.util.shade.Shade;
 import path.SvgPath;
 import tones.bar.Bar;
-import tones.view.StavePageView;
-import tones.view.stave.StaveGroup;
-import tones.view.stave.StaveGroup.StaveTie;
-import tones.view.stave.StaveGroup.TieType;
+import tones.view.PageView;
+import tones.view.pane.PaneGroup;
+import tones.view.pane.PaneGroup.StaveTie;
+import tones.view.pane.PaneGroup.TieType;
 public final class GroupPainters extends PagePainters{
 	private static final SvgPath 
 		TieFromTo=new SvgPath("TieFromTo","M213.0 72.13c7.665,7.444 1.127,13.46 -6.062,6.475 -22.96,-18.09 -48.72,-30.72 -98.74,-31.47 -50.02,0.7481 -75.77,13.38 -98.74,31.47 -7.203,6.997 -13.67,0.9138 -6.062,-6.475 26.2,-29.19 66.25,-42.94 104.8,-42.56 38.75,0.0 78.4,13.15 104.8,42.56z",2),
@@ -21,8 +21,8 @@ public final class GroupPainters extends PagePainters{
 		TieFromShort=new SvgPath("TieFromShort","M108.2 29.57c-38.55,-0.3749 -78.6,13.37 -104.8,42.56 -7.609,7.389 -1.141,13.47 6.062,6.475 22.96,-18.09 48.72,-30.72 98.74,-31.47l0.0 -17.57z",2),
 		TieTo=new SvgPath("TieTo","M0.0 29.57c38.55,-0.3749 78.6,13.37 104.8,42.56 7.609,7.389 1.141,13.47 -6.062,6.475 -22.96,-18.09 -48.72,-30.72 -98.74,-31.47l0.0 -17.57z",2);
 	private final double noteWidth,noteHeight;
-	private final StaveGroup group;
-	public GroupPainters(StavePageView page,StaveGroup group,PainterSource p){
+	private final PaneGroup group;
+	public GroupPainters(PageView page,PaneGroup group,PainterSource p){
 		super(page,p);
 		this.group=group;
 		noteWidth=Bar.WIDTH_NOTE*unitWidth;

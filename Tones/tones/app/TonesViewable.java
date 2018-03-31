@@ -12,8 +12,8 @@ import facets.core.superficial.app.SSelection;
 import facets.util.Debug;
 import tones.bar.Bar;
 import tones.bar.Bars;
-import tones.view.StavePageView;
-import tones.view.stave.StaveNote;
+import tones.view.PageView;
+import tones.view.pane.PaneNote;
 final class TonesViewable extends ViewableFrame{
 	private int barAt;
 	TonesViewable(Bars tones){
@@ -43,7 +43,7 @@ final class TonesViewable extends ViewableFrame{
 		SView view=viewer.view();
 		SSelection selection=selection();
 		if(view instanceof AvatarView){
-			StavePageView page=(StavePageView)view;
+			PageView page=(PageView)view;
 			barAt=page.barAt();
 			return page.avatars().newAvatarSelection(viewer,selection);
 		}
@@ -62,8 +62,8 @@ final class TonesViewable extends ViewableFrame{
 				return framed;
 			}
 			public Object single(){
-				if(!(definition instanceof StaveNote))return framed;
-				StaveNote note=(StaveNote)definition;
+				if(!(definition instanceof PaneNote))return framed;
+				PaneNote note=(PaneNote)definition;
 				Bar bar=null;
 				if(bar==null)throw new RuntimeException("Not implemented in "+Debug.info(this));
 				bar.selectVoice(note.content.voice);
