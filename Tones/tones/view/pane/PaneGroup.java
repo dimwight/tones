@@ -12,7 +12,7 @@ import tones.bar.Annotation.TieGroup;
 import tones.bar.Incipit;
 public abstract class PaneGroup extends PaneItem{
 	public enum TieType{FromTo,From,To,ToFrom}
-	public static final class StaveTie extends PaneGroup{
+	public static final class StaveTie extends PaneGroup{//?
 		public final TieGroup content;
 		public final PaneBar bar;
 		public final Vector fromAt,toAt;
