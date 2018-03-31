@@ -34,15 +34,15 @@ public final class PaneBlock{
 	PaneItem[]newBarItems(double staveY,double staveXScale){
 		double staveX=0;
 		ItemList<PaneItem>items=new ItemList(PaneItem.class);
-		ItemList<PaneBar>staveBars=new ItemList(PaneBar.class);
+		ItemList<PaneBar>paneBars=new ItemList(PaneBar.class);
 		for(Bar bar:thisBars){
-			PaneBar staveBar=new PaneBar(bar,staveX,staveY,staveGap,staveXScale);
-			staveBars.add(staveBar);
-			items.addItems(staveBar.items());
+			PaneBar paneBar=new PaneBar(bar,staveX,staveY,staveGap,staveXScale);
+			paneBars.add(paneBar);
+			items.addItems(paneBar.items());
 			staveX+=staveBar.staveWidth;
 		}
 		for(Group group:groups)
-			items.addItems(PaneGroup.newBarItems(group,staveBars));
+			items.addItems(group.newBarItems(paneBars));
 		return items.items();
 	}
 	public static PaneItem[]newPageItems(Bars content,PageView page){
