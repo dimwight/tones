@@ -21,7 +21,7 @@ public final class PaneBlock{
 			if(staveXUsed+barWidth>useWidth)break;
 			staveXUsed+=barWidth;
 			this.bars.add(bar);
-			for(Annotation a:bar.annotations)if(a instanceof Group)groups.add((Group)a);
+			for(Annotation a:bar.annotations)if(a instanceof Group)groups.add((Group)a);//?
 			rise=Math.max(rise,bar.rise);
 			staveGap=Math.max(staveGap,bar.staveGap);
 			fall=Math.max(fall,bar.fall);
