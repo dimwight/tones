@@ -21,7 +21,7 @@ public class Annotation extends Tracer{
 			super(bar,incipit,tone);
 		}
 	}
-	public static final class TieGroup extends Group{
+	public static final class TieGroup extends Group{//?
 		public final Annotation end;
 		TieGroup(Bar bar,Incipit incipit,Tone tone,List<Bar>bars){
 			super(bar,incipit,tone);
