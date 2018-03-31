@@ -35,7 +35,7 @@ public class PaneBar extends PaneItem{
 		}.items()[0];
 		return new Vector(note.staveX,note.staveY);
 	}
-	PaneItem[]items(){
+	PaneItem[]items(){//newItems
 		final boolean marking=marking();
 		ItemList<PaneIncipit>incipits=new ItemList(PaneIncipit.class);
 		for(Incipit bar:content.incipits)
