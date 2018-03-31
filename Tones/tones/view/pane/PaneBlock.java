@@ -53,7 +53,7 @@ public final class PaneBlock{
 		Bar bar=null;
 		while(bars.hasNext()||bar!=null){
 			PaneBlock block=new PaneBlock();
-			bar=block.readBars(bars,bar,staveWidth/unitWidth);
+			bar=block.readBars(bars,bar,staveWidth/unitWidth);//?
 			double blockStaveHeight=PaneItem.STAVE_GRID*2+block.staveGap+block.fall;
 			if(((staveY+=block.rise)+blockStaveHeight)*pitchHeight>useHeight)break;
 			double scaleUpdate=staveWidth/(block.staveXUsed*unitWidth);
