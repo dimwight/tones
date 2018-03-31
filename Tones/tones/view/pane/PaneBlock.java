@@ -39,7 +39,7 @@ public final class PaneBlock{
 			items.addItems(staveBar.items());
 			staveX+=staveBar.staveWidth;
 		}
-		for(Group group:groups)items.addItems(PaneGroup.newBarItems(group,staveBars));
+		for(Group group:groups)items.addItems(PaneGroup.newBarItems(group,staveBars));//?
 		return items.items();
 	}
 	public static PaneItem[]newPageItems(Bars content,PageView page){
