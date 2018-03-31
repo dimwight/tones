@@ -181,7 +181,7 @@ final public class VoiceLine extends Tracer{
 			if(eighths<=NOTE_NONE)throw new IllegalStateException(
 					"Invalid eighths in context="+context);
 			else context=new Context(scaleNote,octave,eighths);
-			if(this.context==null||!context.resembles(this.context))tags.add(context);
+			if(false&&(this.context==null||!context.resembles(this.context)))tags.add(context);
 			this.context=context;
 			tones.add(new Tone(voice,barAt,eighthAt,(byte)toneValues[0],(short)toneValues[1],
 					tags));

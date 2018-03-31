@@ -19,7 +19,6 @@ public class Bar extends Tracer{
 		WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3);
 	public final int at,rise,staveGap,fall,width;
 	public final Iterable<Incipit>incipits;
-	final Set<Beam>beams=new HashSet();
 	public final Set<Annotation>annotations=new HashSet();
 	private Voice selectedVoice;
 	public Bar(int barAt,Iterable<Incipit>incipits,int sizeInEighths){
@@ -57,25 +56,13 @@ public class Bar extends Tracer{
 		}
 		VoiceAts starts=new VoiceAts();
 		int rise=-1,staveGap=-1,fall=-1;
-		final Map<Voice,Beam>voiceBeams=new HashMap();
-		for(Voice voice:satb)voiceBeams.put(voice,new Beam(voice));
 		for(Incipit incipit:incipits){
-			for(Tone t:incipit.tones){
-				Beam then=voiceBeams.get(t.voice),now=then.readTone(t,incipit);
-				voiceBeams.put(t.voice,now);
-				if(then!=now&&!then.hasTones())beams.add(then);
-			}
 			incipit.close();
 			rise=max(rise,incipit.rise);
 			staveGap=max(staveGap,incipit.staveGap);
 			fall=max(fall,incipit.fall);
 			starts.exchangeAts(incipit);
 		}
-		for(Voice voice:satb){
-			Beam beam=voiceBeams.get(voice);
-			if(!beam.hasTones())beams.add(beam);
-		}
-		for(Beam b:beams)annotations.add(b.newAnnotation(this));
 		this.rise=rise;
 		this.staveGap=staveGap;
 		this.fall=fall;
