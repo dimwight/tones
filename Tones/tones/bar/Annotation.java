@@ -41,7 +41,7 @@ public class Annotation extends Tracer{
 			search.annotations.add(this);
 		}
 	}
-	public static final class BeamGroup extends Group{
+	public static final class BeamGroup extends Group{//??
 		public final Iterable<Tone>tones;
 		public BeamGroup(Bar bar,Incipit incipit,List<Tone>tones){
 			super(bar,incipit,tones.get(0));
