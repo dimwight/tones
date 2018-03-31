@@ -5,7 +5,7 @@ import java.util.List;
 import tones.Tone;
 import tones.Voice;
 import tones.bar.Annotation.BeamGroup;
-final class Beam extends Tracer{
+final class Beam extends Tracer{//?
 	private final Voice voice;
 	private final List<Tone>tones=new ArrayList();
 	private Incipit incipit;
