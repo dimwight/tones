@@ -44,7 +44,7 @@ public abstract class PaneGroup extends PaneItem{
 			this.fromAt=fromAt;this.toAt=toAt;
 		}
 	}
-	static PaneItem[]newBarItems(Group group,List<PaneBar>bars){
+	static PaneItem[]newBarItems(Group group,List<PaneBar>bars){//?
 		PaneBar copy=null;
 		ItemList<PaneItem>items=new ItemList(PaneItem.class);
 		for(PaneBar bar:bars){
