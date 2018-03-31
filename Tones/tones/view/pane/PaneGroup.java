@@ -12,7 +12,7 @@ import tones.bar.Annotation.TieGroup;
 import tones.bar.Incipit;
 public abstract class PaneGroup extends PaneItem{
 	public enum TieType{FromTo,From,To,ToFrom}
-	public static final class PaneTie extends PaneGroup{//?
+	public static final class PaneTie extends PaneGroup{
 		public final TieGroup content;
 		public final PaneBar bar;
 		public final Vector fromAt,toAt;
@@ -44,8 +44,7 @@ public abstract class PaneGroup extends PaneItem{
 			this.fromAt=fromAt;this.toAt=toAt;
 		}
 	}
-	static PaneItem[]newBarItems(Group group,List<PaneBar>bars){//?
-		PaneBar copy=null;
+	static PaneItem[]newBarItems(Group group,List<PaneBar>bars){
 		ItemList<PaneItem>items=new ItemList(PaneItem.class);
 		for(PaneBar bar:bars){
 			if(group instanceof TieGroup){
@@ -56,7 +55,7 @@ public abstract class PaneGroup extends PaneItem{
 			else if(group instanceof BeamGroup){
 				BeamGroup beam=(BeamGroup)group;
 				if(false&&bar.content==group.bar)
-					Util.printOut("StaveGroup.newBarItems: beam="+beam);
+					Util.printOut("PaneGroup.newBarItems: beam="+beam);
 			}
 		}
 		return items.items();

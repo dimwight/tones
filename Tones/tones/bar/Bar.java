@@ -20,7 +20,7 @@ final public class Bar extends Tracer{
 		WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3);
 	public final int at,rise,staveGap,fall,width;
 	public final Iterable<Incipit>incipits;
-	public final Set<Annotation>annotations=new HashSet();//?
+	public final Set<Annotation>annotations=new HashSet();
 	private Voice selectedVoice;
 	public Bar(int barAt,Iterable<Incipit>incipits,int sizeInEighths){
 		at=barAt;
@@ -69,16 +69,17 @@ final public class Bar extends Tracer{
 		this.fall=fall;
 		width=starts.furthestAt(Arrays.asList(satb),sizeInEighths);
 	}
+	void checkTags(List<Bar>bars){
+	for(Incipit incipit:incipits)
+		for(Tone tone:incipit.tones)if(tone.tags!=null&&!tone.tags.isEmpty())
+			for(Tag tag:tone.tags)if(tag==Tag.Tie)
+				annotations.add(new Annotation.TieGroup(this,incipit,tone,bars));
+			else if(false)trace(".Bars: " +" tone="+tone);	
+	}
 	private Bar(int at,Set<Incipit>incipits,int rise,int staveGap,int fall,int width){
 		this.at=at;this.incipits=incipits;
 		this.rise=rise;this.staveGap=staveGap;this.fall=fall;this.width=width;
 	}
-	void checkAnnotations(List<Bar> bars){
-	for(Incipit incipit:incipits)//??
-		for(Tone tone:incipit.tones)if(tone.tags!=null&&!tone.tags.isEmpty())
-			for(Tag tag:tone.tags)if(tag==Tag.Tie)
-				annotations.add(new Annotation.TieGroup(this,incipit,tone,bars));
-			else if(false)trace(".Bars: " +" tone="+tone);	}
 	public Bar newAnnotationCopy(Incipit incipit){
 		return new Bar(at,Collections.singleton(incipit),rise,staveGap,fall,width);
 	}

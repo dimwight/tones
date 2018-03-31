@@ -21,7 +21,7 @@ public class Annotation extends Tracer{
 			super(bar,incipit,tone);
 		}
 	}
-	public static final class TieGroup extends Group{//?
+	public static final class TieGroup extends Group{
 		public final Annotation end;
 		TieGroup(Bar bar,Incipit incipit,Tone tone,List<Bar>bars){
 			super(bar,incipit,tone);
@@ -41,7 +41,7 @@ public class Annotation extends Tracer{
 			search.annotations.add(this);
 		}
 	}
-	public static final class BeamGroup extends Group{//??
+	public static final class BeamGroup extends Group{
 		public final Iterable<Tone>tones;
 		public BeamGroup(Bar bar,Incipit incipit,List<Tone>tones){
 			super(bar,incipit,tones.get(0));
