@@ -12,7 +12,7 @@ import path.SvgPath;
 import tones.bar.Bar;
 import tones.view.PageView;
 import tones.view.pane.PaneGroup;
-import tones.view.pane.PaneGroup.StaveTie;
+import tones.view.pane.PaneGroup.PaneTie;
 import tones.view.pane.PaneGroup.TieType;
 public final class GroupPainters extends PagePainters{
 	private static final SvgPath 
@@ -31,12 +31,12 @@ public final class GroupPainters extends PagePainters{
 	@Override
 	public
 	Painter[]newViewPainters(boolean selected){
-		StaveTie tie=(StaveTie)group;
+		PaneTie tie=(PaneTie)group;
 		return tie.type==ToFrom?new Painter[]{}:new Painter[]{
 				tie.type==To?tieTo(tie):tieFrom(tie)
 			};
 	}
-	private Painter tieTo(StaveTie tie){
+	private Painter tieTo(PaneTie tie){
 		double x=tie.bar.staveX,y=tie.toAt.y;
 		Shade shade=true?blue:red;
 		Painter painter=p.mastered(TieTo.newOutlined(shade,null,false));
@@ -46,7 +46,7 @@ public final class GroupPainters extends PagePainters{
 		},true,painter);
 		return painter;
 	}
-	private Painter tieFrom(StaveTie tie){
+	private Painter tieFrom(PaneTie tie){
 		double pastNote=noteWidth*.7,x=tie.fromAt.x+pastNote,y=tie.fromAt.y;
 		TieType type=tie.type;
 		final boolean isTo=type==FromTo;

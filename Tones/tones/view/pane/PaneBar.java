@@ -25,7 +25,8 @@ public class PaneBar extends PaneItem{
 		staveYs=new double[]{staveY,staveY+STAVE_GRID+staveGap};
 	}
 	Vector newAnnotationAt(Annotation a){
-		PaneNote note=(PaneNote)new PaneBar(a.bar.newAnnotationCopy(a.incipit.newCopy(a.tone)),
+		PaneNote note=(PaneNote)new PaneBar(a.bar.newAnnotationCopy(
+				a.incipit.newCopy(a.tone)),
 				staveX,staveYs[0],staveGap,staveXScale){
 			@Override
 			protected boolean marking(){

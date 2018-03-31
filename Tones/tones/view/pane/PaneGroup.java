@@ -12,12 +12,12 @@ import tones.bar.Annotation.TieGroup;
 import tones.bar.Incipit;
 public abstract class PaneGroup extends PaneItem{
 	public enum TieType{FromTo,From,To,ToFrom}
-	public static final class StaveTie extends PaneGroup{//?
+	public static final class PaneTie extends PaneGroup{//?
 		public final TieGroup content;
 		public final PaneBar bar;
 		public final Vector fromAt,toAt;
 		public final TieType type;
-		StaveTie(TieGroup tie,PaneBar bar,List<PaneBar>bars){
+		PaneTie(TieGroup tie,PaneBar bar,List<PaneBar>bars){
 			this.content=tie;
 			this.bar=bar;
 			Vector fromAt=null,toAt=null;
@@ -51,7 +51,7 @@ public abstract class PaneGroup extends PaneItem{
 			if(group instanceof TieGroup){
 				TieGroup tie=(TieGroup)group;
 				if(bar.content==group.bar||bar.content==tie.end.bar)
-					items.addItem(new StaveTie(tie,bar,bars));
+					items.addItem(new PaneTie(tie,bar,bars));
 			}
 			else if(group instanceof BeamGroup){
 				BeamGroup beam=(BeamGroup)group;

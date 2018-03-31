@@ -16,11 +16,7 @@ public final class Bars extends Tracer implements Titled{
 	public Bars(List<Bar>bars){
 		title="Tones"+instances++;
 		this.bars=bars;
-		for(Bar bar:bars)for(Incipit incipit:bar.incipits)//??
-				for(Tone tone:incipit.tones)if(tone.tags!=null&&!tone.tags.isEmpty())
-					for(Tag tag:tone.tags)if(tag==Tag.Tie)
-						bar.annotations.add(new Annotation.TieGroup(bar,incipit,tone,bars));
-					else if(false)trace(".Bars: " +" tone="+tone);
+		for(Bar bar:bars)bar.checkAnnotations(bars);
 	}
 	public int barCount(){
 		return bars.size();

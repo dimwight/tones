@@ -14,7 +14,8 @@ import java.util.Map;
 import java.util.Set;
 import tones.Tone;
 import tones.Voice;
-public class Bar extends Tracer{
+import tones.Tone.Tag;
+final public class Bar extends Tracer{
 	public static final int WIDTH_NOTE=(false?1:8),
 		WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3);
 	public final int at,rise,staveGap,fall,width;
@@ -72,6 +73,12 @@ public class Bar extends Tracer{
 		this.at=at;this.incipits=incipits;
 		this.rise=rise;this.staveGap=staveGap;this.fall=fall;this.width=width;
 	}
+	void checkAnnotations(List<Bar> bars){
+	for(Incipit incipit:incipits)//??
+		for(Tone tone:incipit.tones)if(tone.tags!=null&&!tone.tags.isEmpty())
+			for(Tag tag:tone.tags)if(tag==Tag.Tie)
+				annotations.add(new Annotation.TieGroup(this,incipit,tone,bars));
+			else if(false)trace(".Bars: " +" tone="+tone);	}
 	public Bar newAnnotationCopy(Incipit incipit){
 		return new Bar(at,Collections.singleton(incipit),rise,staveGap,fall,width);
 	}
