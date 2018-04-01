@@ -71,7 +71,7 @@ final public class Bar extends Tracer{
 	}
 	void checkTags(List<Bar>bars){
 	for(Incipit incipit:incipits)
-		for(Tone tone:incipit.tones)if(tone.tags!=null&&!tone.tags.isEmpty())
+		for(Tone tone:incipit.tones)if(tone.tags!=null&&!tone.tags.isEmpty())//?
 			for(Tag tag:tone.tags)if(tag==Tag.Tie)
 				annotations.add(new Annotation.TieGroup(this,incipit,tone,bars));
 			else if(false)trace(".Bars: " +" tone="+tone);	
