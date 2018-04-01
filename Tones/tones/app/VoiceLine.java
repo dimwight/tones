@@ -144,7 +144,6 @@ final public class VoiceLine extends Tracer{
 		int eighths=context.eighths,eighthAt=0,barEighths=context.barEighths;
 		while(eighthAt<barEighths){
 			int[]toneValues=null;
-			Set<Tag>tags=new HashSet();
 			while(toneValues==null&&codeAt<codes.size()){
 				String code=codes.get(codeAt++);
 				int charCount=code.length();
@@ -178,7 +177,6 @@ final public class VoiceLine extends Tracer{
 			if(eighths<=NOTE_NONE)throw new IllegalStateException(
 					"Invalid eighths in context="+context);
 			else context=new Context(scaleNote,octave,eighths);
-			if(false&&(this.context==null||!context.resembles(this.context)))tags.add(context);
 			this.context=context;
 			tones.add(new Tone(voice,barAt,eighthAt,(byte)toneValues[0],(short)toneValues[1],
 					context));
