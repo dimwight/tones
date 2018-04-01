@@ -168,10 +168,7 @@ final public class VoiceLine extends Tracer{
 							:octaved+(toneNote.pitch<scaleNote.pitch?Octave.pitches:0);
 					toneValues=new int[]{tonePitch,eighths};
 				}
-				if(isUpperCase(secondChar))for(char c:code.substring(1).toCharArray()){
-					Tag tag=c==CODE_TIE?Tag.Tie:c=='B'?Tag.Beam:null;
-					if(tag!=null)tags.add(tag);
-				}
+				
 			}
 			if(toneValues==null){
 				if(padBar&&eighthAt>0)
@@ -184,7 +181,7 @@ final public class VoiceLine extends Tracer{
 			if(false&&(this.context==null||!context.resembles(this.context)))tags.add(context);
 			this.context=context;
 			tones.add(new Tone(voice,barAt,eighthAt,(byte)toneValues[0],(short)toneValues[1],
-					tags));
+					context));
 			eighthAt+=toneValues[1];
 		}		
 		tones.add(0,new Tone(null,barAt,-1,(byte)-1,(short)barEighths,null));
