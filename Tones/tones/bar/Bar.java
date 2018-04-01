@@ -19,7 +19,7 @@ final public class Bar extends Tracer{
 	public static final int WIDTH_NOTE=(false?1:8),
 		WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3);
 	public final int at,rise,staveGap,fall,width;
-	public final Iterable<Incipit>incipits;
+	public final Iterable<Incipit>incipits;//?
 	public final Set<Annotation>annotations=new HashSet();
 	private Voice selectedVoice;
 	public Bar(int barAt,Iterable<Incipit>incipits,int sizeInEighths){
