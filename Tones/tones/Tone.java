@@ -5,14 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 public final class Tone extends Tracer{
-	public interface Tag{
-		Tag Tie=new Tag(){
-			public String toString(){return "Tie";}
-		},
-		Beam=new Tag(){
-			public String toString(){return "Group";}
-		};
-	}
+	
 	public static final short NOTE_WHOLE=8,NOTE_HALF=NOTE_WHOLE/2,
 		NOTE_QUARTER=NOTE_WHOLE/4,NOTE_EIGHTH=NOTE_WHOLE/8,
 		NOTE_DOUBLE=NOTE_WHOLE*2,NOTE_NONE=0;
