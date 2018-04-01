@@ -65,7 +65,7 @@ final public class VoiceLine extends Tracer{
 	//		+""
 		};
 	private static final boolean padBar=false;
-	private final static class Context implements Tone.Tag{
+	private final static class Context{
 		final ScaleNote scaleNote;
 		final Octave octave;
 		final int barEighths=16,eighths;
@@ -76,7 +76,7 @@ final public class VoiceLine extends Tracer{
 					"Null octave in "+Debug.info(this));
 			else if(eighths<NOTE_NONE)throw new IllegalArgumentException(
 					"Invalid eighths in "+Debug.info(this));
-			this.scaleNote=scaleNote;
+			this.scaleNote=scaleNoe;
 			this.octave=octave;
 			this.eighths=eighths;
 		}
