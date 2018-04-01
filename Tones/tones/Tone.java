@@ -13,8 +13,8 @@ public final class Tone extends Tracer{
 	public final Voice voice;
 	public final byte pitch;
 	public final short eighths;
-	rivate final int[]intValues;
-	private final Context context;
+	private final int[]intValues;
+	public final Context context;
 	Tone(Voice voice,int barAt,int eighthAt,byte pitch,short eighths,
 			Context context){
 		this.voice=voice;
@@ -23,9 +23,8 @@ public final class Tone extends Tracer{
 		this.pitch=pitch;
 		this.eighths=eighths;
 		intValues=new int[]{barAt,eighthAt,pitch,eighths};
-		if(tags!=null)this.tags.addAll(tags);
-		if(false&&tags.size()>0)trace(".Tone: ",this);
-	}
+		
+			
 	public String toString(){
 		ScaleNote note=pitchNote();
 		return voice.code+":"+
