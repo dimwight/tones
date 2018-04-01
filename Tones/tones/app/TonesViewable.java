@@ -52,8 +52,10 @@ final class TonesViewable extends ViewableFrame{
 	}
 	protected void viewerSelectionChanged(SViewer viewer,SSelection selection){
 		Object thenSelection=selection().single();
-		if(thenSelection instanceof Bar)
+		trace(".viewerSelectionChanged: selection=",Debug.info(selection.single()));
+		if(thenSelection instanceof Bar) {
 			((Bar)thenSelection).selectVoice(null);
+		}
 		defineSelection(selection.single());
 	}
 	public SSelection defineSelection(final Object definition){

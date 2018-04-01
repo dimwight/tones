@@ -25,7 +25,7 @@ import tones.view.pane.PaneBlock;
 import tones.view.pane.PaneGroup;
 import tones.view.pane.PaneItem;
 import tones.view.pane.PaneNote;
-import tones.view.pane.PaneBar.StaveVoiceNotes;
+import tones.view.pane.PaneBar.VoiceNotes;
 final class PagePolicies extends AvatarPolicies{
 	@Override
 	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){
@@ -47,14 +47,19 @@ final class PagePolicies extends AvatarPolicies{
 	public AvatarPolicy avatarPolicy(SViewer viewer,final AvatarContent content,
 			final PainterSource p){
 		PageView view=(PageView)viewer.view();
-		final PagePainters painters=content instanceof PaneGroup?
-				new GroupPainters(view,(PaneGroup)content,p)
-			:content instanceof PaneNote?
-				new NotePainters(view,(PaneNote)content,p)
-			:content instanceof StaveVoiceNotes?NotePainters.newVoiceNotePainters(view,
-						(StaveVoiceNotes)content,p)
-			:new BarPainters(view,(PaneBar)content,p);
-		return new AvatarPolicy(){
+		PaneItem item=(PaneItem)content;
+		final PagePainters painters=
+			item instanceof PaneGroup?
+				new GroupPainters(view,(PaneGroup)item,p)
+			:item instanceof PaneNote?
+				new NotePainters(view,(PaneNote)item,p)
+			:false&&item instanceof VoiceNotes?
+					NotePainters.newVoiceNotePainters(view,(VoiceNotes)item,p)
+			:item instanceof PaneBar?new BarPainters(view,(PaneBar)item,p)
+			:null;
+		if(painters==null)
+			throw new IllegalStateException("Null painters for "+Debug.info(item));
+		else return new AvatarPolicy(){
 			public Painter[]newViewPainters(boolean selected,boolean active){
 				return painters.newViewPainters(selected);
 			}

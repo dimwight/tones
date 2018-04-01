@@ -10,13 +10,14 @@ import tones.bar.Incipit;
 public class PaneBar extends PaneItem{
 	public final Bar content;
 	public final double staveX,staveYs[],staveGap,staveXScale,staveWidth;
-	public final class StaveVoiceNotes extends PaneItem{
+	public final class VoiceNotes extends PaneItem{
 		public final PaneItem[]items;
-		public StaveVoiceNotes(PaneItem[]items){
+		public VoiceNotes(PaneItem[]items){
 			this.items=items;
 		}
 	}
-	PaneBar(Bar content,double staveX,double staveY,double staveGap,double staveXScale){
+	PaneBar(Bar content,double staveX,double staveY,double staveGap,
+			double staveXScale){
 		this.content=content;
 		this.staveX=staveX;
 		this.staveGap=staveGap;
@@ -25,17 +26,17 @@ public class PaneBar extends PaneItem{
 		staveYs=new double[]{staveY,staveY+STAVE_GRID+staveGap};
 	}
 	Vector newAnnotationAt(Annotation a){
-		PaneNote note=(PaneNote)new PaneBar(a.bar.newAnnotationCopy(
-				a.incipit.newCopy(a.tone)),
+		PaneNote note=(PaneNote)new PaneBar(
+				a.bar.newAnnotationCopy(a.incipit.newCopy(a.tone)),
 				staveX,staveYs[0],staveGap,staveXScale){
 			@Override
 			protected boolean marking(){
 				return true;
 			}
-		}.items()[0];
+		}.newItems()[0];
 		return new Vector(note.staveX,note.staveY);
 	}
-	PaneItem[]items(){//newItems
+	PaneItem[]newItems(){
 		final boolean marking=marking();
 		ItemList<PaneIncipit>incipits=new ItemList(PaneIncipit.class);
 		for(Incipit bar:content.incipits)
@@ -59,8 +60,8 @@ public class PaneBar extends PaneItem{
 				else if(selected!=null&&voice==selected)voiceNotes.addItem(note);
 				else items.addItem(note);
 			}
-		if(voiceNotes.size()>0)
-			items.addItem(new StaveVoiceNotes(voiceNotes.items()));
+		if(!voiceNotes.isEmpty())
+			items.addItem(new VoiceNotes(voiceNotes.items()));
 		return items.items();
 	}
 	public String toString(){

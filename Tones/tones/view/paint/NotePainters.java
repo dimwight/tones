@@ -13,7 +13,7 @@ import tones.bar.Bar;
 import tones.view.PageView;
 import tones.view.pane.PaneItem;
 import tones.view.pane.PaneNote;
-import tones.view.pane.PaneBar.StaveVoiceNotes;
+import tones.view.pane.PaneBar.VoiceNotes;
 public final class NotePainters extends PagePainters{
 	private static final Shade SHADE_NOTE=Shades.blue;
 	private static final SvgPath Empty=new SvgPath("Empty","",0),
@@ -66,7 +66,7 @@ public final class NotePainters extends PagePainters{
 				:new Painter[]{true?unscaledText(text,x,y,-1):tooltipText(text,x,y,-1)};
 	}
 	public static PagePainters newVoiceNotePainters(PageView page,
-			StaveVoiceNotes notes,PainterSource p){
+			VoiceNotes notes,PainterSource p){
 		return new PagePainters(page,p){
 			public Painter[]newViewPainters(boolean selected){
 				ItemList<Painter>painters=new ItemList(Painter.class);
