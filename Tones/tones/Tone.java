@@ -13,10 +13,10 @@ public final class Tone extends Tracer{
 	public final Voice voice;
 	public final byte pitch;
 	public final short eighths;
-	public final Collection<Tag>tags=new HashSet();
-	private final int[]intValues;
-	public Tone(Voice voice,int barAt,int eighthAt,byte pitch,short eighths,
-			Set<Tag>tags){
+	rivate final int[]intValues;
+	private final Context context;
+	Tone(Voice voice,int barAt,int eighthAt,byte pitch,short eighths,
+			Context context){
 		this.voice=voice;
 		this.barAt=barAt;
 		this.eighthAt=eighthAt;
