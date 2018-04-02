@@ -17,15 +17,13 @@ import facets.util.Debug;
 import facets.util.shade.Shades;
 import tones.bar.Bars;
 import tones.view.paint.BarPainters;
-import tones.view.paint.GroupPainters;
 import tones.view.paint.NotePainters;
 import tones.view.paint.PagePainters;
 import tones.view.pane.PaneBar;
+import tones.view.pane.PaneBar.VoiceNotes;
 import tones.view.pane.PaneBlock;
-import tones.view.pane.PaneGroup;
 import tones.view.pane.PaneItem;
 import tones.view.pane.PaneNote;
-import tones.view.pane.PaneBar.VoiceNotes;
 final class PagePolicies extends AvatarPolicies{
 	@Override
 	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){
@@ -49,9 +47,7 @@ final class PagePolicies extends AvatarPolicies{
 		PageView view=(PageView)viewer.view();
 		PaneItem item=(PaneItem)content;
 		final PagePainters painters=
-			item instanceof PaneGroup?
-				new GroupPainters(view,(PaneGroup)item,p)
-			:item instanceof PaneNote?
+			item instanceof PaneNote?
 				new NotePainters(view,(PaneNote)item,p)
 			:false&&item instanceof VoiceNotes?
 					NotePainters.newVoiceNotePainters(view,(VoiceNotes)item,p)

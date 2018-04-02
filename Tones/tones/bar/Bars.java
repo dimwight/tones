@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import tones.Tone;
-import tones.Tone.Tag;
 public final class Bars extends Tracer implements Titled{
 	private static int instances=1;
 	private final String title;
@@ -16,7 +15,6 @@ public final class Bars extends Tracer implements Titled{
 	public Bars(List<Bar>bars){
 		title="Tones"+instances++;
 		this.bars=bars;
-		for(Bar bar:bars)bar.checkTags(bars);
 	}
 	public int barCount(){
 		return bars.size();
@@ -47,8 +45,6 @@ public final class Bars extends Tracer implements Titled{
 					NodeList toneList=new NodeList(new DataNode(Tone.class.getSimpleName(),
 							tone.toString()),true);
 					incipitList.add(toneList.parent);
-					for(Tag tag:tone.tags)
-						toneList.add(new DataNode(Tag.class.getSimpleName(),tag.toString()));
 				}
 			}
 		}

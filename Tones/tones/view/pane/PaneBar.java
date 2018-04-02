@@ -4,7 +4,6 @@ import facets.util.geom.Vector;
 import tones.Clef;
 import tones.Tone;
 import tones.Voice;
-import tones.bar.Annotation;
 import tones.bar.Bar;
 import tones.bar.Incipit;
 public class PaneBar extends PaneItem{
@@ -24,17 +23,6 @@ public class PaneBar extends PaneItem{
 		this.staveXScale=staveXScale;
 		staveWidth=content.width*staveXScale;
 		staveYs=new double[]{staveY,staveY+STAVE_GRID+staveGap};
-	}
-	Vector newAnnotationAt(Annotation a){
-		PaneNote note=(PaneNote)new PaneBar(
-				a.bar.newAnnotationCopy(a.incipit.newCopy(a.tone)),
-				staveX,staveYs[0],staveGap,staveXScale){
-			@Override
-			protected boolean marking(){
-				return true;
-			}
-		}.newItems()[0];
-		return new Vector(note.staveX,note.staveY);
 	}
 	PaneItem[]newItems(){
 		final boolean marking=marking();

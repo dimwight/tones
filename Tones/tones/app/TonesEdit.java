@@ -40,6 +40,7 @@ import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
 import java.util.HashSet;
 import java.util.Set;
+import tones.VoiceLine;
 import tones.bar.Bars;
 import tones.view.PageView;
 final public class TonesEdit extends ViewerContenter{
@@ -74,7 +75,7 @@ final public class TonesEdit extends ViewerContenter{
 			}
 		}){};
 		return ActionViewerTarget.newViewerAreas(viewable,
-			true?new SFrameTarget[]{
+			false?new SFrameTarget[]{
 				page,
 				debug
 			}

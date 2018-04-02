@@ -4,15 +4,12 @@ import facets.util.ItemList;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import tones.bar.Annotation;
-import tones.bar.Annotation.Group;
 import tones.bar.Bar;
 import tones.bar.Bars;
 import tones.view.PageView;
 public final class PaneBlock{
 	static final double STAVE_X_SCALE_DEFAULT=1.5;
 	private final List<Bar>thisBars=new ArrayList();
-	private final List<Group>groups=new ArrayList();
 	double rise=0,staveGap=0,fall=0,staveXUsed=0;
 	final Bar endBar;
 	PaneBlock(Iterator<Bar>bars,Bar bar,final double useWidth){
@@ -25,8 +22,6 @@ public final class PaneBlock{
 			staveGap=Math.max(staveGap,bar.staveGap);
 			fall=Math.max(fall,bar.fall);
 			thisBars.add(bar);
-			for(Annotation a:bar.annotations)
-				if(a instanceof Group)groups.add((Group)a);
 			bar=null;
 		}
 		endBar=bar;
@@ -41,8 +36,6 @@ public final class PaneBlock{
 			items.addItems(paneBar.newItems());
 			paneX+=paneBar.staveWidth;
 		}
-		for(Group group:groups)
-			items.addItems(PaneGroup.newBarItems(group,paneBars));
 		return items.items();
 	}
 	public static PaneItem[]newPageItems(Bars content,PageView page){

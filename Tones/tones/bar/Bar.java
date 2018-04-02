@@ -8,19 +8,16 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import tones.Tone;
 import tones.Voice;
-import tones.Tone.Tag;
 final public class Bar extends Tracer{
 	public static final int WIDTH_NOTE=(false?1:8),
 		WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3);
 	public final int at,rise,staveGap,fall,width;
 	public final Iterable<Incipit>incipits;
-	public final Set<Annotation>annotations=new HashSet();
 	private Voice selectedVoice;
 	public Bar(int barAt,Iterable<Incipit>incipits,int sizeInEighths){
 		at=barAt;
@@ -68,13 +65,6 @@ final public class Bar extends Tracer{
 		this.staveGap=staveGap;
 		this.fall=fall;
 		width=starts.furthestAt(Arrays.asList(satb),sizeInEighths);
-	}
-	void checkTags(List<Bar>bars){
-	for(Incipit incipit:incipits)
-		for(Tone tone:incipit.tones)if(tone.tags!=null&&!tone.tags.isEmpty())
-			for(Tag tag:tone.tags)if(tag==Tag.Tie)
-				annotations.add(new Annotation.TieGroup(this,incipit,tone,bars));
-			else if(false)trace(".Bars: " +" tone="+tone);	
 	}
 	private Bar(int at,Set<Incipit>incipits,int rise,int staveGap,int fall,int width){
 		this.at=at;this.incipits=incipits;
