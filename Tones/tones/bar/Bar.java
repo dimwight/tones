@@ -58,7 +58,7 @@ final public class Bar extends Tracer{
 		VoiceAts starts=new VoiceAts();
 		int rise=-1,staveGap=-1,fall=-1;
 		for(Incipit incipit:incipits){
-			incipit.close();//?
+			incipit.close();
 			rise=max(rise,incipit.rise);
 			staveGap=max(staveGap,incipit.staveGap);
 			fall=max(fall,incipit.fall);
@@ -69,7 +69,13 @@ final public class Bar extends Tracer{
 		this.fall=fall;
 		width=starts.furthestAt(Arrays.asList(satb),sizeInEighths);
 	}
-	
+	void checkTags(List<Bar>bars){
+	for(Incipit incipit:incipits)
+		for(Tone tone:incipit.tones)if(tone.tags!=null&&!tone.tags.isEmpty())
+			for(Tag tag:tone.tags)if(tag==Tag.Tie)
+				annotations.add(new Annotation.TieGroup(this,incipit,tone,bars));
+			else if(false)trace(".Bars: " +" tone="+tone);	
+	}
 	private Bar(int at,Set<Incipit>incipits,int rise,int staveGap,int fall,int width){
 		this.at=at;this.incipits=incipits;
 		this.rise=rise;this.staveGap=staveGap;this.fall=fall;this.width=width;

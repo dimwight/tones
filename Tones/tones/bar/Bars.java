@@ -16,7 +16,7 @@ public final class Bars extends Tracer implements Titled{
 	public Bars(List<Bar>bars){
 		title="Tones"+instances++;
 		this.bars=bars;
-		for(Bar bar:bars)bar.checkAnnotations(bars);
+		for(Bar bar:bars)bar.checkTags(bars);
 	}
 	public int barCount(){
 		return bars.size();

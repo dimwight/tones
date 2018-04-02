@@ -65,7 +65,7 @@ final public class VoiceLine extends Tracer{
 	//		+""
 		};
 	private static final boolean padBar=false;
-	private final static class Context{
+	private final static class Context implements Tone.Tag{
 		final ScaleNote scaleNote;
 		final Octave octave;
 		final int barEighths=16,eighths;
@@ -76,7 +76,7 @@ final public class VoiceLine extends Tracer{
 					"Null octave in "+Debug.info(this));
 			else if(eighths<NOTE_NONE)throw new IllegalArgumentException(
 					"Invalid eighths in "+Debug.info(this));
-			this.scaleNote=scaleNoe;
+			this.scaleNote=scaleNote;
 			this.octave=octave;
 			this.eighths=eighths;
 		}
@@ -144,6 +144,7 @@ final public class VoiceLine extends Tracer{
 		int eighths=context.eighths,eighthAt=0,barEighths=context.barEighths;
 		while(eighthAt<barEighths){
 			int[]toneValues=null;
+			Set<Tag>tags=new HashSet();
 			while(toneValues==null&&codeAt<codes.size()){
 				String code=codes.get(codeAt++);
 				int charCount=code.length();
@@ -167,7 +168,10 @@ final public class VoiceLine extends Tracer{
 							:octaved+(toneNote.pitch<scaleNote.pitch?Octave.pitches:0);
 					toneValues=new int[]{tonePitch,eighths};
 				}
-				
+				if(isUpperCase(secondChar))for(char c:code.substring(1).toCharArray()){
+					Tag tag=c==CODE_TIE?Tag.Tie:c=='B'?Tag.Beam:null;
+					if(tag!=null)tags.add(tag);
+				}
 			}
 			if(toneValues==null){
 				if(padBar&&eighthAt>0)
@@ -177,9 +181,10 @@ final public class VoiceLine extends Tracer{
 			if(eighths<=NOTE_NONE)throw new IllegalStateException(
 					"Invalid eighths in context="+context);
 			else context=new Context(scaleNote,octave,eighths);
+			if(false&&(this.context==null||!context.resembles(this.context)))tags.add(context);
 			this.context=context;
 			tones.add(new Tone(voice,barAt,eighthAt,(byte)toneValues[0],(short)toneValues[1],
-					context));
+					tags));
 			eighthAt+=toneValues[1];
 		}		
 		tones.add(0,new Tone(null,barAt,-1,(byte)-1,(short)barEighths,null));

@@ -5,7 +5,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 public final class Tone extends Tracer{
-	
+	public interface Tag{
+		Tag Tie=new Tag(){
+			public String toString(){return "Tie";}
+		},
+		Beam=new Tag(){
+			public String toString(){return "Group";}
+		};
+	}
 	public static final short NOTE_WHOLE=8,NOTE_HALF=NOTE_WHOLE/2,
 		NOTE_QUARTER=NOTE_WHOLE/4,NOTE_EIGHTH=NOTE_WHOLE/8,
 		NOTE_DOUBLE=NOTE_WHOLE*2,NOTE_NONE=0;
@@ -13,18 +20,19 @@ public final class Tone extends Tracer{
 	public final Voice voice;
 	public final byte pitch;
 	public final short eighths;
+	public final Collection<Tag>tags=new HashSet();
 	private final int[]intValues;
-	public final Context context;
-	Tone(Voice voice,int barAt,int eighthAt,byte pitch,short eighths,
-			Context context){
+	public Tone(Voice voice,int barAt,int eighthAt,byte pitch,short eighths,
+			Set<Tag>tags){
 		this.voice=voice;
 		this.barAt=barAt;
 		this.eighthAt=eighthAt;
 		this.pitch=pitch;
 		this.eighths=eighths;
 		intValues=new int[]{barAt,eighthAt,pitch,eighths};
-		
-			
+		if(tags!=null)this.tags.addAll(tags);
+		if(false&&tags.size()>0)trace(".Tone: ",this);
+	}
 	public String toString(){
 		ScaleNote note=pitchNote();
 		return voice.code+":"+
