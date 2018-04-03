@@ -59,9 +59,10 @@ final public class VoiceLine extends Tracer{
 	//		+""
 		};
 	private static final boolean padBar=false;
-	private final Voice voice;
+	final Voice voice;
+	final List<Tone>tones=new ArrayList();
 	private final List<String>codes=new ArrayList();
-	private int codeAt;
+	private int codeAt,toneAt;
 	private Tone.Context context;
 	public VoiceLine(String src){
 		String splitVoice[]=src.split(":",2),
@@ -101,7 +102,7 @@ final public class VoiceLine extends Tracer{
 		return new Bars(bars);
 	}
 	protected List<Tone>nextBarTones(int barAt){
-		List<Tone>tones=new ArrayList();
+		final List<Tone>tones=new ArrayList();
 		Tone.Context context=this.context==null?newDefaultContexts().get(voice):this.context;
 		ScaleNote scaleNote=context.scaleNote;
 		Octave octave=context.octave;
@@ -143,11 +144,13 @@ final public class VoiceLine extends Tracer{
 					"Invalid eighths in context="+context);
 			else context=new Tone.Context(scaleNote,octave,eighths);
 			this.context=context;
-			tones.add(new Tone(voice,barAt,eighthAt,(byte)toneValues[0],
-					(short)toneValues[1]));
+			Tone add=new Tone(this,toneAt++,barAt,eighthAt,
+					(byte)toneValues[0],(short)toneValues[1], context);
+			tones.add(add);
+			this.tones.add(add);
 			eighthAt+=toneValues[1];
 		}		
-		tones.add(0,new Tone(null,barAt,-1,(byte)-1,(short)barEighths));
+		tones.add(0,new Tone(this,-1,barAt,-1,(byte)-1,(short)barEighths, context));
 		return tones;
 	}
 	private static Map<Voice,Tone.Context>newDefaultContexts(){
@@ -165,6 +168,7 @@ final public class VoiceLine extends Tracer{
 	}
 	private VoiceLine(Tone first){
 		voice=first.voice;
+		context=first.context;
 	}
 	private void encode(Tone tone){
 		int eighths=context.eighths;

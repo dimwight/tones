@@ -1,10 +1,11 @@
 package tones;
+import static tones.ScaleNote.*;
 import facets.util.Debug;
 import facets.util.Tracer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
+import tones.Mark.Tie;
 public final class Tone extends Tracer{
 	public static final short NOTE_WHOLE=8,NOTE_HALF=NOTE_WHOLE/2,
 		NOTE_QUARTER=NOTE_WHOLE/4,NOTE_EIGHTH=NOTE_WHOLE/8,
@@ -39,18 +40,25 @@ public final class Tone extends Tracer{
 			">";
 		}
 	}
-	public final int barAt,eighthAt;
+	public final int lineAt,barAt,eighthAt;
 	public final Voice voice;
 	public final byte pitch;
 	public final short eighths;
+	final Context context;
 	private final int[]intValues;
-	public Tone(Voice voice,int barAt,int eighthAt,byte pitch,short eighths){
-		this.voice=voice;
+	private final VoiceLine line;
+	private final HashSet<Mark>marks=new HashSet();
+	Tone(VoiceLine line,int lineAt,int barAt,int eighthAt,byte pitch,
+			short eighths,Context context){
+		this.line=line;
+		this.context=context;
+		this.voice=line.voice;
+		this.lineAt=lineAt;
 		this.barAt=barAt;
 		this.eighthAt=eighthAt;
 		this.pitch=pitch;
 		this.eighths=eighths;
-		intValues=new int[]{barAt,eighthAt,pitch,eighths};
+		intValues=new int[]{lineAt,barAt,eighthAt,pitch,eighths};
 	}
 	public String toString(){
 		ScaleNote note=pitchNote();
@@ -65,5 +73,13 @@ public final class Tone extends Tracer{
 	public boolean equals(Object o){
 		Tone that=(Tone)o;
 		return voice==that.voice&&Arrays.equals(intValues,that.intValues);
+	}
+	public Collection<Mark>getMarks(){
+		if(lineAt<0)return marks;
+		Tone before=lineAt==0?null:line.tones.get(lineAt-1);
+		if(before!=null&&before.pitch==pitch
+				&&before.pitch!=PITCH_REST&&pitch!=PITCH_REST)
+			marks.add(new Tie(this,before));
+		return marks;
 	}
 }

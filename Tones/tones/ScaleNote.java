@@ -1,5 +1,4 @@
 package tones;
-
 public enum ScaleNote{C(0),D(1),E(2),F(3),G(4),A(5),B(6),REST(ScaleNote.PITCH_REST);
 	final public static byte PITCH_REST=Byte.MIN_VALUE;
 	final public byte pitch;

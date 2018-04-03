@@ -8,9 +8,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import tones.Mark;
 import tones.Tone;
 import tones.Voice;
 final public class Bar extends Tracer{
@@ -18,6 +20,7 @@ final public class Bar extends Tracer{
 		WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3);
 	public final int at,rise,staveGap,fall,width;
 	public final Iterable<Incipit>incipits;
+	public final Set<Mark>marks=new HashSet(); 
 	private Voice selectedVoice;
 	public Bar(int barAt,Iterable<Incipit>incipits,int sizeInEighths){
 		at=barAt;
@@ -54,12 +57,13 @@ final public class Bar extends Tracer{
 		}
 		VoiceAts starts=new VoiceAts();
 		int rise=-1,staveGap=-1,fall=-1;
-		for(Incipit incipit:incipits){
-			incipit.close();
-			rise=max(rise,incipit.rise);
-			staveGap=max(staveGap,incipit.staveGap);
-			fall=max(fall,incipit.fall);
-			starts.exchangeAts(incipit);
+		for(Incipit i:incipits){
+			i.close();
+			rise=max(rise,i.rise);
+			staveGap=max(staveGap,i.staveGap);
+			fall=max(fall,i.fall);
+			starts.exchangeAts(i);
+			for(Tone tone:i.tones)marks.addAll(tone.getMarks());
 		}
 		this.rise=rise;
 		this.staveGap=staveGap;
