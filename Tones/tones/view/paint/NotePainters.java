@@ -38,7 +38,7 @@ public final class NotePainters extends PagePainters{
 	}
 	public Painter[]newViewPainters(boolean selected){
 		ItemList<Painter>painters=new ItemList(Painter.class);
-		if(note.content.pitch!=ScaleNote.PITCH_REST){
+		if(note.tone.pitch!=ScaleNote.PITCH_REST){
 			if(note.ledgerLines!=0)painters.addItems(staveLinePainters(
 					x,y+note.ledgerLineShift*pitchHeight,width,note.ledgerLines));
 			painters.addItems(newBeadPainters(SHADE_NOTE));
@@ -46,7 +46,7 @@ public final class NotePainters extends PagePainters{
 		return painters.items();
 	}
 	private Painter[]newBeadPainters(Shade shade){
-		double at=note.dotAt,time=note.content.eighths;
+		double at=note.dotAt,time=note.tone.eighths;
 		if(false&&time<NOTE_QUARTER)shade=Shades.gray;
 		SvgPath dot=at==PaneNote.DOT_NONE?Empty:at==PaneNote.DOT_BELOW?DotBelow:DotLevel,
 				bead=time<NOTE_HALF?Solid:time<NOTE_WHOLE?Half:time<NOTE_DOUBLE?Whole:Double;

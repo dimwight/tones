@@ -68,7 +68,7 @@ final class TonesViewable extends ViewableFrame{
 				PaneNote note=(PaneNote)definition;
 				Bar bar=null;
 				if(bar==null)throw new RuntimeException("Not implemented in "+Debug.info(this));
-				bar.selectVoice(note.content.voice);
+				bar.selectVoice(note.tone.voice);
 				return bar;
 			}
 			public Object[]multiple(){

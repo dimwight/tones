@@ -31,10 +31,11 @@ public final class PaneBlock{
 		ItemList<PaneItem>items=new ItemList(PaneItem.class);
 		ItemList<PaneBar>paneBars=new ItemList(PaneBar.class);
 		int barAt=-1;
+		PaneItem[]beforeItems=null;
 		for(Bar bar:thisBars){
 			PaneBar paneBar=new PaneBar(bar,paneX,paneY,staveGap,paneXScale);
 			paneBars.add(paneBar);
-			items.addItems(paneBar.newItems(++barAt==0?null:paneBars.get(barAt-1)));
+			items.addItems(beforeItems=paneBar.newItems(beforeItems));
 			paneX+=paneBar.staveWidth;
 		}
 		return items.items();
