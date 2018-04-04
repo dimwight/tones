@@ -20,7 +20,6 @@ final public class Bar extends Tracer{
 		WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3);
 	public final int at,rise,staveGap,fall,width;
 	public final Iterable<Incipit>incipits;
-	public final Set<Mark>marks=new HashSet(); 
 	private Voice selectedVoice;
 	public Bar(int barAt,Iterable<Incipit>incipits,int sizeInEighths){
 		at=barAt;
@@ -63,7 +62,6 @@ final public class Bar extends Tracer{
 			staveGap=max(staveGap,i.staveGap);
 			fall=max(fall,i.fall);
 			starts.exchangeAts(i);
-			for(Tone tone:i.tones)marks.addAll(tone.getMarks());
 		}
 		this.rise=rise;
 		this.staveGap=staveGap;
@@ -84,8 +82,9 @@ final public class Bar extends Tracer{
 		return selectedVoice;
 	}
 	public String toString(){
-		return Debug.info(this)+" at="+at+
-			" incipits=\n"+Objects.toLines(((Collection)incipits).toArray());
+		return Debug.info(this)+" at="+at
+//			+" incipits=\n"+Objects.toLines(((Collection)incipits).toArray())
+			;
 	}
 	public void updateSelectedVoiceLine(String line){
 		throw new RuntimeException("Not implemented in "+Debug.info(this));

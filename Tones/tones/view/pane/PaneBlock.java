@@ -30,10 +30,11 @@ public final class PaneBlock{
 		double paneX=0;
 		ItemList<PaneItem>items=new ItemList(PaneItem.class);
 		ItemList<PaneBar>paneBars=new ItemList(PaneBar.class);
+		int barAt=-1;
 		for(Bar bar:thisBars){
 			PaneBar paneBar=new PaneBar(bar,paneX,paneY,staveGap,paneXScale);
 			paneBars.add(paneBar);
-			items.addItems(paneBar.newItems());
+			items.addItems(paneBar.newItems(++barAt==0?null:paneBars.get(barAt-1)));
 			paneX+=paneBar.staveWidth;
 		}
 		return items.items();

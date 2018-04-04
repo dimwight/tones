@@ -2,15 +2,14 @@ package tones;
 import facets.util.Tracer;
 public abstract class Mark extends Tracer{
 	public static final class Tie extends Mark{
-		public final Tone tied,before;
-		public Tie(Tone tied,Tone before){
+		public final Tone tied,to;
+		public Tie(Tone tied,Tone to){
 			this.tied=tied;
-			this.before=before;
-			trace(".",this);
+			this.to=to;
 		}
 		@Override
 		public String toString(){
-			return ""+tied;
+			return "tied="+tied+" to="+to;
 		}
 	}
 }

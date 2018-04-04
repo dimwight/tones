@@ -1,7 +1,10 @@
 package tones.view.pane;
 import facets.util.ItemList;
-import facets.util.geom.Vector;
+import facets.util.Objects;
+import java.util.Set;
 import tones.Clef;
+import tones.Mark;
+import tones.Mark.Tie;
 import tones.Tone;
 import tones.Voice;
 import tones.bar.Bar;
@@ -24,7 +27,7 @@ public class PaneBar extends PaneItem{
 		staveWidth=content.width*staveXScale;
 		staveYs=new double[]{staveY,staveY+STAVE_GRID+staveGap};
 	}
-	PaneItem[]newItems(){
+	PaneItem[]newItems(PaneBar before){
 		final boolean marking=marking();
 		ItemList<PaneIncipit>incipits=new ItemList(PaneIncipit.class);
 		for(Incipit bar:content.incipits)
@@ -47,6 +50,11 @@ public class PaneBar extends PaneItem{
 				if(marking)return new PaneItem[]{note};
 				else if(selected!=null&&voice==selected)voiceNotes.addItem(note);
 				else items.addItem(note);
+				Set<Mark>marks=note.content.marks;
+				if(marks.isEmpty())continue;
+				for(Tie tie:Objects.newTyped(Tie.class,marks.toArray(new Tie[]{}))){
+					if(tie.to.barAt!=content.at&&before!=null)trace(".newItems: to="+tie.to);
+				}
 			}
 		if(!voiceNotes.isEmpty())
 			items.addItem(new VoiceNotes(voiceNotes.items()));
