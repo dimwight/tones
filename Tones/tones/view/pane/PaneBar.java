@@ -1,35 +1,22 @@
 package tones.view.pane;
 import facets.util.ItemList;
 import facets.util.Objects;
-import facets.util.geom.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 import tones.Clef;
 import tones.Mark;
+import tones.Mark.Beam;
 import tones.Mark.Tie;
 import tones.Tone;
 import tones.Voice;
 import tones.bar.Bar;
 import tones.bar.Incipit;
+import tones.view.pane.PaneItem.PaneBeam;
 public class PaneBar extends PaneItem{
 	public final double staveX,staveYs[],staveGap,staveXScale,staveWidth;
-	public static final class PaneTie extends PaneItem{
-		public final PaneNote from,to;
-		public PaneTie(PaneNote from,PaneNote to){
-			this.from=from;
-			this.to=to;
-			trace(":",this);
-		}
-		@Override
-		public String toString(){
-			return " from="+from.staveAt()+" to="+(to==null?"null":to.staveAt());
-		}
-	}
 	public final class VoiceNotes extends PaneItem{
 		public final PaneItem[]items;
 		public VoiceNotes(PaneItem[]items){
@@ -70,29 +57,19 @@ public class PaneBar extends PaneItem{
 				else if(selected!=null&&voice==selected)voiceNotes.add(note);
 				else notes.add(note);
 			}
-		for(PaneNote from:notes){
-			Collection<Mark>marks=from.tone.marks;
+		for(PaneNote check:notes){
+			Collection<Mark>marks=check.tone.marks;
 			if(marks.isEmpty())continue;
 			for(Mark mark:marks){
-				if(!(mark instanceof Tie))continue;
-				Tie tie=(Tie)mark;
-				PaneNote[]checkNotes=tie.to.barAt==content.at
-						||beforeItems==null?notes.items()
-						:new Function<PaneItem[],PaneNote[]>(){
-							@Override
-							public PaneNote[]apply(PaneItem[] t){
-								List<PaneItem>list=new ArrayList<PaneItem>(Arrays.asList(t));
-								list.removeIf(item->!(item instanceof PaneNote));
-								return Objects.newTyped(PaneNote.class,list.toArray());
-							}}.apply(beforeItems);
-				PaneNote to=null;
-				for(PaneNote check:checkNotes)
-					if(check.tone==tie.to){
-						to=check;
-						break;
-					}
-				PaneTie add=new PaneTie(from,to);
-				if(false)items.add(add);
+				PaneNote[]barNotes=notes.items();
+				if(mark instanceof Tie){
+					PaneItem.PaneTie add=newPaneTie((Tie)mark,barNotes,check,beforeItems);
+					if(false)items.add(add);
+				}
+				else if(mark instanceof Beam){
+					PaneItem add=newPaneBeam((Beam)mark,barNotes);
+					if(false)items.add(add);
+				}
 			}
 		}
 		items.addAll(notes);
@@ -100,6 +77,32 @@ public class PaneBar extends PaneItem{
 		if(!voiceNotes.isEmpty())
 			items.addItem(new VoiceNotes(voiceNotes.items()));
 		return items.items();
+	}
+	private PaneItem newPaneBeam(Beam mark,PaneNote[]barNotes){
+		ItemList<PaneNote>beamed=new ItemList(PaneNote.class);
+		for(PaneNote note:barNotes)
+			for(Tone tone:mark.tones)
+				if(note.tone==tone)beamed.add(note);
+		return new PaneBeam(beamed.items());
+	}
+	private PaneItem.PaneTie newPaneTie(Tie tie,PaneNote[]barNotes,PaneNote from,
+			PaneItem[]beforeItems){
+		PaneNote[]checkNotes=tie.to.barAt==content.at
+				||beforeItems==null?barNotes
+				:new Function<PaneItem[],PaneNote[]>(){
+					@Override
+					public PaneNote[]apply(PaneItem[] t){
+						List<PaneItem>list=new ArrayList<PaneItem>(Arrays.asList(t));
+						list.removeIf(item->!(item instanceof PaneNote));
+						return Objects.newTyped(PaneNote.class,list.toArray());
+					}}.apply(beforeItems);
+		PaneNote to=null;
+		for(PaneNote check:checkNotes)
+			if(check.tone==tie.to){
+				to=check;
+				break;
+			}
+		return new PaneItem.PaneTie(from,to);
 	}
 	public String toString(){
 		return super.toString()+", staveX="+staveX+", staveY="+staveYs;

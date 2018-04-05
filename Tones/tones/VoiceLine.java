@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import tones.Mark.Beam;
 import tones.bar.Bar;
 import tones.bar.Bars;
 import tones.bar.Incipit;
@@ -103,6 +104,7 @@ final public class VoiceLine extends Tracer{
 	}
 	protected List<Tone>nextBarTones(int barAt){
 		final List<Tone>tones=new ArrayList();
+		Beam beam=new Beam(voice);
 		Tone.Context context=this.context==null?newDefaultContexts().get(voice):this.context;
 		ScaleNote scaleNote=context.scaleNote;
 		Octave octave=context.octave;
@@ -146,6 +148,11 @@ final public class VoiceLine extends Tracer{
 			this.context=context;
 			Tone add=new Tone(this,toneAt++,barAt,eighthAt,
 					(byte)toneValues[0],(short)toneValues[1], context);
+			if(add.eighths==NOTE_EIGHTH)beam.addTone(add);
+			else{
+				if(beam.tones.size()>1)add.marks.add(beam);
+				beam=new Beam(voice);
+			}
 			tones.add(add);
 			this.tones.add(add);
 			eighthAt+=toneValues[1];

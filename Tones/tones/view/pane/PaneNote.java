@@ -29,7 +29,7 @@ public abstract class PaneNote extends PaneItem{
 			+" beyondStave="+beyondStave;
 	}
 	public String toString(){
-		return debugString;
+		return false?debugString:tone.toString()+" "+staveAt();
 	}
 	public int hashCode(){
 		return Arrays.hashCode(intValues());
