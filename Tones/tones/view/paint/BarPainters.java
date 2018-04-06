@@ -38,7 +38,7 @@ public final class BarPainters extends PagePainters{
 				selected?Shades.blue:Shades.red));
 		return painters.items();
 }
-	private Painter barLine(double y){
+	private Painter barLine(double y){//?
 		return p.line(new Line(new double[]{x+width,y,x+width,bassY+8*pitchHeight}),Shades.lightGray,
 				PainterSource.HAIRLINE,false);
 	}
