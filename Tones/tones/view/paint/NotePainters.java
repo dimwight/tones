@@ -43,6 +43,8 @@ public final class NotePainters extends PagePainters{
 					x,y+note.ledgerLineShift*pitchHeight,width,note.ledgerLines));
 			painters.addItems(newBeadPainters(SHADE_NOTE));
 			painters.addItems(newBeamPainters());
+			painters.addItems(newTiePainters());
+		}
 		}
 		}
 		return painters.items();
