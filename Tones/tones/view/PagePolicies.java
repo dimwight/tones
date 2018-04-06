@@ -17,12 +17,16 @@ import facets.util.Debug;
 import facets.util.shade.Shades;
 import tones.bar.Bars;
 import tones.view.paint.BarPainters;
+import tones.view.paint.ItemPainters.BeamPainters;
 import tones.view.paint.NotePainters;
 import tones.view.paint.PagePainters;
+import tones.view.paint.TiePainters;
 import tones.view.pane.PaneBar;
 import tones.view.pane.PaneBar.VoiceNotes;
 import tones.view.pane.PaneBlock;
 import tones.view.pane.PaneItem;
+import tones.view.pane.PaneItem.PaneBeam;
+import tones.view.pane.PaneItem.PaneTie;
 import tones.view.pane.PaneNote;
 final class PagePolicies extends AvatarPolicies{
 	@Override
@@ -52,7 +56,9 @@ final class PagePolicies extends AvatarPolicies{
 			:false&&item instanceof VoiceNotes?
 					NotePainters.newVoiceNotePainters(view,(VoiceNotes)item,p)
 			:item instanceof PaneBar?new BarPainters(view,(PaneBar)item,p)
-			:null;
+			:item instanceof PaneTie?new TiePainters(view,(PaneTie)item,p)
+			:item instanceof PaneBeam?new BeamPainters(view,(PaneBeam)item,p)
+					:null;
 		if(painters==null)
 			throw new IllegalStateException("Null painters for "+Debug.info(item));
 		else return new AvatarPolicy(){

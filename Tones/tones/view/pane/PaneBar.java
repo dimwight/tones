@@ -64,11 +64,11 @@ public class PaneBar extends PaneItem{
 				PaneNote[]barNotes=notes.items();
 				if(mark instanceof Tie){
 					PaneItem.PaneTie add=newPaneTie((Tie)mark,barNotes,check,beforeItems);
-					if(false)items.add(add);
+					items.add(add);
 				}
 				else if(mark instanceof Beam){
 					PaneItem add=newPaneBeam((Beam)mark,barNotes);
-					if(false)items.add(add);
+					items.add(add);
 				}
 			}
 		}
@@ -102,7 +102,7 @@ public class PaneBar extends PaneItem{
 				to=check;
 				break;
 			}
-		return new PaneItem.PaneTie(from,to);
+		return new PaneItem.PaneTie(from,to,this);
 	}
 	public String toString(){
 		return super.toString()+", staveX="+staveX+", staveY="+staveYs;

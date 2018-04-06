@@ -1,5 +1,6 @@
 package tones.view.pane;
 import facets.util.geom.Point;
+import facets.util.geom.Vector;
 import java.util.Arrays;
 import tones.Clef;
 import tones.Tone;
@@ -42,7 +43,7 @@ public abstract class PaneNote extends PaneItem{
 	private int[]intValues(){
 		return new int[]{tone.pitch,tone.eighths};
 	}
-	public Point staveAt(){
-		return new Point(staveX,staveY);
+	public Vector staveAt(){
+		return new Vector(staveX,staveY);
 	}
 }
