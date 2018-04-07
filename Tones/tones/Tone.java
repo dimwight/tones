@@ -41,36 +41,35 @@ public final class Tone extends Tracer{
 			">";
 		}
 	}
-	public final int lineAt,barAt,eighthAt;
+	public final int barAt,eighthAt;
 	public final Voice voice;
 	public final byte pitch;
 	public final short eighths;
 	public final HashSet<Mark>marks=new HashSet();
 	final Context context;
 	private final int[]intValues;
-	Tone(Voice voice,int lineAt,int barAt,int eighthAt,byte pitch,
-			short eighths,Context context){
+	Tone(Voice voice,int barAt,int eighthAt,byte pitch,short eighths,
+			Context context){
 		this.voice=voice;
-		this.lineAt=lineAt;
 		this.barAt=barAt;
 		this.eighthAt=eighthAt;
 		this.pitch=pitch;
 		this.eighths=eighths;
-		intValues=new int[]{lineAt,barAt,eighthAt,pitch,eighths};
+		intValues=new int[]{barAt,eighthAt,pitch,eighths};
 		this.context=context;
 	}
 	void checkTied(Tone before){
-		if(before!=null&&before.pitch==this.pitch
-				&&!before.isRest()&&!isRest()&&this.eighthAt%4==0)
+		if(before==null||before.isRest()||isRest()
+				||before.pitch!=pitch||eighthAt%4!=0)return;
 			marks.add(new Tie(this,before));
+			before.marks.add(new Tie(before,this));
 	}
 	private boolean isRest(){
-		return this.pitch!=PITCH_REST;
+		return this.pitch==PITCH_REST;
 	}
 	public String toString(){
 		ScaleNote note=pitchNote();
-		return voice+" "+(note==ScaleNote.REST?"*":note)
-				+": "+ eighths+Strings.intsString(intValues);
+		return voice+" "+pitchNote()+": "+Strings.intsString(intValues);
 	}
 	public ScaleNote pitchNote(){
 		return ScaleNote.pitchNote(pitch);

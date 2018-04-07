@@ -10,10 +10,16 @@ public abstract class Mark extends Tracer{
 		public Tie(Tone tied,Tone to){
 			this.tied=tied;
 			this.to=to;	
+			if(tied.barAt<4)trace(": ",this);
 		}
 		@Override
 		public String toString(){
 			return "tied="+tied+" to="+to;
+		}
+		@Override
+		public boolean equals(Object o){
+			Tie that=(Tie)o;
+			return that.tied.equals(tied)&&that.to.equals(to);
 		}
 	}
 	public static final class Beam extends Mark{
