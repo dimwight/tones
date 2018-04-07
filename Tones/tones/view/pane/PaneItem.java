@@ -9,17 +9,22 @@ public abstract class PaneItem extends Tracer implements AvatarContent{
 		public enum TieType{FromTo,From,To,ToFrom}
 		public final PaneBar bar;
 		public final TieType type;
-		public final Vector fromAt,toAt;
-		PaneTie(PaneNote from,PaneNote to,PaneBar bar){
+		public final Vector beforeAt,afterAt;
+		private final PaneNote before;
+		private final PaneNote after;
+		PaneTie(PaneNote before,PaneNote after,PaneBar bar){
+			this.before=before;
+			this.after=after;
 			this.bar=bar;
-			type=to==null?To:ToFrom;
-			this.fromAt=from.staveAt();
-			this.toAt=to==null?null:to.staveAt();
+			type=after==null?To:ToFrom;
+			this.beforeAt=before==null?null:before.staveAt();
+			this.afterAt=after==null?null:after.staveAt();
 			if(false)trace(":",this);
 		}
 		@Override
 		public String toString(){
-			return " from="+fromAt+" to="+(toAt==null?"null":toAt);
+			return " before="+before==null?"null":before+
+					" after="+(after==null?"null":after);
 		}
 	}
 	public static final class PaneBeam extends PaneItem{

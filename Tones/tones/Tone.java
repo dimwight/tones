@@ -61,8 +61,9 @@ public final class Tone extends Tracer{
 	void checkTied(Tone before){
 		if(before==null||before.isRest()||isRest()
 				||before.pitch!=pitch||eighthAt%4!=0)return;
-			marks.add(new Tie(this,before));
-			before.marks.add(new Tie(before,this));
+			Tie tie=new Tie(before,this);
+			marks.add(tie);
+			before.marks.add(tie);
 	}
 	private boolean isRest(){
 		return this.pitch==PITCH_REST;

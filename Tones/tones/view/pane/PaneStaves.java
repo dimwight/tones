@@ -51,24 +51,26 @@ public final class PaneStaves{
 			Collection<Mark>marks=note.tone.marks;
 			if(marks.isEmpty())continue;
 			for(Mark mark:marks)
-				if(mark instanceof Tie)items.add(newPaneTie((Tie)mark,notes,note));
+				if(mark instanceof Tie)items.add(newPaneTie((Tie)mark,note,notes));
 				else if(mark instanceof Beam)items.add(newPaneBeam((Beam)mark,notes));
 		}
 		return items.items();
 	}
-	private PaneItem newPaneTie(Tie tie,PaneNote[]barNotes,PaneNote from){
-		PaneNote to=null;
-		for(PaneNote check:barNotes)
-			if(check.tone==tie.to){
-				to=check;
+	private PaneItem newPaneTie(Tie tie,PaneNote tied,PaneNote[]staveNotes){
+		boolean isBefore=tie.before==tied.tone;
+		PaneNote other=null;
+		for(PaneNote check:staveNotes)
+			if(check==tied)continue;
+			else if(isBefore?check.tone==tie.after:check.tone==tie.before){
+				other=check;
 				break;
 			}
-		return new PaneTie(from,to,from.bar);
+		return new PaneTie(isBefore?tied:other,isBefore?other:tied,tied.bar);
 	}
-	private PaneItem newPaneBeam(Beam mark,PaneNote[]barNotes){
+	private PaneItem newPaneBeam(Beam mark,PaneNote[]staveNotes){
 		ItemList<PaneNote>beamed=new ItemList(PaneNote.class);
 		for(Tone tone:mark.tones)
-			for(PaneNote check:barNotes)
+			for(PaneNote check:staveNotes)
 				if(check.tone==tone)beamed.add(check);
 		return new PaneBeam(beamed.items());
 	}

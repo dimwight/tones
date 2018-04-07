@@ -36,7 +36,7 @@ public final class TiePainters extends PagePainters{
 			};
 	}
 	private Painter tieTo(PaneTie tie){
-		double x=tie.bar.staveX,y=tie.toAt.y;
+		double x=tie.bar.staveX,y=tie.afterAt.y;
 		Shade shade=true?blue:red;
 		Painter painter=p.mastered(TieTo.newOutlined(shade,null,false));
 		p.applyTransforms(new Transform[]{
@@ -46,14 +46,14 @@ public final class TiePainters extends PagePainters{
 		return painter;
 	}
 	private Painter tieFrom(PaneTie tie){
-		double pastNote=noteWidth*.7,x=tie.fromAt.x+pastNote,y=tie.fromAt.y;
+		double pastNote=noteWidth*.7,x=tie.beforeAt.x+pastNote,y=tie.beforeAt.y;
 		TieType type=tie.type;
 		final boolean isTo=type==FromTo;
 		Shade shade=true?blue:isTo?magenta:cyan;
 		Outlined path=(isTo?TieFromTo:false?TieFromLong:TieFromShort
 				).newOutlined(shade,null,false);
 		Vector bounds=path.bounds().scaled(noteHeight);
-		double toTo=(!isTo?0:tie.toAt.x-x)*unitWidth, 
+		double toTo=(!isTo?0:tie.afterAt.x-x)*unitWidth, 
 			toBarEnd=(tie.bar.staveX+tie.bar.staveWidth-x)*unitWidth,
 			stretch=(!isTo?toBarEnd:toTo)/bounds.x;
 		Painter painter=p.mastered(path);
