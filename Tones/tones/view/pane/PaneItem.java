@@ -4,11 +4,13 @@ import facets.core.app.avatar.AvatarContent;
 import facets.util.Objects;
 import facets.util.Tracer;
 import facets.util.geom.Vector;
+import tones.Voice;
 public abstract class PaneItem extends Tracer implements AvatarContent{
 	public static final class PaneTie extends PaneItem{
-		public enum TieType{FromTo,From,To,ToFrom}
+		public enum TieType{BeforeAfter,BeforeNull,AfterNull}
 		public final PaneBar bar;
 		public final TieType type;
+		public final Voice voice;
 		public final Vector beforeAt,afterAt;
 		private final PaneNote before;
 		private final PaneNote after;
@@ -16,7 +18,8 @@ public abstract class PaneItem extends Tracer implements AvatarContent{
 			this.before=before;
 			this.after=after;
 			this.bar=bar;
-			type=after==null?To:ToFrom;
+			type=after==null?AfterNull:before==null?BeforeNull:BeforeAfter;
+			voice=(type==AfterNull?before:after).tone.voice;
 			this.beforeAt=before==null?null:before.staveAt();
 			this.afterAt=after==null?null:after.staveAt();
 			if(false)trace(":",this);

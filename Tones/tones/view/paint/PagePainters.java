@@ -1,6 +1,7 @@
 package tones.view.paint;
 import facets.core.app.avatar.Painter;
 import facets.core.app.avatar.PainterSource;
+import facets.util.Debug;
 import facets.util.ItemList;
 import facets.util.Tracer;
 import facets.util.geom.Line;
@@ -18,7 +19,6 @@ public abstract class PagePainters extends Tracer{
 		unitWidth=pitchHeight*page.widthForPitch();
 	}
 	public abstract Painter[]newViewPainters(boolean selected);
-	public abstract Painter[]newPickPainters();
 	final protected Painter unscaledText(String text,double x,double y,double dropFactor){
 		double scaledPoints=TEXT_POINTS/page.scale(),
 			textDrop=scaledPoints*dropFactor;
@@ -40,5 +40,8 @@ public abstract class PagePainters extends Tracer{
 		ItemList<Painter>painters=new ItemList(Painter.class);
 		painters.add(p.backgroundLines(lines,Shades.gray));
 		return painters.items();
+	}
+	public Painter[]newPickPainters(){
+		throw new RuntimeException("Not implemented in "+Debug.info(this));
 	}
 }

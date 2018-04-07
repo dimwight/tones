@@ -14,9 +14,5 @@ public abstract class ItemPainters{
 		public Painter[]newViewPainters(boolean selected){
 			return new Painter[]{};
 		}
-		@Override
-		public Painter[]newPickPainters(){
-			return new Painter[]{};
-		}
 	}
 }
