@@ -23,7 +23,7 @@ import tones.view.paint.PagePainters;
 import tones.view.paint.TiePainters;
 import tones.view.pane.PaneBar;
 import tones.view.pane.PaneBar.VoiceNotes;
-import tones.view.pane.PaneBlock;
+import tones.view.pane.PaneStaves;
 import tones.view.pane.PaneItem;
 import tones.view.pane.PaneItem.PaneBeam;
 import tones.view.pane.PaneItem.PaneTie;
@@ -32,7 +32,7 @@ final class PagePolicies extends AvatarPolicies{
 	@Override
 	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){
 		Object content=viewable.content();
-		PaneItem[]items=PaneBlock.newPageItems((Bars)content,(PageView)viewer.view());
+		PaneItem[]items=PaneStaves.newPageItems((Bars)content,(PageView)viewer.view());
 		Object selected=viewable.single();
 		if(selected==content||selected instanceof SView)
 			return PathSelection.newMinimal(items);

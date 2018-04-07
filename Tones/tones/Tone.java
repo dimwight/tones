@@ -48,23 +48,24 @@ public final class Tone extends Tracer{
 	public final HashSet<Mark>marks=new HashSet();
 	final Context context;
 	private final int[]intValues;
-	private final VoiceLine line;
-	Tone(VoiceLine line,int lineAt,int barAt,int eighthAt,byte pitch,
+	Tone(Voice voice,int lineAt,int barAt,int eighthAt,byte pitch,
 			short eighths,Context context){
-		this.line=line;
-		this.context=context;
-		this.voice=line.voice;
+		this.voice=voice;
 		this.lineAt=lineAt;
 		this.barAt=barAt;
 		this.eighthAt=eighthAt;
 		this.pitch=pitch;
 		this.eighths=eighths;
 		intValues=new int[]{lineAt,barAt,eighthAt,pitch,eighths};
-		if(lineAt<0)return;
-		Tone before=lineAt==0?null:line.tones.get(lineAt-1);
-		if(before!=null&&before.pitch==pitch
-				&&before.pitch!=PITCH_REST&&pitch!=PITCH_REST&&eighthAt%4==0)
+		this.context=context;
+	}
+	void checkTied(Tone before){
+		if(before!=null&&before.pitch==this.pitch
+				&&!before.isRest()&&!isRest()&&this.eighthAt%4==0)
 			marks.add(new Tie(this,before));
+	}
+	private boolean isRest(){
+		return this.pitch!=PITCH_REST;
 	}
 	public String toString(){
 		ScaleNote note=pitchNote();

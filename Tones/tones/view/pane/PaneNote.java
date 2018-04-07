@@ -7,12 +7,14 @@ import tones.Tone;
 import tones.bar.Incipit;
 public abstract class PaneNote extends PaneItem{
 	public static final int DOT_NONE=0,DOT_LEVEL=1,DOT_BELOW=-1;
-	public final double staveX,staveY,ledgerLineShift,dotAt;
+	public final PaneBar bar;
 	public final Tone tone;
 	public final Incipit incipit;
+	public final double staveX,staveY,ledgerLineShift,dotAt;
 	public final int ledgerLines;
 	private final String debugString;
-	PaneNote(Tone tone,PaneIncipit i,double barStaveY,Clef clef){
+	PaneNote(PaneBar bar,Tone tone,PaneIncipit i,double barStaveY,Clef clef){
+		this.bar=bar;
 		this.tone=tone;
 		incipit=i.content;
 		staveX=i.scaledStaveX(tone);

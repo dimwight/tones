@@ -8,7 +8,7 @@ public abstract class ItemPainters{
 	public static final class BeamPainters extends PagePainters{
 		public BeamPainters(PageView page,PaneBeam beam,PainterSource p){
 			super(page,p);
-			trace(": beam=",beam);
+			if(false)trace(": beam=",beam);
 		}
 		@Override
 		public Painter[]newViewPainters(boolean selected){

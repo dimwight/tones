@@ -24,14 +24,14 @@ public final class TiePainters extends PagePainters{
 	public TiePainters(PageView page,PaneTie tie,PainterSource p){
 		super(page,p);
 		this.tie=tie;
-		trace(": tie=",tie);	
+		if(true)trace(": tie=",tie);	
 		noteWidth=Bar.WIDTH_NOTE*unitWidth;
 		noteHeight=pitchHeight*2;
 	}
 	@Override
 	public
 	Painter[]newViewPainters(boolean selected){
-		return tie.type==ToFrom?new Painter[]{}:new Painter[]{
+		return true||tie.type==ToFrom?new Painter[]{}:new Painter[]{
 				tie.type==To?tieTo(tie):tieFrom(tie)
 			};
 	}

@@ -65,6 +65,7 @@ final public class VoiceLine extends Tracer{
 	private final List<String>codes=new ArrayList();
 	private int codeAt,toneAt;
 	private Tone.Context context;
+	private Tone before;
 	public VoiceLine(String src){
 		String splitVoice[]=src.split(":",2),
 			voiceCode=splitVoice[0].substring(0).toLowerCase();
@@ -146,8 +147,9 @@ final public class VoiceLine extends Tracer{
 					"Invalid eighths in context="+context);
 			else context=new Tone.Context(scaleNote,octave,eighths);
 			this.context=context;
-			Tone add=new Tone(this,toneAt++,barAt,eighthAt,
+			Tone add=new Tone(voice,toneAt++,barAt,eighthAt,
 					(byte)toneValues[0],(short)toneValues[1], context);
+			add.checkTied(before);
 			if(add.eighths==NOTE_EIGHTH)beam.addTone(add);
 			else{
 				if(beam.tones.size()>1)add.marks.add(beam);
@@ -156,8 +158,9 @@ final public class VoiceLine extends Tracer{
 			tones.add(add);
 			this.tones.add(add);
 			eighthAt+=toneValues[1];
+			before=add;
 		}		
-		tones.add(0,new Tone(this,-1,barAt,-1,(byte)-1,(short)barEighths, context));
+		tones.add(0,new Tone(voice,-1,barAt,-1,(byte)-1,(short)barEighths, context));
 		return tones;
 	}
 	private static Map<Voice,Tone.Context>newDefaultContexts(){

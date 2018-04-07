@@ -1,18 +1,28 @@
 package tones.view.pane;
 import static tones.view.PageView.*;
 import facets.util.ItemList;
+import facets.util.Objects;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
+import tones.Mark;
+import tones.Tone;
+import tones.Mark.Beam;
+import tones.Mark.Tie;
 import tones.bar.Bar;
 import tones.bar.Bars;
 import tones.view.PageView;
-public final class PaneBlock{
+import tones.view.pane.PaneItem.PaneBeam;
+import tones.view.pane.PaneItem.PaneTie;
+public final class PaneStaves{
 	static final double STAVE_X_SCALE_DEFAULT=1.5;
 	private final List<Bar>thisBars=new ArrayList();
 	double rise=0,staveGap=0,fall=0,staveXUsed=0;
 	final Bar endBar;
-	PaneBlock(Iterator<Bar>bars,Bar bar,final double useWidth){
+	PaneStaves(Iterator<Bar>bars,Bar bar,final double useWidth){
 		while(bars.hasNext()||bar!=null){
 			if(bar==null)bar=bars.next();
 			double barWidth=bar.width;
@@ -29,16 +39,38 @@ public final class PaneBlock{
 	PaneItem[]newItems(double paneY,double paneXScale){
 		double paneX=0;
 		ItemList<PaneItem>items=new ItemList(PaneItem.class);
-		ItemList<PaneBar>paneBars=new ItemList(PaneBar.class);
-		int barAt=-1;
-		PaneItem[]beforeItems=null;
 		for(Bar bar:thisBars){
 			PaneBar paneBar=new PaneBar(bar,paneX,paneY,staveGap,paneXScale);
-			paneBars.add(paneBar);
-			items.addItems(beforeItems=paneBar.newItems(beforeItems));
+			items.addItems(paneBar.newItems());
 			paneX+=paneBar.staveWidth;
 		}
+		List<PaneItem>all=new ArrayList(items);
+		all.removeIf(item->!(item instanceof PaneNote));
+		PaneNote[]notes=Objects.newTyped(PaneNote.class,all.toArray());
+		for(PaneNote note:notes){
+			Collection<Mark>marks=note.tone.marks;
+			if(marks.isEmpty())continue;
+			for(Mark mark:marks)
+				if(mark instanceof Tie)items.add(newPaneTie((Tie)mark,notes,note));
+				else if(mark instanceof Beam)items.add(newPaneBeam((Beam)mark,notes));
+		}
 		return items.items();
+	}
+	private PaneItem newPaneTie(Tie tie,PaneNote[]barNotes,PaneNote from){
+		PaneNote to=null;
+		for(PaneNote check:barNotes)
+			if(check.tone==tie.to){
+				to=check;
+				break;
+			}
+		return new PaneTie(from,to,from.bar);
+	}
+	private PaneItem newPaneBeam(Beam mark,PaneNote[]barNotes){
+		ItemList<PaneNote>beamed=new ItemList(PaneNote.class);
+		for(Tone tone:mark.tones)
+			for(PaneNote check:barNotes)
+				if(check.tone==tone)beamed.add(check);
+		return new PaneBeam(beamed.items());
 	}
 	public static PaneItem[]newPageItems(Bars content,PageView page){
 		Iterator<Bar>bars=content.barsFrom(page.barAt()).iterator();
@@ -50,7 +82,7 @@ public final class PaneBlock{
 		ItemList<PaneItem>items=new ItemList(PaneItem.class);
 		Bar bar=null;
 		while(bars.hasNext()||bar!=null){
-			PaneBlock block=new PaneBlock(bars,bar,paneWidth/unitWidth);
+			PaneStaves block=new PaneStaves(bars,bar,paneWidth/unitWidth);
 			bar=block.endBar;
 			double blockStaveHeight=PaneItem.STAVE_GRID*2+block.staveGap+block.fall;
 			if(((paneY+=block.rise)+blockStaveHeight)*pitchHeight>useHeight)break;
