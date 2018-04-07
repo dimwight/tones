@@ -1,6 +1,8 @@
 package tones.view.pane;
 import facets.util.geom.Point;
 import facets.util.geom.Vector;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Double;
 import java.util.Arrays;
 import tones.Clef;
 import tones.Tone;
@@ -12,6 +14,7 @@ public abstract class PaneNote extends PaneItem{
 	public final Incipit incipit;
 	public final double staveX,staveY,ledgerLineShift,dotAt;
 	public final int ledgerLines;
+	public final Double tailBox;
 	private final String debugString;
 	PaneNote(PaneBar bar,Tone tone,PaneIncipit i,double barStaveY,Clef clef){
 		this.bar=bar;
@@ -30,6 +33,10 @@ public abstract class PaneNote extends PaneItem{
 		debugString=tone.pitchNote()+
 			" stavePitch="+stavePitch+" aboveMidPitch="+aboveMidPitch
 			+" beyondStave="+beyondStave;
+		double tailHeight=3.5;
+		tailBox=tone.eighths>Tone.NOTE_HALF||tone.eighths==Tone.NOTE_EIGHTH?null
+				:tone.voice.tailsUp?new Rectangle2D.Double(1.35,-tailHeight-0.2,3,tailHeight)
+				:new Rectangle2D.Double(0.09,0,3,tailHeight);
 	}
 	public String toString(){
 		return false?debugString:tone.toString()+" "+staveAt();

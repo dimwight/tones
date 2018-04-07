@@ -35,8 +35,8 @@ public abstract class PageView extends PlaneViewWorks{
 	public final int barAt(){
 		return barAt;
 	}
-	public static SFrameTarget newFramed(final double notePoints,final AppValues spec,
-			final int barCount){
+	public static SFrameTarget newFramed(final double notePoints,
+			final AppValues spec,final int barCount){
 		final ValueNode state=spec.state();
 		ValueNode args=spec.args();
 		final int barFrom=args.getOrPutInt(TonesEdit.ARG_BAR_FROM,1);
@@ -66,8 +66,8 @@ public abstract class PageView extends PlaneViewWorks{
 			public double pitchHeight(){
 				return notePoints/2;
 			}
-			public void setShowValues(double widthNow,double heightNow,Vector plotShiftNow,
-					double scaleNow){
+			public void setShowValues(double widthNow,double heightNow,
+					Vector plotShiftNow,double scaleNow){
 				double heightThen=showHeight();
 				if(false)trace(".setShowValues: heightThen="+fx(heightThen)+
 						" heightNow="+fx(heightNow)+"\n");
@@ -78,7 +78,7 @@ public abstract class PageView extends PlaneViewWorks{
 					widthNow/=ratio;
 					plotShiftNow=new Vector(-widthNow/2+INSET,-heightThen/2+INSET);
 				}
-				super.setShowValues(widthNow,heightNow,plotShiftNow,scaleNow);
+				super.setShowValues(widthNow,heightNow,plotShiftNow,scaleNow*1);
 				state.put(KEY_HEIGHT,heightNow/INCH_PTS);
 			}
 		};
