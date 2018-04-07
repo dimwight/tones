@@ -54,7 +54,7 @@ public final class PaneStaves{
 				if(mark instanceof Tie)items.add(newPaneTie((Tie)mark,notes,note));
 				else if(mark instanceof Beam)items.add(newPaneBeam((Beam)mark,notes));
 		}
-		return items.items();
+		return items.items();//
 	}
 	private PaneItem newPaneTie(Tie tie,PaneNote[]barNotes,PaneNote from){
 		PaneNote to=null;
