@@ -1,4 +1,6 @@
 package tones.view.pane;
+import static tones.Tone.*;
+import facets.util.geom.Line;
 import facets.util.geom.Point;
 import facets.util.geom.Vector;
 import java.awt.geom.Rectangle2D;
@@ -6,6 +8,7 @@ import java.awt.geom.Rectangle2D.Double;
 import java.util.Arrays;
 import tones.Clef;
 import tones.Tone;
+import tones.bar.Bar;
 import tones.bar.Incipit;
 public abstract class PaneNote extends PaneItem{
 	public static final int DOT_NONE=0,DOT_LEVEL=1,DOT_BELOW=-1;
@@ -14,8 +17,9 @@ public abstract class PaneNote extends PaneItem{
 	public final Incipit incipit;
 	public final double staveX,staveY,ledgerLineShift,dotAt;
 	public final int ledgerLines;
-	public final Double tailBox;
 	private final String debugString;
+	public final Line tail;
+	public final Vector at;
 	PaneNote(PaneBar bar,Tone tone,PaneIncipit i,double barStaveY,Clef clef){
 		this.bar=bar;
 		this.tone=tone;
@@ -24,6 +28,7 @@ public abstract class PaneNote extends PaneItem{
 		final int stavePitch=tone.pitch-clef.staveMidPitch,
 			staveToMidPitch=STAVE_GRID/2-1;
 		staveY=barStaveY+staveToMidPitch-stavePitch;
+		at=new Vector(staveX,staveY);
 		boolean aboveMidPitch=stavePitch>0;
 		int beyondStave=Math.abs(stavePitch)-staveToMidPitch;
 		ledgerLines=beyondStave<=0?0
@@ -33,10 +38,17 @@ public abstract class PaneNote extends PaneItem{
 		debugString=tone.pitchNote()+
 			" stavePitch="+stavePitch+" aboveMidPitch="+aboveMidPitch
 			+" beyondStave="+beyondStave;
-		double tailHeight=3.5;
-		tailBox=tone.eighths>Tone.NOTE_HALF||tone.eighths==Tone.NOTE_EIGHTH?null
-				:tone.voice.tailsUp?new Rectangle2D.Double(1.35,-tailHeight-0.2,3,tailHeight)
-				:new Rectangle2D.Double(0.09,0,3,tailHeight);
+		boolean tailsUp=tone.voice.tailsUp;
+		double tailHeight=5;
+		Point tailFrom=new Point(tailFrom(tone.eighths,tailsUp
+				).at().scaled(scaleToNoteWidth)),
+			tailTo=tailFrom.shifted(new Vector(0,tailHeight*(tailsUp?-1:1)));
+		tail=tone.eighths>6?null:new Line(tailFrom,tailTo);
+	}
+	public Point tailFrom(short note,boolean tailsUp){
+		return tailsUp?
+				note>NOTE_QUARTER?new Point(0.9,-0.5):new Point(0.82,-0.2)
+				:note>NOTE_QUARTER?new Point(0.12,0.3):new Point(0.15,0.1);
 	}
 	public String toString(){
 		return false?debugString:tone.toString()+" "+staveAt();

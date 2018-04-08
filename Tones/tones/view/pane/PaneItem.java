@@ -3,8 +3,10 @@ import static tones.view.pane.PaneItem.PaneTie.TieType.*;
 import facets.core.app.avatar.AvatarContent;
 import facets.util.Objects;
 import facets.util.Tracer;
+import facets.util.geom.Line;
 import facets.util.geom.Vector;
 import tones.Voice;
+import tones.bar.Bar;
 public abstract class PaneItem extends Tracer implements AvatarContent{
 	public static final class PaneTie extends PaneItem{
 		public enum TieType{BeforeAfter,BeforeNull,AfterNull}
@@ -31,17 +33,23 @@ public abstract class PaneItem extends Tracer implements AvatarContent{
 		}
 	}
 	public static final class PaneBeam extends PaneItem{
-		public final PaneNote[]notes;
+		private final PaneNote[]notes;
+		public final Line geom;
+		public final PaneNote from,to;
 		PaneBeam(PaneNote[]notes){
 			this.notes=notes;
 			if(false&&notes[0].tone.barAt<4)
 				trace(": ",notes);
+			from=notes[0];
+			to=notes[notes.length-1];
+			geom=new Line(from.tail.to,to.tail.to);
 		}
 		public String toString(){
 			return Objects.toString(notes);
 		}
 	}
 	public static final int STAVE_GRID=11;
+	final static Vector scaleToNoteWidth=new Vector(Bar.WIDTH_NOTE,1);
 	protected boolean marking(){
 		return false;
 	}

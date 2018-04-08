@@ -16,6 +16,7 @@ import facets.util.tree.ValueNode;
 import tones.app.TonesEdit;
 import tones.bar.Bar;
 public abstract class PageView extends PlaneViewWorks{
+	private static final boolean enlarge=System.getProperty("enlarge")!=null;
 	public static final double INSET=0.5*INCH_PTS,DEFAULT_HEIGHT=7;
 	public static final String KEY_HEIGHT="pageHeight",
 		KEY_HEIGHT_SETS="pageHeightSets";
@@ -78,7 +79,7 @@ public abstract class PageView extends PlaneViewWorks{
 					widthNow/=ratio;
 					plotShiftNow=new Vector(-widthNow/2+INSET,-heightThen/2+INSET);
 				}
-				super.setShowValues(widthNow,heightNow,plotShiftNow,scaleNow*1);
+				super.setShowValues(widthNow,heightNow,plotShiftNow,scaleNow*(enlarge?2:1));
 				state.put(KEY_HEIGHT,heightNow/INCH_PTS);
 			}
 		};

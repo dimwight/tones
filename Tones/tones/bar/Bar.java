@@ -16,7 +16,7 @@ import tones.Mark;
 import tones.Tone;
 import tones.Voice;
 final public class Bar extends Tracer{
-	public static final int WIDTH_NOTE=(false?1:8),
+	public static final int WIDTH_NOTE=8,
 		WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3);
 	public final int at,rise,staveGap,fall,width;
 	public final Iterable<Incipit>incipits;

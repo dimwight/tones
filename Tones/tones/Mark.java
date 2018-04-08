@@ -10,7 +10,7 @@ public abstract class Mark extends Tracer{
 		public Tie(Tone before,Tone after){
 			this.before=before;
 			this.after=after;	
-			if(before.barAt<4)trace(": ",this);
+			if(false&&before.barAt<4)trace(": ",this);
 		}
 		@Override
 		public String toString(){

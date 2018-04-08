@@ -6,6 +6,8 @@ import facets.core.app.avatar.PainterSource;
 import facets.util.ItemList;
 import facets.util.Util;
 import facets.util.geom.Line;
+import facets.util.geom.Point;
+import facets.util.geom.Vector;
 import facets.util.shade.Shade;
 import facets.util.shade.Shades;
 import path.SvgPath;
@@ -27,15 +29,15 @@ public final class NotePainters extends PagePainters{
 	private final double x,y,width,height;
 	static boolean firstInBar;
 	private final PaneNote note;
-	private java.awt.geom.Rectangle2D.Double tail;
+	private final Line tail;
 	public NotePainters(PageView page,PaneNote note,PainterSource p){
 		super(page,p);
 		this.note=note;
 		width=Bar.WIDTH_NOTE*unitWidth;
 		x=note.staveX*unitWidth;
-		y=note.staveY*pitchHeight-pitchHeight;
+		y=(note.staveY-1)*pitchHeight;
 		height=pitchHeight*2;
-		tail=note.tailBox;
+		tail=note.tail;
 		if(false&&firstInBar)Util.printOut("NotePainters: ",note+", x="+fx(x)+", y="+fx(y));
 		firstInBar=false;
 	}
@@ -55,24 +57,20 @@ public final class NotePainters extends PagePainters{
 					:dotAt==PaneNote.DOT_BELOW?DotBelow:DotLevel,
 				bead=time<NOTE_HALF?Solid:time<NOTE_WHOLE?Half
 						:time<NOTE_DOUBLE?Whole:Double;
-		ItemList<Painter>items=new ItemList(Painter.class);
-		items.addItems(p.mastered(dot.newOutlined(shade,null,false)),
+		ItemList<Painter>painters=new ItemList(Painter.class);
+		painters.addItems(p.mastered(dot.newOutlined(shade,null,false)),
 				p.mastered(bead.newOutlined(shade,null,true)));
-		if(tail!=null){
-			double tailX=tail.getX(),tailY=tail.getY(),tailW=tail.getWidth(),
-					tailH=tail.getHeight();
-			Shade tailShade=false?Shades.green.darker():Shades.blue;
-			items.add(false?p.rectangle(tailX,tailY,tailW,tailH,
-						"shadePen="+tailShade.title())
-					:p.line(new Line(new double[]{tailX,tailY,tailX,tailY+tailH}),
-							tailShade,1,false));
-		}
-		Painter[]painters=items.items();
 		p.applyTransforms(new PainterSource.Transform[]{
-			p.transformAt(x+width*0.1,y+pitchHeight),
-			p.transformScale(height*.9,height*.9),
-		},true,painters);
-		return painters;
+				p.transformAt(x+width*0.1,y+pitchHeight),
+				p.transformScale(height*.9,height*.9),
+		},true,painters.items());
+		if(tail!=null){
+			painters.add(p.line(new Line(
+					new Point(tail.from.at().plus(note.at).scaled(scaleToPage)),
+					new Point(tail.to.at().plus(note.at).scaled(scaleToPage))
+					),false?Shades.green.darker():Shades.blue,1,false));
+		}
+		return painters.items();
 	}
 	public Painter[]newPickPainters(){
 		String text=note.toString();

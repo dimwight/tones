@@ -17,7 +17,7 @@ import facets.util.Debug;
 import facets.util.shade.Shades;
 import tones.bar.Bars;
 import tones.view.paint.BarPainters;
-import tones.view.paint.ItemPainters.BeamPainters;
+import tones.view.paint.BeamPainters;
 import tones.view.paint.NotePainters;
 import tones.view.paint.PagePainters;
 import tones.view.paint.TiePainters;

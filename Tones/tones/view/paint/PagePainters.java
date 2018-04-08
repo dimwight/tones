@@ -5,6 +5,7 @@ import facets.util.Debug;
 import facets.util.ItemList;
 import facets.util.Tracer;
 import facets.util.geom.Line;
+import facets.util.geom.Vector;
 import facets.util.shade.Shades;
 import tones.view.PageView;
 public abstract class PagePainters extends Tracer{
@@ -12,11 +13,13 @@ public abstract class PagePainters extends Tracer{
 	final PageView page;
 	final PainterSource p;
 	final double pitchHeight,unitWidth;
+	final Vector scaleToPage;
 	PagePainters(PageView page,PainterSource p){
 		this.page=page;
 		this.p=p;
 		pitchHeight=page.pitchHeight();
 		unitWidth=pitchHeight*page.widthForPitch();
+		scaleToPage=new Vector(unitWidth,pitchHeight);
 	}
 	public abstract Painter[]newViewPainters(boolean selected);
 	final protected Painter unscaledText(String text,double x,double y,double dropFactor){
@@ -30,8 +33,8 @@ public abstract class PagePainters extends Tracer{
 			textDrop=scaledPoints*dropFactor;
 		return p.textTooltip(text,x,y+textDrop);
 	}
-	final protected Painter[]staveLinePainters(double fromX,double fromY,double width,
-			int count){
+	final protected Painter[]staveLinePainters(double fromX,double fromY,
+			double width,int count){
 		Line[]lines=new Line[Math.abs(count)];
 		for(int i=0;i<lines.length;i++){
 			double lineY=fromY+pitchHeight*2*i*(count>0?1:-1);
