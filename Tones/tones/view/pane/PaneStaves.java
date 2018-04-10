@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.function.Function;
 import tones.Mark;
 import tones.Tone;
+import tones.Voice;
 import tones.Mark.Beam;
 import tones.Mark.Tie;
 import tones.bar.Bar;
@@ -50,6 +51,8 @@ public final class PaneStaves{
 		for(PaneNote note:notes){
 			Collection<Mark>marks=note.tone.marks;
 			if(marks.isEmpty())continue;
+			if(false&&note.tone.barAt==6&&note.tone.voice==Voice.Alto)
+				note.trace(".newItems: marks=",note);
 			for(Mark mark:marks)
 				if(mark instanceof Tie)items.add(newPaneTie((Tie)mark,note,notes));
 				else if(mark instanceof Beam)items.add(newPaneBeam((Beam)mark,notes));

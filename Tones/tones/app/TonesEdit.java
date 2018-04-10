@@ -53,8 +53,8 @@ final public class TonesEdit extends ViewerContenter{
 	}
 	@Override
 	protected ViewableFrame newContentViewable(Object source){
-		Bars bars=VoiceLine.newBars((String[])source);
-		if(false)trace(".newContentViewable: bars=",VoiceLine.newCodeLines(bars));
+		Bars bars=new Bars();
+		bars.readCodes((String[])source);
 		return new TonesViewable(bars);
 	}
 	@Override
@@ -91,9 +91,10 @@ final public class TonesEdit extends ViewerContenter{
 				return child.title().contains("Debug")?null
 						:new ViewerAreaMaster(){
 					protected SFacet newViewTools(STargeter viewTargeter){
-						return ff.toolGroups(viewTargeter,HINT_NONE,ff.spacerWide(8),true?null:ff.spacerTall(45),
+						return ff.toolGroups(viewTargeter,HINT_NONE,ff.spacerWide(8),
+								true?null:ff.spacerTall(45),
 					  		ff.numericSliders(viewTargeter.elements()[PageView.TARGET_BAR],
-					  				200,HINT_SLIDER_TICKS+HINT_SLIDER_LABELS+HINT_SLIDER_LOCAL));
+					  				400,HINT_SLIDER_TICKS+HINT_SLIDER_LABELS+HINT_SLIDER_LOCAL));
 					}
 					protected String hintString(){
 						return HINT_NO_FLASH+HINT_PANEL_BORDER+HINT_BARE;
@@ -124,16 +125,16 @@ final public class TonesEdit extends ViewerContenter{
 			@Override
 			public SFacet[]header(){
 				final SFacet main=menuRoot(new AppFacetsBuilder(this,area).newMenuFacets());
-				return app.contentStyle==ContentStyle.SINGLE?true?null:new SFacet[]{main}
+				return app.contentStyle==ContentStyle.SINGLE?false?null:new SFacet[]{main}
 					:new SFacet[]{main,menuRoot(windowMenuFacets(area,false))};
 			}
 			@Override
 			public SFacet toolbar(){
-				return true?null:true?toolGroups(view,HINT_NONE,
+				return false?null:false?toolGroups(view,HINT_NONE,
 						togglingButtons(heightSetsPage,HINT_BARE)):
 					rowPanel(selection,textualField(code,50,HINT_NONE),
-						indexingDropdownList(time,HINT_NONE),
-						indexingDropdownList(barSize,HINT_NONE));
+						true?null:indexingDropdownList(time,HINT_NONE),
+						true?null:indexingDropdownList(barSize,HINT_NONE));
 			}
 			@Override
 			public SurfaceServices services(){
@@ -168,7 +169,7 @@ final public class TonesEdit extends ViewerContenter{
 				super.adjustValues();
 			}
 			@Override
-			public boolean isFileApp() {
+			public boolean isFileApp(){
 				return false;
 			}
 			@Override

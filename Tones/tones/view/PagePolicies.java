@@ -41,7 +41,7 @@ final class PagePolicies extends AvatarPolicies{
 			if(matchBar!=null)break;
 			else if(item instanceof PaneBar&&((PaneBar)item).content==selected)
 				matchBar=(PaneBar)item;
-		if(true||matchBar==null)throw new IllegalStateException(
+		if(matchBar==null)throw new IllegalStateException(
 				"Null matchBar in "+Debug.info(this));
 		return new PathSelection(items,new ArrayPath(items,matchBar));
 	}

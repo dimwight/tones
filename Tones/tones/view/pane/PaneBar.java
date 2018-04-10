@@ -41,7 +41,8 @@ public class PaneBar extends PaneItem{
 		for(PaneIncipit incipit:incipits)incipit.scaleStaveX(staveXScale);
 		ItemList<PaneNote>voiceNotes=new ItemList(PaneItem.class);
 		ItemList<PaneItem>items=new ItemList(PaneItem.class);
-		final Voice selected=content.selectedVoice();
+		if(!marking)items.addItem(this);
+		final Voice selected=null;
 		for(PaneIncipit incipit:incipits)
 			for(Tone tone:incipit.content.tones){
 				final Voice voice=tone.voice;
@@ -56,7 +57,6 @@ public class PaneBar extends PaneItem{
 				else if(selected!=null&&voice==selected)voiceNotes.add(note);
 				else items.add(note);
 			}
-		if(!marking)items.addItem(this);
 		if(!voiceNotes.isEmpty())
 			items.addItem(new VoiceNotes(voiceNotes.items()));
 		return items.items();

@@ -68,13 +68,13 @@ public final class NotePainters extends PagePainters{
 			painters.add(p.line(new Line(
 					new Point(tail.from.at().plus(note.at).scaled(scaleToPage)),
 					new Point(tail.to.at().plus(note.at).scaled(scaleToPage))
-					),false?Shades.green.darker():Shades.blue,1,false));
+					),shade,1,false));
 		}
 		return painters.items();
 	}
 	public Painter[]newPickPainters(){
 		String text=note.toString();
-		return false?newBeadPainters(Shades.red)
+		return true?newBeadPainters(Shades.red)
 				:new Painter[]{true?unscaledText(text,x,y,-1):tooltipText(text,x,y,-1)};
 	}
 	public static PagePainters newVoiceNotePainters(PageView page,

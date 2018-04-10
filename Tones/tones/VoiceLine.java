@@ -23,6 +23,11 @@ final public class VoiceLine extends Tracer{
 		CODE_TIE='T',CODE_BEAM='B',CODE_BAR_SIZE='Z';
 	private static final String CODES_NOTE="abcdefgx";
 	public static final String TEST_CODES[]={
+			"e:16," 
+			+"x,x,x,x,"
+			+"x,x,x,x,"
+			+"x,x,x,x,"
+			,
 			"s:" 
 			+"16,x,x,x,x,"
 			+"8,x,sg,b," 
@@ -60,50 +65,25 @@ final public class VoiceLine extends Tracer{
 	//		+""
 		};
 	private static final boolean padBar=false;
-	final Voice voice;
+	public final Voice voice;
+	public final String src;
 	final List<Tone>tones=new ArrayList();
 	private final List<String>codes=new ArrayList();
 	private int codeAt,toneAt;
 	private Tone.Context context;
 	private Tone before;
 	public VoiceLine(String src){
+		this.src=src;
 		String splitVoice[]=src.split(":",2),
 			voiceCode=splitVoice[0].substring(0).toLowerCase();
-		voice=voiceCode.equals("b")?Bass:voiceCode.equals("t")?Tenor
+		voice=voiceCode.equals("e")?Empty:
+			voiceCode.equals("b")?Bass:voiceCode.equals("t")?Tenor
 			:voiceCode.equals("a")?Alto:voiceCode.equals("s")?Soprano:null;
 		if(voice==null)throw new IllegalArgumentException(
 				"Voice not specified in src="+src);
 		codes.addAll(Arrays.asList(splitVoice[1].split(",")));
 	}
-	final static public Bars newBars(String[]codeLines){
-		Set<VoiceLine>voiceLines=new HashSet();
-		for(String line:codeLines)voiceLines.add(new VoiceLine(line));
-		int barAt=0,barEighths=0;
-		List<Bar>bars=new ArrayList();
-		while(true){
-			Map<Integer,Incipit>incipits=new HashMap();
-			for(VoiceLine line:voiceLines){
-				List<Tone>tones=line.nextBarTones(barAt);
-				int barEighthsNow=tones.remove(0).eighths;
-				if(tones.isEmpty())continue;
-				if(barEighths!=0&&barEighthsNow!=barEighths)throw new IllegalStateException(
-						"New barEighths="+barEighths+", barEighthsNow="+barEighthsNow+" in "+Debug.info(line));
-				else barEighths=barEighthsNow;
-				int eighthAt=0;
-				for(Tone tone:tones){
-					Incipit i;
-					if((i=incipits.get(eighthAt))==null)
-						incipits.put(eighthAt,i=new Incipit(eighthAt));
-					i.addTone(tone);
-					eighthAt+=tone.eighths;
-				}
-			}
-			if(incipits.isEmpty())break;
-			else bars.add(new Bar(barAt++,incipits.values(),barEighths));
-		}
-		return new Bars(bars);
-	}
-	protected List<Tone>nextBarTones(int barAt){
+	public List<Tone>nextBarTones(int barAt){
 		final List<Tone>tones=new ArrayList();
 		Beam beam=new Beam(voice);
 		Tone.Context context=this.context==null?newDefaultContexts().get(voice):this.context;
@@ -160,6 +140,7 @@ final public class VoiceLine extends Tracer{
 			eighthAt+=toneValues[1];
 			before=add;
 		}		
+		if(beam.tones.size()>1)tones.get(tones.size()-1).marks.add(beam);
 		tones.add(0,new Tone(voice,barAt,-1,(byte)-1,(short)barEighths,context));
 		return tones;
 	}
@@ -177,6 +158,8 @@ final public class VoiceLine extends Tracer{
 		return Debug.info(this)+": "+voice+"\n"+Objects.toString(codes.toArray(),",");
 	}
 	private VoiceLine(Tone first){
+		if(true)throw new RuntimeException("Not implemented in "+this);
+		src="";
 		voice=first.voice;
 		context=first.context;
 	}

@@ -1,5 +1,6 @@
 package tones.view.paint;
 import static facets.util.shade.Shades.*;
+import static tones.Tone.*;
 import static tones.view.pane.PaneItem.PaneTie.TieType.*;
 import facets.core.app.avatar.Painter;
 import facets.core.app.avatar.PainterMaster.Outlined;
@@ -8,6 +9,7 @@ import facets.core.app.avatar.PainterSource.Transform;
 import facets.util.geom.Vector;
 import facets.util.shade.Shade;
 import path.SvgPath;
+import tones.Tone;
 import tones.bar.Bar;
 import tones.view.PageView;
 import tones.view.pane.PaneItem.PaneTie;
@@ -48,7 +50,9 @@ public final class TiePainters extends PagePainters{
 	}
 	private Painter after(PaneTie tie){
 		TieType type=tie.type;
-		double pastNote=noteWidth*.7,x=tie.beforeAt.x+pastNote,y=tie.beforeAt.y;
+		double pastNote=noteWidth*.7,
+				x=tie.beforeAt.x+pastNote,
+				y=tie.beforeAt.y;
 		final boolean isBoth=type==BeforeAfter;
 		Shade shade=true?blue:isBoth?magenta:cyan;
 		Outlined path=(isBoth?BeforeAfter_:true?AfterNullLong_:AfterNullShort_
@@ -59,7 +63,9 @@ public final class TiePainters extends PagePainters{
 			stretch=(isBoth?toAfter:toBarEnd)/bounds.x;
 		Painter painter=p.mastered(path);
 		p.applyTransforms(new Transform[]{
-			p.transformAt(x*unitWidth+(isBoth?0:2),
+			p.transformAt(x*unitWidth+(isBoth?
+					(tie.before.tone.eighths==NOTE_QUARTER?-2:-1):2)
+					+(tailsUp?2:-2),
 					y*pitchHeight-noteHeight*(tailsUp?1.5:-1.5)),
 			p.transformScale(noteHeight*stretch,noteHeight*(tailsUp?1:-1)),
 		},true,painter);

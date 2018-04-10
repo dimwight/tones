@@ -5,6 +5,7 @@ import facets.util.Objects;
 import facets.util.Tracer;
 import facets.util.geom.Line;
 import facets.util.geom.Vector;
+import tones.Tone;
 import tones.Voice;
 import tones.bar.Bar;
 public abstract class PaneItem extends Tracer implements AvatarContent{
@@ -14,8 +15,7 @@ public abstract class PaneItem extends Tracer implements AvatarContent{
 		public final TieType type;
 		public final Voice voice;
 		public final Vector beforeAt,afterAt;
-		private final PaneNote before;
-		private final PaneNote after;
+		public final PaneNote before,after;
 		PaneTie(PaneNote before,PaneNote after,PaneBar bar){
 			this.before=before;
 			this.after=after;
@@ -38,8 +38,8 @@ public abstract class PaneItem extends Tracer implements AvatarContent{
 		public final PaneNote from,to;
 		PaneBeam(PaneNote[]notes){
 			this.notes=notes;
-			if(false&&notes[0].tone.barAt<4)
-				trace(": ",notes);
+			Tone tone=notes[0].tone;
+			if(false&&tone.barAt==6&&tone.voice==Voice.Alto)trace(": ",notes);
 			from=notes[0];
 			to=notes[notes.length-1];
 			geom=new Line(from.tail.to,to.tail.to);

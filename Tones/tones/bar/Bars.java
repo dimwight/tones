@@ -1,4 +1,5 @@
 package tones.bar;
+import facets.util.Debug;
 import facets.util.Titled;
 import facets.util.Tracer;
 import facets.util.tree.DataNode;
@@ -6,15 +7,69 @@ import facets.util.tree.NodeList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import tones.Tone;
+import tones.Voice;
+import tones.VoiceLine;
 public final class Bars extends Tracer implements Titled{
 	private static int instances=1;
 	private final String title;
-	private final List<Bar>bars;
-	public Bars(List<Bar>bars){
+	private final List<Bar>bars=new ArrayList();
+	private final Map<Voice,VoiceLine>voiceLines=new HashMap();
+	private VoiceLine selectedVoice;
+	public Bars(){
 		title="Tones"+instances++;
-		this.bars=bars;
+	}
+	final public void readCodes(String...codeLines){
+		for(String line:codeLines){
+			VoiceLine voice=new VoiceLine(line);
+			voiceLines.put(voice.voice,voice);
+		}
+		selectedVoice=voiceLines.get(Voice.Bass);
+		int barAt=0,barEighths=0;
+		while(true){
+			Map<Integer,Incipit>incipits=new HashMap();
+			for(VoiceLine line:voiceLines.values()){
+				List<Tone>tones=line.nextBarTones(barAt);
+				int barEighthsNow=tones.remove(0).eighths;
+				if(tones.isEmpty())continue;
+				if(barEighths!=0&&barEighthsNow!=barEighths)throw new IllegalStateException(
+						"New barEighths="+barEighths+", barEighthsNow="+barEighthsNow+
+						" in "+Debug.info(line));
+				else barEighths=barEighthsNow;
+				int eighthAt=0;
+				for(Tone tone:tones){
+					Incipit i;
+					if((i=incipits.get(eighthAt))==null)
+						incipits.put(eighthAt,i=new Incipit(eighthAt));
+					i.addTone(tone);
+					eighthAt+=tone.eighths;
+				}
+			}
+			if(incipits.isEmpty())break;
+			else{
+				Bar bar=new Bar(barAt++,incipits.values(),barEighths);
+				if(bars.size()<barAt)bars.add(bar);
+				else {
+					bars.remove(barAt);
+					bars.add(barAt,bar);
+				}
+			}
+		}
+		trace(".readCodes: bars="+bars.size()+" barAt="+barAt);
+	}
+	public void updateSelectedVoiceLine(String codes){
+		readCodes(codes);
+	}
+	public void selectVoice(Voice voice){
+		selectedVoice=voiceLines.get(voice);
+	}
+	public VoiceLine selectedVoice(){
+		return selectedVoice;
 	}
 	public int barCount(){
 		return bars.size();

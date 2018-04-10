@@ -47,7 +47,7 @@ public abstract class PageView extends PlaneViewWorks{
 				spec.trace(".indexSet: i=",i.indexed());
 			}
 		}),
-		barSize=new SIndexing("Whole Notes per Bar",new Object[]{1,2,4},3,new Coupler(){
+		barSize=new SIndexing("Whole Notes per Bar",new Object[]{1,2,4},2,new Coupler(){
 			public void indexSet(SIndexing i){
 				spec.trace(".indexSet: i=",i.indexed());
 			}
@@ -89,7 +89,7 @@ public abstract class PageView extends PlaneViewWorks{
 				view.barAt=(int)n.value()-1;				
 			}		
 			public NumberPolicy policy(SNumeric n){
-				return new NumberPolicy.Ticked(1,barCount){
+				return new NumberPolicy.Ticked(1,barCount*2){
 				  final public int format(){return FORMAT_DECIMALS_0;}
 				  public int labelSpacing(){return TICKS_DEFAULT;}
 				};

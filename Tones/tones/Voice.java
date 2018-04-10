@@ -2,6 +2,7 @@ package tones;
 import static tones.Octave.*;
 import static tones.ScaleNote.*;
 public enum Voice{
+	Empty(E,Above,"E",1),
 	Soprano(E,Above,"S",1),
 	Alto(C,Above,"A",-1),
 	Tenor(A,Below,"T",1),

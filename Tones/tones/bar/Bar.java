@@ -20,7 +20,6 @@ final public class Bar extends Tracer{
 		WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3);
 	public final int at,rise,staveGap,fall,width;
 	public final Iterable<Incipit>incipits;
-	private Voice selectedVoice;
 	public Bar(int barAt,Iterable<Incipit>incipits,int sizeInEighths){
 		at=barAt;
 		if(incipits==null)throw new IllegalStateException(
@@ -75,21 +74,9 @@ final public class Bar extends Tracer{
 	public Bar newAnnotationCopy(Incipit incipit){
 		return new Bar(at,Collections.singleton(incipit),rise,staveGap,fall,width);
 	}
-	public void selectVoice(Voice voice){
-		selectedVoice=voice;
-	}
-	public Voice selectedVoice(){
-		return selectedVoice;
-	}
 	public String toString(){
 		return Debug.info(this)+" at="+at
 //			+" incipits=\n"+Objects.toLines(((Collection)incipits).toArray())
 			;
-	}
-	public void updateSelectedVoiceLine(String line){
-		throw new RuntimeException("Not implemented in "+Debug.info(this));
-	}
-	public String selectedVoiceLine(){
-		throw new RuntimeException("Not implemented in "+Debug.info(this));
 	}
 }

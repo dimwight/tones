@@ -39,7 +39,7 @@ public abstract class PaneNote extends PaneItem{
 			" stavePitch="+stavePitch+" aboveMidPitch="+aboveMidPitch
 			+" beyondStave="+beyondStave;
 		boolean tailsUp=tone.voice.tailsUp;
-		double tailHeight=5;
+		double tailHeight=tone.eighths>NOTE_QUARTER?4.7:5;
 		Point tailFrom=new Point(tailFrom(tone.eighths,tailsUp
 				).at().scaled(scaleToNoteWidth)),
 			tailTo=tailFrom.shifted(new Vector(0,tailHeight*(tailsUp?-1:1)));

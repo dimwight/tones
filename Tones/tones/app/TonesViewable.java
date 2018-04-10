@@ -16,25 +16,24 @@ import tones.view.PageView;
 import tones.view.pane.PaneNote;
 final class TonesViewable extends ViewableFrame{
 	private int barAt;
-	TonesViewable(Bars tones){
-		super(tones.title(),tones);
-		defineSelection(tones);
+	TonesViewable(Bars bars){
+		super(bars.title(),bars);
+		defineSelection(bars);
 	}
 	public SFrameTarget selectionFrame(){
 		return new SFrameTarget(selection().single()){
 			protected STarget[]lazyElements(){
-				final Bar bar=framed instanceof Bar?(Bar)framed:null;
-				STextual textual=new STextual("Text",
-						bar==null?"[No selection]":bar.selectedVoiceLine(),
+				final Bars bars=framedBars();
+				String src=bars.selectedVoice().src;
+				STextual textual=new STextual("Text",src,
 						new STextual.Coupler(){
 					public void textSet(STextual t){
-						bar.updateSelectedVoiceLine(t.text());
+						bars.updateSelectedVoiceLine(t.text());
 					}
 					public boolean updateInterim(STextual t){
-						return true;
+						return false;
 					}
 				});
-				textual.setLive(bar!=null);
 				return new STextual[]{textual};
 			}
 		};
@@ -52,9 +51,9 @@ final class TonesViewable extends ViewableFrame{
 	}
 	protected void viewerSelectionChanged(SViewer viewer,SSelection selection){
 		Object thenSelection=selection().single();
-		trace(".viewerSelectionChanged: selection=",Debug.info(selection.single()));
+		trace(".viewerSelectionChanged: selection=",selection.single());
 		if(thenSelection instanceof Bar) {
-			((Bar)thenSelection).selectVoice(null);
+			framedBars().selectVoice(null);
 		}
 		defineSelection(selection.single());
 	}
@@ -66,14 +65,17 @@ final class TonesViewable extends ViewableFrame{
 			public Object single(){
 				if(!(definition instanceof PaneNote))return framed;
 				PaneNote note=(PaneNote)definition;
-				Bar bar=null;
+				Bar bar=note.bar.content;
 				if(bar==null)throw new RuntimeException("Not implemented in "+Debug.info(this));
-				bar.selectVoice(note.tone.voice);
+				framedBars().selectVoice(note.tone.voice);
 				return bar;
 			}
 			public Object[]multiple(){
 				throw new RuntimeException("Not implemented in "+Debug.info(this));
 			}
 		});
+	}
+	Bars framedBars(){
+		return (Bars)TonesViewable.this.framed;
 	}
 }

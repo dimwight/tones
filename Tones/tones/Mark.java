@@ -30,7 +30,7 @@ public abstract class Mark extends Tracer{
 		}
 		void addTone(Tone add){
 			tones.add(add);
-			if(false&&add.barAt<4)trace(".addTone: ",add);
+			if(false&&add.barAt==6&&voice==Voice.Alto)trace(".addTone: ",add);
 		}
 		@Override
 		protected void traceOutput(String msg){
