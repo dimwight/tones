@@ -36,7 +36,6 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		return Arrays.hashCode(intValues());
 	}
 	public boolean equals(Object obj){
-		if(true)throw new RuntimeException("Untested");
 		Incipit that=(Incipit)obj;
 		return this==that||Arrays.equals(intValues(),that.intValues());
 	}

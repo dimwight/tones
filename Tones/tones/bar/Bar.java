@@ -19,12 +19,17 @@ final public class Bar extends Tracer{
 	public static final int WIDTH_NOTE=8,
 		WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3);
 	public final int at,rise,staveGap,fall,width;
-	public final Iterable<Incipit>incipits;
-	public Bar(int barAt,Iterable<Incipit>incipits,int sizeInEighths){
+	public final Set<Incipit>incipits;
+	@Override
+	public boolean equals(Object obj){
+		Bar that=(Bar)obj;
+		return this==that||incipits.equals(that.incipits);
+	}
+	public Bar(int barAt,Collection<Incipit>incipits,int sizeInEighths){
 		at=barAt;
 		if(incipits==null)throw new IllegalStateException(
 				"Null incipits in "+Debug.info(this));
-		else this.incipits=incipits;
+		else this.incipits=new HashSet(incipits);
 		final Voice[]satb=Voice.values();
 		class VoiceAts{
 			private static final int START_AT=WIDTH_NOTE/2;

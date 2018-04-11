@@ -97,7 +97,7 @@ final public class VoiceLine extends Tracer{
 	}
 	public final String src;
 	public final Voice voice;
-	public final List<List<Tone>>barTones=new ArrayList();
+	private final List<List<Tone>>barTones=new ArrayList();
 	public VoiceLine(String src){
 		this.src=src;
 		String splitVoice[]=src.split(":",2),
@@ -176,7 +176,7 @@ final public class VoiceLine extends Tracer{
 		}
 		barTones.add(Collections.EMPTY_LIST);
 	}
-	public List<Tone>nextBarTones(int barAt){
+	public List<Tone>getBarTones(int barAt){
 		return barAt<barTones.size()?barTones.get(barAt):Collections.EMPTY_LIST;
 	}
 	private static Map<Voice,Context>newDefaultContexts(){
@@ -194,6 +194,6 @@ final public class VoiceLine extends Tracer{
 		if(voice==Bass)Util.printOut(voice+msg);
 	}
 	public String toString(){
-		return Debug.info(this)+": "+voice+"\n"+Objects.toString(barTones.toArray(),",");
+		return Debug.info(this)+": "+voice+" barTones="+barTones.size();
 	}
 }

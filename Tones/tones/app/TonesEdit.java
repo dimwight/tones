@@ -53,8 +53,7 @@ final public class TonesEdit extends ViewerContenter{
 	}
 	@Override
 	protected ViewableFrame newContentViewable(Object source){
-		Bars bars=new Bars();
-		bars.readCodes((String[])source);
+		Bars bars=new Bars((String[])source);
 		return new TonesViewable(bars);
 	}
 	@Override

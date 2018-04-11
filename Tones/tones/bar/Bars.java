@@ -23,51 +23,54 @@ public final class Bars extends Tracer implements Titled{
 	private final Map<Voice,VoiceLine>voiceLines=new HashMap();
 	private final String title;
 	private VoiceLine selectedVoice;
-	public Bars(){
+	int barEighths;
+	public Bars(String...codeLines){
 		title="Tones"+instances++;
-	}
-	final public void readCodes(String...codeLines){
 		for(String line:codeLines){
 			VoiceLine voice=new VoiceLine(line);
 			voiceLines.put(voice.voice,voice);
 		}
 		selectedVoice=voiceLines.get(Bass);
-		int barAt=0,barEighths=0;
+		int barAt=0;
+		barEighths=0;
 		while(true){
-			Map<Integer,Incipit>incipits=new HashMap();
-			for(VoiceLine line:voiceLines.values()){
-				List<Tone>tones=line.nextBarTones(barAt);
-				if(false&&line.voice==Bass)trace(".readCodes: tones="+tones.size()+" barAt="+barAt);
-				int barEighthsNow=tones.isEmpty()?barEighths
-						:(eighthsCheck?tones.remove(0):tones.get(0)).eighths;
-				if(tones.isEmpty())continue;
-				if(eighthsCheck&&barEighths!=0&&barEighthsNow!=barEighths)throw new IllegalStateException(
-						"New barEighths="+barEighths+", barEighthsNow="+barEighthsNow+
-						" in "+Debug.info(line));
-				else barEighths=barEighthsNow;
-				int eighthAt=0;
-				for(Tone tone:tones){
-					Incipit i;
-					if((i=incipits.get(eighthAt))==null)
-						incipits.put(eighthAt,i=new Incipit(eighthAt));
-					i.addTone(tone);
-					eighthAt+=tone.eighths;
-				}
-			}
-			if(incipits.isEmpty())break;
-			else{
-				Bar bar=new Bar(barAt++,incipits.values(),barEighths);
-				if(true||bars.size()<barAt)bars.add(bar);
-				else {
-					bars.remove(barAt);
-					bars.add(barAt,bar);
-				}
+			Bar bar=newVoiceLinesBar(barAt++);
+			if(bar!=null)bars.add(bar);
+			else break;
+		}
+		if(true)trace(".readCodes~: bars="+bars.size()+" barAt="+barAt);
+	}
+	private Bar newVoiceLinesBar(int barAt){
+		Map<Integer,Incipit>incipits=new HashMap();
+		for(VoiceLine line:voiceLines.values()){
+			List<Tone>tones=line.getBarTones(barAt);
+			if(false&&line.voice==Bass)trace(".newVoiceLinesBar: tones="+tones.size()+" barAt="+barAt);
+			int barEighthsNow=tones.isEmpty()?barEighths
+					:(eighthsCheck?tones.remove(0):tones.get(0)).eighths;
+			if(tones.isEmpty())continue;
+			if(eighthsCheck&&barEighths!=0&&barEighthsNow!=barEighths)throw new IllegalStateException(
+					"New barEighths="+barEighths+", barEighthsNow="+barEighthsNow+
+					" in "+Debug.info(line));
+			else barEighths=barEighthsNow;
+			int eighthAt=0;
+			for(Tone tone:tones){
+				Incipit i;
+				if((i=incipits.get(eighthAt))==null)
+					incipits.put(eighthAt,i=new Incipit(eighthAt));
+				i.addTone(tone);
+				eighthAt+=tone.eighths;
 			}
 		}
-		if(false)trace(".readCodes~: bars="+bars.size()+" barAt="+barAt);
+		return incipits.isEmpty()?null:new Bar(barAt++,incipits.values(),barEighths);
 	}
 	public void updateSelectedVoiceLine(String codes){
-		readCodes(codes);
+		VoiceLine now=new VoiceLine(codes),
+			then=voiceLines.replace(now.voice,now);
+		for(int barAt=0;barAt<bars.size();barAt++){
+			List<Tone>thenTones=then.getBarTones(barAt),
+					nowTones=now.getBarTones(barAt);
+			trace(".updateSelectedVoiceLine: ",thenTones.equals(nowTones));
+		}
 	}
 	public void selectVoice(Voice voice){
 		selectedVoice=voiceLines.get(voice);
