@@ -6,18 +6,16 @@ import static tones.Voice.*;
 import facets.util.Debug;
 import facets.util.Objects;
 import facets.util.Tracer;
+import facets.util.Util;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import tones.Mark.Beam;
-import tones.bar.Bar;
 import tones.bar.Bars;
-import tones.bar.Incipit;
 final public class VoiceLine extends Tracer{
 	private static final char CODE_SCALE='s',CODE_OCTAVE_UP='+',CODE_OCTAVE_DOWN='-',
 		CODE_TIE='T',CODE_BEAM='B',CODE_BAR_SIZE='Z';
@@ -65,13 +63,41 @@ final public class VoiceLine extends Tracer{
 	//		+""
 		};
 	private static final boolean padBar=false;
-	public final Voice voice;
+	final static class Context{
+		final ScaleNote scaleNote;
+		final Octave octave;
+		final int barEighths=16,eighths;
+		Context(ScaleNote scaleNote,Octave octave,int eighths){
+			if(scaleNote==null)throw new IllegalArgumentException(
+					"Null keyPitch in "+Debug.info(this));
+			else if(octave==null)throw new IllegalArgumentException(
+					"Null octave in "+Debug.info(this));
+			else if(eighths<Tone.NOTE_NONE)throw new IllegalArgumentException(
+					"Invalid eighths in "+Debug.info(this));
+			this.scaleNote=scaleNote;
+			this.octave=octave;
+			this.eighths=eighths;
+		}
+		@Override
+		public boolean equals(Object o){
+			if(true)throw new RuntimeException("Not implemented in "+this);
+			Context that=(Context)o;
+			return resembles(that)&&that.eighths==eighths;
+		}
+		public boolean resembles(Context that){
+			if(true)throw new RuntimeException("Not implemented in "+this);
+			return that.scaleNote==scaleNote&&that.octave==octave
+				&&that.barEighths==barEighths;
+		}
+		@Override
+		public String toString(){
+			return "<"+octave+","+scaleNote+//","+eighths+
+			">";
+		}
+	}
 	public final String src;
-	final List<Tone>tones=new ArrayList();
-	private final List<String>codes=new ArrayList();
-	private int codeAt,toneAt;
-	private Tone.Context context;
-	private Tone before;
+	public final Voice voice;
+	public final List<List<Tone>>barTones=new ArrayList();
 	public VoiceLine(String src){
 		this.src=src;
 		String splitVoice[]=src.split(":",2),
@@ -81,111 +107,93 @@ final public class VoiceLine extends Tracer{
 			:voiceCode.equals("a")?Alto:voiceCode.equals("s")?Soprano:null;
 		if(voice==null)throw new IllegalArgumentException(
 				"Voice not specified in src="+src);
-		codes.addAll(Arrays.asList(splitVoice[1].split(",")));
+		final Iterator<String>nextCodes=Arrays.asList(splitVoice[1].split(",")).iterator();
+		int codeAt=0,toneAt;
+		Context context=null;
+		Tone before=null;
+		while(nextCodes.hasNext()){
+			final List<Tone>tones=new ArrayList();
+			Beam beam=new Beam(voice);
+			if(context==null)context=newDefaultContexts().get(voice);
+			ScaleNote scaleNote=context.scaleNote;
+			Octave octave=context.octave;
+			int eighths=context.eighths,eighthAt=0,barEighths=context.barEighths;
+			int barAt=barTones.size();
+			while(eighthAt<barEighths){
+				int[]toneValues=null;
+				while(toneValues==null&nextCodes.hasNext()){
+					String code=nextCodes.next();
+					int charCount=code.length();
+					if(charCount==0)throw new IllegalStateException(
+							"Empty code at="+codeAt+" in voice="+voice);
+					else codeAt++;
+					char firstChar=code.toLowerCase().charAt(0),secondChar=charCount==1?'z'
+							:code.charAt(1);
+					if(firstChar==CODE_SCALE)scaleNote=codeNote(toLowerCase(secondChar));
+					else if(firstChar==CODE_OCTAVE_UP)octave=octave.above();
+					else if(firstChar==CODE_OCTAVE_DOWN)octave=octave.below();
+					else if(firstChar==CODE_BAR_SIZE){
+						if(true)throw new RuntimeException("Not tested for code="+code);
+						else barEighths=Integer.valueOf(code.substring(1));
+					}
+					else if(isDigit(firstChar))
+						eighths=Integer.valueOf(code)*Tone.NOTE_EIGHTH;
+					else if(CODES_NOTE.contains(""+firstChar)){
+						ScaleNote toneNote=codeNote(firstChar);
+						int octaved=toneNote.octaved(octave),
+							tonePitch=toneNote==REST?PITCH_REST
+								:octaved+(toneNote.pitch<scaleNote.pitch?Octave.pitches:0);
+						toneValues=new int[]{tonePitch,eighths};
+					}
+					if(isUpperCase(secondChar))
+						throw new RuntimeException("Not implemented in "+this);
+				}
+				if(toneValues==null){
+					if(padBar&&eighthAt>0)
+						toneValues=new int[]{PITCH_REST,barEighths-eighthAt+1};
+					else break;
+				}
+				if(eighths<=NOTE_NONE)throw new IllegalStateException(
+						"Invalid eighths in context="+context);
+				context=new Context(scaleNote,octave,eighths);
+				Tone add=new Tone(voice,barAt,eighthAt,(byte)toneValues[0],
+						(short)toneValues[1]);
+				add.checkTied(before);
+				if(add.eighths==NOTE_EIGHTH)beam.addTone(add);
+				else{
+					if(beam.tones.size()>1)add.marks.add(beam);
+					beam=new Beam(voice);
+				}
+				tones.add(add);
+				eighthAt+=toneValues[1];
+				before=add;
+			}		
+			if(beam.tones.size()>1)tones.get(tones.size()-1).marks.add(beam);
+			if(Bars.eighthsCheck)tones.add(0,new Tone(voice,barAt,-1,(byte)-1,(short)barEighths));
+			barTones.add(tones);
+			if(false)trace(".nextBarTones: barAt="+barAt+" barTones="+barTones.size()+
+					" nextCodes="+nextCodes.hasNext());
+		}
+		barTones.add(Collections.EMPTY_LIST);
 	}
 	public List<Tone>nextBarTones(int barAt){
-		final List<Tone>tones=new ArrayList();
-		Beam beam=new Beam(voice);
-		Tone.Context context=this.context==null?newDefaultContexts().get(voice):this.context;
-		ScaleNote scaleNote=context.scaleNote;
-		Octave octave=context.octave;
-		int eighths=context.eighths,eighthAt=0,barEighths=context.barEighths;
-		while(eighthAt<barEighths){
-			int[]toneValues=null;
-			while(toneValues==null&&codeAt<codes.size()){
-				String code=codes.get(codeAt++);
-				int charCount=code.length();
-				if(charCount==0)throw new IllegalStateException(
-						"Empty code at="+codeAt+" in voice="+voice);
-				char firstChar=code.toLowerCase().charAt(0),secondChar=charCount==1?'z'
-						:code.charAt(1);
-				if(firstChar==CODE_SCALE)scaleNote=codeNote(toLowerCase(secondChar));
-				else if(firstChar==CODE_OCTAVE_UP)octave=octave.above();
-				else if(firstChar==CODE_OCTAVE_DOWN)octave=octave.below();
-				else if(firstChar==CODE_BAR_SIZE){
-					if(true)throw new RuntimeException("Not tested for code="+code);
-					else barEighths=Integer.valueOf(code.substring(1));
-				}
-				else if(isDigit(firstChar))
-					eighths=Integer.valueOf(code)*Tone.NOTE_EIGHTH;
-				else if(CODES_NOTE.contains(""+firstChar)){
-					ScaleNote toneNote=codeNote(firstChar);
-					int octaved=toneNote.octaved(octave),
-						tonePitch=toneNote==REST?PITCH_REST
-							:octaved+(toneNote.pitch<scaleNote.pitch?Octave.pitches:0);
-					toneValues=new int[]{tonePitch,eighths};
-				}
-				if(isUpperCase(secondChar))
-					throw new RuntimeException("Not implemented in "+this);
-			}
-			if(toneValues==null){
-				if(padBar&&eighthAt>0)
-					toneValues=new int[]{PITCH_REST,barEighths-eighthAt+1};
-				else break;
-			}
-			if(eighths<=NOTE_NONE)throw new IllegalStateException(
-					"Invalid eighths in context="+context);
-			else context=new Tone.Context(scaleNote,octave,eighths);
-			this.context=context;
-			Tone add=new Tone(voice,barAt,eighthAt,(byte)toneValues[0],
-					(short)toneValues[1],context);
-			add.checkTied(before);
-			if(add.eighths==NOTE_EIGHTH)beam.addTone(add);
-			else{
-				if(beam.tones.size()>1)add.marks.add(beam);
-				beam=new Beam(voice);
-			}
-			tones.add(add);
-			this.tones.add(add);
-			eighthAt+=toneValues[1];
-			before=add;
-		}		
-		if(beam.tones.size()>1)tones.get(tones.size()-1).marks.add(beam);
-		tones.add(0,new Tone(voice,barAt,-1,(byte)-1,(short)barEighths,context));
-		return tones;
+		return barAt<barTones.size()?barTones.get(barAt):Collections.EMPTY_LIST;
 	}
-	private static Map<Voice,Tone.Context>newDefaultContexts(){
-		Map<Voice,Tone.Context>contexts=new HashMap();
+	private static Map<Voice,Context>newDefaultContexts(){
+		Map<Voice,Context>contexts=new HashMap();
 		for(Voice voice:Voice.values())contexts.put(voice,
-				new Tone.Context(voice.midNote,voice.octave,NOTE_NONE));
+				new Context(voice.midNote,voice.octave,NOTE_NONE));
 		return contexts;
 	}
 	private ScaleNote codeNote(char noteChar){
 		return noteChar=='x'?ScaleNote.REST
 				:ScaleNote.pitchNote((byte)((noteChar-0x61+5)%Octave.pitches));
 	}
+	@Override
+	protected void traceOutput(String msg){
+		if(voice==Bass)Util.printOut(voice+msg);
+	}
 	public String toString(){
-		return Debug.info(this)+": "+voice+"\n"+Objects.toString(codes.toArray(),",");
-	}
-	private VoiceLine(Tone first){
-		if(true)throw new RuntimeException("Not implemented in "+this);
-		src="";
-		voice=first.voice;
-		context=first.context;
-	}
-	private void encode(Tone tone){
-		int eighths=context.eighths;
-		codes.add(tone.pitchNote().name());
-	}
-	final public static List<String>newCodeLines(Bars bars){
-		Map<Voice,VoiceLine>voices=new HashMap();
-		Iterator<Bar>all=bars.barsFrom(0).iterator();
-		while(all.hasNext()){
-			for(Incipit incipit:all.next().incipits){
-				for(Tone tone:incipit.tones){
-					VoiceLine coded;
-					Voice voice=tone.voice;
-					if(voice!=Voice.Bass)continue;
-					if((coded=voices.get(voice))==null)
-							voices.put(voice,coded=new VoiceLine(tone));
-					coded.encode(tone);
-				}
-			}
-		}
-		List<String>lines=new ArrayList();
-		for(VoiceLine voice:voices.values())lines.add(
-				(voice.voice.toString().toLowerCase().charAt(0)+":"
-						+Objects.toString(voice.codes.toArray())));
-		return lines;
+		return Debug.info(this)+": "+voice+"\n"+Objects.toString(barTones.toArray(),",");
 	}
 }

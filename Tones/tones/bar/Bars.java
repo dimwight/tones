@@ -1,4 +1,5 @@
 package tones.bar;
+import static tones.Voice.*;
 import facets.util.Debug;
 import facets.util.Titled;
 import facets.util.Tracer;
@@ -16,10 +17,11 @@ import tones.Tone;
 import tones.Voice;
 import tones.VoiceLine;
 public final class Bars extends Tracer implements Titled{
+	public static final boolean eighthsCheck=true;
 	private static int instances=1;
-	private final String title;
 	private final List<Bar>bars=new ArrayList();
 	private final Map<Voice,VoiceLine>voiceLines=new HashMap();
+	private final String title;
 	private VoiceLine selectedVoice;
 	public Bars(){
 		title="Tones"+instances++;
@@ -29,15 +31,17 @@ public final class Bars extends Tracer implements Titled{
 			VoiceLine voice=new VoiceLine(line);
 			voiceLines.put(voice.voice,voice);
 		}
-		selectedVoice=voiceLines.get(Voice.Bass);
+		selectedVoice=voiceLines.get(Bass);
 		int barAt=0,barEighths=0;
 		while(true){
 			Map<Integer,Incipit>incipits=new HashMap();
 			for(VoiceLine line:voiceLines.values()){
 				List<Tone>tones=line.nextBarTones(barAt);
-				int barEighthsNow=tones.remove(0).eighths;
+				if(false&&line.voice==Bass)trace(".readCodes: tones="+tones.size()+" barAt="+barAt);
+				int barEighthsNow=tones.isEmpty()?barEighths
+						:(eighthsCheck?tones.remove(0):tones.get(0)).eighths;
 				if(tones.isEmpty())continue;
-				if(barEighths!=0&&barEighthsNow!=barEighths)throw new IllegalStateException(
+				if(eighthsCheck&&barEighths!=0&&barEighthsNow!=barEighths)throw new IllegalStateException(
 						"New barEighths="+barEighths+", barEighthsNow="+barEighthsNow+
 						" in "+Debug.info(line));
 				else barEighths=barEighthsNow;
@@ -53,14 +57,14 @@ public final class Bars extends Tracer implements Titled{
 			if(incipits.isEmpty())break;
 			else{
 				Bar bar=new Bar(barAt++,incipits.values(),barEighths);
-				if(bars.size()<barAt)bars.add(bar);
+				if(true||bars.size()<barAt)bars.add(bar);
 				else {
 					bars.remove(barAt);
 					bars.add(barAt,bar);
 				}
 			}
 		}
-		trace(".readCodes: bars="+bars.size()+" barAt="+barAt);
+		if(false)trace(".readCodes~: bars="+bars.size()+" barAt="+barAt);
 	}
 	public void updateSelectedVoiceLine(String codes){
 		readCodes(codes);
