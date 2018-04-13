@@ -16,7 +16,7 @@ public final class Tone extends Tracer{
 	public final short eighths;
 	public final HashSet<Mark>marks=new HashSet();
 	private final int[]intValues;
-	Tone(Voice voice,int barAt,int eighthAt,byte pitch,short eighths){
+	public Tone(Voice voice,int barAt,int eighthAt,byte pitch,short eighths){
 		this.voice=voice;
 		this.barAt=barAt;
 		this.eighthAt=eighthAt;
@@ -24,7 +24,7 @@ public final class Tone extends Tracer{
 		this.eighths=eighths;
 		intValues=new int[]{barAt,eighthAt,pitch,eighths};
 	}
-	void checkTied(Tone before){
+	public void checkTied(Tone before){
 		if(before==null||before.isRest()||isRest()
 				||before.pitch!=pitch||eighthAt%4!=0)return;
 			Tie tie=new Tie(before,this);
@@ -46,6 +46,6 @@ public final class Tone extends Tracer{
 	}
 	public boolean equals(Object o){
 		Tone that=(Tone)o;
-		return true||this==that||(voice==that.voice&&Arrays.equals(intValues,that.intValues));
+		return this==that||(voice==that.voice&&Arrays.equals(intValues,that.intValues));
 	}
 }

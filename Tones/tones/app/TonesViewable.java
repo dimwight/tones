@@ -24,11 +24,15 @@ final class TonesViewable extends ViewableFrame{
 		return new SFrameTarget(selection().single()){
 			protected STarget[]lazyElements(){
 				final Bars bars=framedBars();
-				String src=bars.selectedVoice().src;
+				String src=bars.selectedPart().src;
 				STextual textual=new STextual("Text",src,
 						new STextual.Coupler(){
+					@Override
+					protected String getText(STextual t){
+						return bars.selectedPart().src;
+					}
 					public void textSet(STextual t){
-						bars.updateSelectedVoiceLine(t.text());
+						bars.updateSelectedPart(t.text());
 					}
 					public boolean updateInterim(STextual t){
 						return false;
@@ -53,7 +57,7 @@ final class TonesViewable extends ViewableFrame{
 		Object thenSelection=selection().single();
 		trace(".viewerSelectionChanged: selection=",selection.single());
 		if(thenSelection instanceof Bar) {
-			framedBars().selectVoice(null);
+			framedBars().selectPart(null);
 		}
 		defineSelection(selection.single());
 	}
@@ -67,7 +71,7 @@ final class TonesViewable extends ViewableFrame{
 				PaneNote note=(PaneNote)definition;
 				Bar bar=note.bar.content;
 				if(bar==null)throw new RuntimeException("Not implemented in "+Debug.info(this));
-				framedBars().selectVoice(note.tone.voice);
+				framedBars().selectPart(note.tone.voice);
 				return bar;
 			}
 			public Object[]multiple(){

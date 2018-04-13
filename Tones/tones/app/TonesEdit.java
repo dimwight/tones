@@ -40,11 +40,57 @@ import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
 import java.util.HashSet;
 import java.util.Set;
-import tones.VoiceLine;
 import tones.bar.Bars;
 import tones.view.PageView;
 final public class TonesEdit extends ViewerContenter{
 	public static final String ARG_BAR_FROM="barFrom",ARG_RESCALE="rescale";
+	public static final char CODE_SCALE='s',CODE_OCTAVE_UP='+',CODE_OCTAVE_DOWN='-',
+			CODE_TIE='T',CODE_BEAM='B',CODE_BAR_SIZE='Z';
+	public static final int BAR_EIGHTHS_DEFAULT=16;
+	public static final String CODES_NOTE="abcdefgx";
+	public static final String TEST_CODES[]={
+			"e:16," 
+			+"x,x,x,x,"
+			+"x,x,x,x,"
+			+"x,x,"
+//			+"x,x,"
+			,
+			"s:" 
+			+"16,x,x,x,x,"
+			+"8,x,sg,b," 
+			+"4,c,e,d,c,"
+			+"8,b,2,b,1,a,g,4,a,"
+			+"sc,a,g,f,e,d,"
+			,
+			"a:" 
+			+"16,x,x,x,"
+			+"8,sb,-,e,4,f,a,g,f,e,2,x,b,"
+			+"se,+,e,f,g,a,1,b,f,4,b,2,a,"
+			+"sc,a,1,g,f,4,g,6,c,1,d,e,"
+			+"4,d,4,e,2,e,d,4,c,-,f"
+			,
+			"t:" 
+			+"16,x,8,x,sf,8,b,"
+			+"4,c,e,d,c,6,"
+			+"b,2,b,a,b,c,d," 
+			+"1,e,b,4,e,2,d,4,e,2,g,f,"
+			+"sb,-,4,g,e,8,f,"
+			+"2,f,b,4,e,2,e,c,4,f,"
+			+"2,se,+,f,1,e,f,2,g,a,1,b,f,4,b,2,a,"
+			+"4,b"
+			,
+			"b:"
+			+"sb,-,8,e,4,f,a," 
+			+"g,f,2,e,1,d,c,2,d,b," 
+			+"2,+,sc,e,f,g,a,1,b,f,4,b,2,a," 
+			+"a,1,g,f,4,g,g,4,f," 
+			+"g,2,a,1,b,a,2,g,f,e,d," 
+			+"8,c,-,4,b,f,"
+			+"6,g,2,e,6,a,2,f,"
+			+"16,b,"
+			+"4,b"
+	//		+""
+		};
 	private final FacetAppSurface app;
 	private ViewableFrame viewable;
 	TonesEdit(Object source,FacetAppSurface app){
@@ -196,7 +242,7 @@ final public class TonesEdit extends ViewerContenter{
 					}
 					@Override
 					public Object getInternalContentSource(){
-						return VoiceLine.TEST_CODES;
+						return TEST_CODES;
 					}
 					protected void appOpened(){
 						SToggling heightSetsPage=(SToggling)activeContentTargeter().view().elements(

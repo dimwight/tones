@@ -25,10 +25,10 @@ public abstract class Mark extends Tracer{
 	public static final class Beam extends Mark{
 		public final List<Tone>tones=new ArrayList();
 		public final Voice voice;
-		Beam(Voice voice){
+		public Beam(Voice voice){
 			this.voice=voice;
 		}
-		void addTone(Tone add){
+		public void addTone(Tone add){
 			tones.add(add);
 			if(false&&add.barAt==6&&voice==Voice.Alto)trace(".addTone: ",add);
 		}

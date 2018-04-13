@@ -1,5 +1,6 @@
 package tones.bar;
 import static tones.Voice.*;
+import static tones.bar.Bars.*;
 import facets.util.Debug;
 import facets.util.Titled;
 import facets.util.Tracer;
@@ -15,34 +16,34 @@ import java.util.Map;
 import java.util.Set;
 import tones.Tone;
 import tones.Voice;
-import tones.VoiceLine;
+import tones.app.TonesEdit;
 public final class Bars extends Tracer implements Titled{
-	public static final boolean eighthsCheck=true;
+	public static final boolean eighthsCheck=false;
 	private static int instances=1;
 	private final List<Bar>bars=new ArrayList();
-	private final Map<Voice,VoiceLine>voiceLines=new HashMap();
+	private final Map<Voice,VoicePart>voiceLines=new HashMap();
 	private final String title;
-	private VoiceLine selectedVoice;
+	private VoicePart selectedPart;
 	int barEighths;
 	public Bars(String...codeLines){
 		title="Tones"+instances++;
 		for(String line:codeLines){
-			VoiceLine voice=new VoiceLine(line);
+			VoicePart voice=new VoicePart(line);
 			voiceLines.put(voice.voice,voice);
 		}
-		selectedVoice=voiceLines.get(Bass);
+		selectPart(Tenor);
 		int barAt=0;
 		barEighths=0;
 		while(true){
-			Bar bar=newVoiceLinesBar(barAt++);
+			Bar bar=newPartsBar(barAt++);
 			if(bar!=null)bars.add(bar);
 			else break;
 		}
-		if(true)trace(".readCodes~: bars="+bars.size()+" barAt="+barAt);
+		if(false)trace(".readCodes~: bars="+bars.size()+" barAt="+barAt);
 	}
-	private Bar newVoiceLinesBar(int barAt){
+	private Bar newPartsBar(int barAt){
 		Map<Integer,Incipit>incipits=new HashMap();
-		for(VoiceLine line:voiceLines.values()){
+		for(VoicePart line:voiceLines.values()){
 			List<Tone>tones=line.getBarTones(barAt);
 			if(false&&line.voice==Bass)trace(".newVoiceLinesBar: tones="+tones.size()+" barAt="+barAt);
 			int barEighthsNow=tones.isEmpty()?barEighths
@@ -63,20 +64,33 @@ public final class Bars extends Tracer implements Titled{
 		}
 		return incipits.isEmpty()?null:new Bar(barAt++,incipits.values(),barEighths);
 	}
-	public void updateSelectedVoiceLine(String codes){
-		VoiceLine now=new VoiceLine(codes),
-			then=voiceLines.replace(now.voice,now);
-		for(int barAt=0;barAt<bars.size();barAt++){
-			List<Tone>thenTones=then.getBarTones(barAt),
-					nowTones=now.getBarTones(barAt);
-			trace(".updateSelectedVoiceLine: ",thenTones.equals(nowTones));
+	public void updateSelectedPart(String codes){
+		VoicePart nowPart=new VoicePart(codes),
+			thenPart=voiceLines.replace(nowPart.voice,nowPart);
+		selectPart(nowPart.voice);
+		int count=bars.size();
+		trace(".updateSelectedPart: count=",count);
+		for(int start=true?0:count-5,stop=false?2:count,
+				barAt=start;barAt<stop;barAt++){
+			List<Tone>thenTones=thenPart.getBarTones(barAt),
+					nowTones=nowPart.getBarTones(barAt);
+			barEighths=eighthsCheck&&!nowTones.isEmpty()?nowTones.remove(0).eighths
+					:TonesEdit.BAR_EIGHTHS_DEFAULT;
+			boolean equals=thenTones.equals(nowTones);
+			if(!equals) {
+				trace(".updateSelectedPart: barAt="+barAt
+						+ " equals="+equals+" now=",nowTones);
+				trace(" then=",thenTones);
+				bars.remove(barAt);
+				bars.add(barAt,newPartsBar(barAt));
+			}
 		}
 	}
-	public void selectVoice(Voice voice){
-		selectedVoice=voiceLines.get(voice);
+	public void selectPart(Voice voice){
+		selectedPart=voiceLines.get(voice);
 	}
-	public VoiceLine selectedVoice(){
-		return selectedVoice;
+	public VoicePart selectedPart(){
+		return selectedPart;
 	}
 	public int barCount(){
 		return bars.size();
