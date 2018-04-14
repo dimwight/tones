@@ -66,7 +66,7 @@ public final class TextTreeContenter extends ViewerContenter{
 	public STarget[]lazyContentAreaElements(SAreaTarget area){
 		return new STarget[]{
 				app.ff.areas().panesGetTarget(area),
-				new TargetCore("TreeMenuAdjustmentTargets",
+				new TargetCore("TreeMenuAdjustmentTargets",//?
 						treeSpec.newContentRootTargets(app)),
 		};
 	}
@@ -106,9 +106,9 @@ public final class TextTreeContenter extends ViewerContenter{
 				+ "\nfile="+name);
 		app.notify(new Notice(frame,Impact.DEFAULT));
 	}
-	private DataNode newSourceNode(Object source){
+	private DataNode newSourceNode(Object source){//?
 			DataNode node=(DataNode)source;
-			if(true)source=Nodes.decode(new ValueNode(node.type(),node.title(),new Object[]{
+			if(true)source=Nodes.decode(new ValueNode(node.type(),node.title(),new Object[]{//?
 	"789CAD523D681451101E37B772A7467249202A0A5B2A865DA34DE052199B8335161B45B8EADDDDDCB9E1DDEEFA76F63C530869626123A2581A248D70047F11B1B0D24A546CD28AD6013B110B9DB7B797DCA9659A61DE7BDF37DF3733AFBB0566A260AAE22E89B6B0FDD0F650F942FACBA22AB1B4F1A9D0F536B7CA064027020093A0E0852DB4083B142B38D21035A4D84EC897362944FB9290092E84759CCE1FFFF8F6FCCF379AAAE0F03FC0738284C64D6DDEB978FFD149CF803D15C8D7C28030A09860A267C99122683A17AA4B58A352E77F8A8BD723ACEB4A0F7FBF9BF95C31B952AE0C865F77616F2414572338EAF6688EA6399AE66CD34A2EE4880F04E3038A1E293F68F25BA1AD3B5A4C01C501C0BC1471AC1D1D1A74E491206C24723E5438F7A4F8EBFD88F3CD00C3053326D18AB8AD811265EEB5898A454CF249E255B801F94EC4732DA6DBD0203B038D7F5D5BFFB1727396C7540633F5C4DA633BB885A45545B5DABD776CFFDD2FB7FA0B7B4560EA264F71FE94E5737AECED2162AFD3B5EFEBB3CBA567675322FF886CFC3D4836FEDB1F2E3F188B4FC87E7123D68E47D238CAE71799D80CE71BFAF2800E451D26121D27F9214730BAFD85AC30B0D8145D0BA7090ED2155E8C152A0BDBA8EFF735C24459D20F30FE4BE965A6749AF3C7BBAB34F4C387555F67AA67387FDE1FE66E6BFE01079F200692030000"}));
 			return new DataNode("Created",node.title(),new Object[]{source});
 		}
@@ -130,7 +130,7 @@ public final class TextTreeContenter extends ViewerContenter{
 			}
 			if(tree==null)throw new IllegalStateException("Bad file type in "+file);
 		}
-		else tree=true?(DataNode)source:newSourceNode(source);
+		else tree=true?(DataNode)source:newSourceNode(source);//?
 		final ValueNode state=app.spec.state();
 		NodeViewable viewable=new NodeViewable(tree,app.ff.statefulClipperSource(false)){
 			@Override
@@ -143,7 +143,7 @@ public final class TextTreeContenter extends ViewerContenter{
 			}
 			@Override
 			protected void viewerSelectionChanged(SViewer viewer,SSelection selection){
-				if(!treeSpec.viewerSelectionChanged(this,viewer,selection))
+				if(!treeSpec.viewerSelectionChanged(this,viewer,selection))/?
 					super.viewerSelectionChanged(viewer,selection);
 				putSelectionState(state,STATE_OFFSETS);
 			}
@@ -160,7 +160,7 @@ public final class TextTreeContenter extends ViewerContenter{
 		viewable.readSelectionState(state,STATE_OFFSETS);
 		return this.viewable=viewable;
 	}
-	private TextTreeSpecifier treeSpecifier(){
+	private TextTreeSpecifier treeSpecifier(){//?
 		return (TextTreeSpecifier)app.spec;
 	}
 }
