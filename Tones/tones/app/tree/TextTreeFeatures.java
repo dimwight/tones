@@ -67,10 +67,4 @@ final public class TextTreeFeatures extends FacetFactory{
 		};
 		return context;
 	}
-	@Override
-	public SFacet status(){//? view
-		STargeter targeter=area.selection().elements()[0];
-		return toolGroups(targeter,HINT_NONE,spacerTall(2),
-			textualLabel(targeter,HINT_NONE));
-	}
 }

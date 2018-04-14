@@ -4,14 +4,9 @@ import facets.core.app.ActionViewerTarget;
 import facets.core.app.AreaRoot;
 import facets.core.app.FeatureHost.LayoutFeatures;
 import facets.core.app.NodeViewable;
-import facets.core.app.PathSelection;
 import facets.core.app.SAreaTarget;
 import facets.core.app.SContentAreaTargeter;
-import facets.core.app.SView;
-import facets.core.app.SViewer;
 import facets.core.app.StatefulViewable;
-import facets.core.app.ValueEdit;
-import facets.core.app.ViewableAction;
 import facets.core.app.ViewableFrame;
 import facets.core.app.ViewerContenter;
 import facets.core.app.ViewerTarget;
@@ -21,18 +16,14 @@ import facets.core.superficial.SFrameTarget;
 import facets.core.superficial.STarget;
 import facets.core.superficial.TargetCore;
 import facets.core.superficial.app.FacetedTarget;
-import facets.core.superficial.app.SSelection;
-import facets.core.superficial.app.SelectionView;
 import facets.facet.AreaFacets;
 import facets.facet.app.FacetAppSurface;
 import facets.facet.app.FileAppActions;
 import facets.util.Debug;
 import facets.util.FileSpecifier;
-import facets.util.OffsetPath;
 import facets.util.Stateful;
 import facets.util.TextLines;
 import facets.util.tree.DataNode;
-import facets.util.tree.NodePath;
 import facets.util.tree.Nodes;
 import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
@@ -44,13 +35,11 @@ public final class TextTreeContenter extends ViewerContenter{
 	public static final int TARGETS_PANE=0,TARGETS_CONTENT=1;
 	public static final String STATE_OFFSETS="selectionOffsets";
 	private final FacetAppSurface app;
-	private final TextTreeSpecifier spec;
 	private Object stateStamp=null;
 	private NodeViewable viewable;
 	TextTreeContenter(Object source,FacetAppSurface app){
 		super(source);
 		this.app=app;
-		spec=(TextTreeSpecifier)app.spec;
 	}
 	@Override
 	protected ViewableFrame newContentViewable(Object source){
@@ -72,56 +61,18 @@ public final class TextTreeContenter extends ViewerContenter{
 		}
 		else tree=(DataNode)source;
 		final ValueNode state=app.spec.state();
-		NodeViewable viewable=new NodeViewable(tree,app.ff.statefulClipperSource(false)){
-			@Override
-			public boolean actionIsLive(SViewer viewer,ViewableAction action){
-				TypedNode tree=tree();
-				SSelection selection=selection();
-				Object[]selected=selection.multiple();
-				int arrayCount=tree.children().length,selectionCount=selected.length;
-				boolean empty=arrayCount==0;
-				TypedNode selectedNode=(TypedNode)selected[0];
-				OffsetPath firstPath=((PathSelection)selection).paths[0];
-				boolean valueSelected=((NodePath)firstPath).valueAt()>=0,
-						belowRoot=selectedNode.parent()!=tree,nodeSelected=!valueSelected;
-				return action==COPY?nodeSelected||valueSelected
-						:action==MODIFY?valueSelected&&selectionCount==1
-						:action==CUT||action==DELETE?belowRoot&&nodeSelected
-			 			:action==PASTE?canPaste()&&!valueSelected
-			 			:action==SELECT_ALL?false
-						:super.actionIsLive(viewer,action);
-			}
-			@Override
-			protected SSelection newViewerSelection(SViewer viewer){
-				return ((SelectionView)viewer.view()).newViewerSelection(viewer,selection());
-			}
-			@Override
-			public ViewableAction[]viewerActions(SView view){
-				return spec.viewerActions(view);
-			}
-			@Override
-			protected void viewerSelectionChanged(SViewer viewer,SSelection selection){
-				if(!spec.viewerSelectionChanged(this,viewer,selection))
-					super.viewerSelectionChanged(viewer,selection);
-				putSelectionState(state,STATE_OFFSETS);
-			}
-			@Override
-			public boolean editSelection(){
-				return new ValueEdit(((PathSelection)selection())){
-					protected String getDialogInput(String title,String rubric,
-							String proposal){
-						return app.dialogs().getTextInput(title,rubric,proposal, 0);
-					}
-				}.dialogEdit();
-			}
-		};
+		NodeViewable viewable=new TextTreeViewable(
+				tree,app.ff.statefulClipperSource(false),app);
 		viewable.readSelectionState(state,STATE_OFFSETS);
 		return this.viewable=viewable;
+	}
+	private TextTreeSpecifier textTreeSpec(){
+		return (TextTreeSpecifier)app.spec;
 	}
 	@Override
 	protected FacetedTarget[]newContentViewers(ViewableFrame viewable){
 		return ActionViewerTarget.newViewerAreas(viewable,ViewerTarget.newViewFrames(
-			spec.newContentViews((NodeViewable)viewable)
+				textTreeSpec().newContentViews((NodeViewable)viewable)
 		));
 	}
 	@Override
@@ -137,7 +88,7 @@ public final class TextTreeContenter extends ViewerContenter{
 		return new STarget[]{
 				app.ff.areas().panesGetTarget(area),
 				new TargetCore("ContentRootTargets",
-						spec.newContentRootTargets(app)),
+						textTreeSpec().newContentRootTargets(app)),
 		};
 	}
 	@Override
@@ -170,7 +121,7 @@ public final class TextTreeContenter extends ViewerContenter{
 		DataNode tree=(DataNode)frame.framed;
 		tree.setTitle(name);
 		tree.setValidType("File");
-		new XmlDocRoot(tree,spec.xmlPolicy()).writeToSink(file);
+		new XmlDocRoot(tree,textTreeSpec().xmlPolicy()).writeToSink(file);
 		stateStamp=tree.updateStateStamp();
 		if(false)trace(".setSink: area="+Debug.info(app.activeContentTargeter().target().title())
 				+ "\nfile="+name);

@@ -19,8 +19,6 @@ import facets.facet.FacetFactory;
 import facets.facet.app.FacetAppSpecifier;
 import facets.facet.app.FacetAppSurface;
 import facets.util.FileSpecifier;
-import facets.util.tree.DataNode;
-import facets.util.tree.Nodes;
 import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
 import facets.util.tree.XmlPolicy;
@@ -39,10 +37,6 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 			contenters[PREFERENCES_VALUES],
 			contenters[PREFERENCES_VIEW],
 		};
-	}
-	@Override
-	protected final AppActions newActions(ActionAppSurface app){
-		return super.newActions(app);
 	}
 	@Override
 	public boolean headerIsRibbon(){
@@ -109,8 +103,9 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 			public boolean isLive(){
 				return liveViews;
 			}
-		};
-		return new SView[]{tree};
+		},
+		text=new TextTreeView("Text",canEditContent());
+		return new SView[]{tree,text};
 	}
 	protected STarget[]newContentRootTargets(FacetAppSurface app){
 		return new STarget[]{};
