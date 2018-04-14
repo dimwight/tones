@@ -25,7 +25,7 @@ import facets.util.tree.XmlPolicy;
 import facets.util.tree.XmlSpecifier;
 import java.io.File;
 public abstract class TextTreeSpecifier extends FacetAppSpecifier{
-	public static final String ARG_TREE_SIZE="treeSize";
+	public static final String ARG_TREE_SIZE="treeSize";//?
 	public TextTreeSpecifier(Class appClass){
 		super(appClass);
 	}
@@ -60,7 +60,7 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 			}
 			@Override
 			protected SContenter newContenter(Object source){
-				return new TextTreeContenter(source,this);
+				return new TextTreeContenter(source,this);//?
 			}
 		};
 	}
@@ -75,7 +75,7 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 				return false?false:super.dataUsesAttributes();
 			}
 			public XmlSpecifier[]fileSpecifiers(){
-				return false?new XmlSpecifier[]{
+				return false?new XmlSpecifier[]{//?
 					new XmlSpecifier("state.xml","Facets state files",this),
 					super.fileSpecifiers()[0],
 					super.fileSpecifiers()[1],
@@ -84,7 +84,7 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 			};
 		};
 	}
-	protected Object getInternalContentSource(){
+	protected Object getInternalContentSource(){//?
 		return false?new File("Test.xml")
 				:Nodes.newTestTree("Test",nature().getOrPutInt(ARG_TREE_SIZE,false?-1:3));
 	}
