@@ -105,7 +105,7 @@ public abstract class TreeTextSpecifier extends FacetAppSpecifier{
 			}
 		},
 		text=new TreeTextView("Text",canEditContent());
-		return new SView[]{tree,text};
+		return new SView[]{tree,text};?
 	}
 	protected STarget[]newContentRootTargets(FacetAppSurface app){?
 		return new STarget[]{};
