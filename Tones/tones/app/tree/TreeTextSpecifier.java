@@ -58,6 +58,11 @@ public abstract class TreeTextSpecifier extends FacetAppSpecifier{
 			}
 		};
 	}
+	protected XmlSpecifier[]fileSpecifiers(XmlPolicy policy){
+		return new XmlSpecifier[]{
+			new XmlSpecifier("txt.xml","Text in XML",policy),
+		};
+	}
 	protected Object getInternalContentSource(){
 		return false?new File("Test.txt.xml")
 				:new ValueNode("xml","Content"+contents++,new Object[]{
@@ -66,11 +71,6 @@ public abstract class TreeTextSpecifier extends FacetAppSpecifier{
 									new Object[]{"First line"}),
 							new ValueNode("TextLine",TypedNode.UNTITLED,
 									new Object[]{"Second line"})})});
-	}
-	private XmlSpecifier[]fileSpecifiers(XmlPolicy policy){?
-		return new XmlSpecifier[]{
-			new XmlSpecifier("txt.xml","Text in XML",policy),
-		};
 	}
 	protected TreeTextContenter newContenter(Object source,FacetAppSurface app){
 		return new TreeTextContenter(source,app){};

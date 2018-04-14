@@ -13,7 +13,8 @@ import facets.facet.app.FacetAppSurface;
 import facets.util.OffsetPath;
 import facets.util.tree.NodePath;
 import facets.util.tree.TypedNode;
-public class TreeTextViewable extends NodeViewable{
+import tones.app.tree.TreeTextContenter.TreeTextView;
+public abstract class TreeTextViewable extends NodeViewable{
 	private final FacetAppSurface app;
 	public TreeTextViewable(TypedNode tree,ClipperSource clipperSource,
 			FacetAppSurface app){
@@ -39,29 +40,47 @@ public class TreeTextViewable extends NodeViewable{
 				:super.actionIsLive(viewer,action);
 	}
 	@Override
-	protected SSelection newViewerSelection(SViewer viewer){
-		SView view=viewer.view();
-		if(view instanceof TreeView)return selection();
-		else if(view instanceof TextView)return selection();?
-		else throw new RuntimeException("Not implemented in "+this);
+	final protected SSelection newViewerSelection(SViewer viewer){
+		if(viewer.view()instanceof TreeView)return selection();
+		else return newNonTreeViewerSelection(viewer);
 	}
 	@Override
-	protected void viewerSelectionChanged(SViewer viewer,SSelection selection){
-		SView view=viewer.view();
-		if(view instanceof TreeView)super.viewerSelectionChanged(viewer,selection);
-		else if(view instanceof TextView)super.viewerSelectionChanged(viewer,selection);?
-		else throw new RuntimeException("Not implemented in "+this);
-		putSelectionState(app.spec.state(),TreeTextContenter.STATE_OFFSETS);?
+	final protected void viewerSelectionChanged(SViewer viewer,SSelection selection){
+		putSelectionState(app.spec.state(),TreeTextContenter.STATE_OFFSETS);
+		if(viewer.view() instanceof TreeView)
+			super.viewerSelectionChanged(viewer,selection);
+		else nonTreeViewerSelectionChanged(viewer,selection);
 	}
 	@Override
-	protected void viewerSelectionEdited(SViewer viewer,Object edit,
+	final protected void viewerSelectionEdited(SViewer viewer,Object edit,
+			boolean interim){
+		if(viewer.view() instanceof TreeView)
+			textViewerSelectionEdited(viewer,edit,interim);
+		else nonTreeViewerSelectionEdited(viewer,edit,interim);
+	}
+	protected SSelection newNonTreeViewerSelection(SViewer viewer){
+		SView view=viewer.view();
+		if(view instanceof TreeTextView)
+			return((TreeTextView)view).newViewerSelection(viewer,selection());
+		else throw new RuntimeException("Not implemented in "+this);			
+	}
+	protected void nonTreeViewerSelectionChanged(SViewer viewer,
+			SSelection selection){
+		SView view=viewer.view();
+		if(view instanceof TreeTextView)
+			super.viewerSelectionChanged(viewer,selection);
+		else throw new RuntimeException("Not implemented in "+this);
+	}
+	protected void nonTreeViewerSelectionEdited(SViewer viewer,Object edit,
 			boolean interim){
 		SView view=viewer.view();
-		if(view instanceof TreeView)
-			super.viewerSelectionEdited(viewer,edit,interim);
-		else if(view instanceof TextView)
-			super.viewerSelectionEdited(viewer,edit,interim);?
+		if(view instanceof TextView)
+			textViewerSelectionEdited(viewer,edit,interim);
 		else throw new RuntimeException("Not implemented in "+this);
+	}
+	protected void textViewerSelectionEdited(SViewer viewer,Object edit,
+			boolean interim){
+		throw new RuntimeException("Not implemented in "+this);
 	}
 	@Override
 	public ViewableAction[]viewerActions(SView view){
@@ -74,9 +93,6 @@ public class TreeTextViewable extends NodeViewable{
 		     UNDO,
 		     REDO};
 		return view.isLive()?all:new ViewableAction[]{COPY};
-	}
-	private TreeTextSpecifier textTreeSpec(){?
-		return (TreeTextSpecifier)app.spec;
 	}
 	@Override
 	public String title(){
