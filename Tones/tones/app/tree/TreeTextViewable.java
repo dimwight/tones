@@ -39,11 +39,11 @@ public class TreeTextViewable extends NodeViewable{
 	}
 	@Override
 	protected void viewerSelectionEdited(SViewer viewer,Object edit,
-			boolean interim){
+			boolean interim){?
 		if(true)throw new RuntimeException("Not implemented in "+this);
 	}
 	@Override
-	protected SSelection newViewerSelection(SViewer viewer){
+	protected SSelection newViewerSelection(SViewer viewer){?
 		return ((SelectionView)viewer.view()).newViewerSelection(viewer,selection());
 	}
 	@Override
@@ -55,7 +55,7 @@ public class TreeTextViewable extends NodeViewable{
 	}
 	@Override
 	protected void viewerSelectionChanged(SViewer viewer,SSelection selection){
-		if(!textTreeSpec().viewerSelectionChanged(this,viewer,selection))
+		if(!textTreeSpec().viewerSelectionChanged(this,viewer,selection))?
 			super.viewerSelectionChanged(viewer,selection);
 		putSelectionState(app.spec.state(),TreeTextContenter.STATE_OFFSETS);
 	}
