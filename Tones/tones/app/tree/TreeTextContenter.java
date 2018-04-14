@@ -1,10 +1,13 @@
 package tones.app.tree;
+import static facets.util.tree.DataConstants.*;
 import facets.core.app.ActionViewerTarget;
 import facets.core.app.AreaRoot;
 import facets.core.app.FeatureHost.LayoutFeatures;
 import facets.core.app.NodeViewable;
 import facets.core.app.SAreaTarget;
 import facets.core.app.SContentAreaTargeter;
+import facets.core.app.SView;
+import facets.core.app.TreeView;
 import facets.core.app.ViewableFrame;
 import facets.core.app.ViewerContenter;
 import facets.core.app.ViewerTarget;
@@ -25,21 +28,24 @@ import facets.util.tree.DataNode;
 import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
 import facets.util.tree.XmlDocRoot;
+import facets.util.tree.XmlPolicy;
 import facets.util.tree.XmlSpecifier;
 import java.io.File;
 import java.io.IOException;
-public final class TreeTextContenter extends ViewerContenter{
+public abstract class TreeTextContenter extends ViewerContenter{
 	public static final int TARGETS_PANE=0,TARGETS_CONTENT=1;
 	public static final String STATE_OFFSETS="selectionOffsets";
 	private final FacetAppSurface app;
 	private Object stateStamp=null;
 	private NodeViewable viewable;
+	private final XmlPolicy xmlPolicy;
 	TreeTextContenter(Object source,FacetAppSurface app){
 		super(source);
 		this.app=app;
+		xmlPolicy=textTreeSpec().xmlPolicy;
 	}
 	@Override
-	protected ViewableFrame newContentViewable(Object source){
+	final protected ViewableFrame newContentViewable(Object source){
 		DataNode tree=null;
 		if(source instanceof File){
 			File file=(File)source;
@@ -58,8 +64,7 @@ public final class TreeTextContenter extends ViewerContenter{
 		}
 		else tree=(DataNode)source;
 		final ValueNode state=app.spec.state();
-		NodeViewable viewable=new TreeTextViewable(?
-				tree,app.ff.statefulClipperSource(false),app);
+		NodeViewable viewable=newViewable(tree);
 		viewable.readSelectionState(state,STATE_OFFSETS);
 		return this.viewable=viewable;
 	}
@@ -67,26 +72,54 @@ public final class TreeTextContenter extends ViewerContenter{
 		return (TreeTextSpecifier)app.spec;
 	}
 	@Override
-	protected FacetedTarget[]newContentViewers(ViewableFrame viewable){
-		return ActionViewerTarget.newViewerAreas(viewable,ViewerTarget.newViewFrames(
-				textTreeSpec().newContentViews((NodeViewable)viewable)?
+	final protected FacetedTarget[]newContentViewers(ViewableFrame viewable){
+		TypedNode root=(TypedNode)viewable.framed;
+		final String rootCheck=false?root.title():root.type();
+		final boolean liveViews=textTreeSpec().canEditContent();
+		SView tree=new TreeView("Debug"){
+			@Override
+			public boolean allowMultipleSelection(){
+				return true;
+			}
+			@Override
+			public boolean hideRoot(){
+				return rootCheck.endsWith(TYPE_XML);
+			}
+			@Override
+			public boolean isLive(){
+				return liveViews;
+			}
+		};
+		return ActionViewerTarget.newViewerAreas(viewable,
+				ViewerTarget.newViewFrames(newViews(tree,liveViews)
 		));
 	}
 	@Override
-	protected void attachContentAreaFacets(AreaRoot area){
+	final public STarget[]lazyContentAreaElements(SAreaTarget area){
+		return new STarget[]{
+				app.ff.areas().panesGetTarget(area),
+				new TargetCore("ContentRootTargets",newContentRootTargets())
+		};
+	}
+	@Override
+	final protected void attachContentAreaFacets(AreaRoot area){
 		app.ff.areas().attachViewerAreaPanes(area,"",AreaFacets.PANE_SPLIT_VERTICAL);
 	}
 	@Override
-	public LayoutFeatures newContentFeatures(SContentAreaTargeter area){
-		return new TreeTextFeatures(app,area);?
+	final public LayoutFeatures newContentFeatures(SContentAreaTargeter area){
+		return newTreeTextFeatures(area);
 	}
-	@Override
-	public STarget[]lazyContentAreaElements(SAreaTarget area){
-		return new STarget[]{
-				app.ff.areas().panesGetTarget(area),
-				new TargetCore("ContentRootTargets",
-						textTreeSpec().newContentRootTargets(app)),?
-		};
+	protected TreeTextViewable newViewable(DataNode tree){
+		return new TreeTextViewable(tree,app.ff.statefulClipperSource(false),app);
+	}
+	protected SView[]newViews(SView debugTree,boolean liveViews){
+		return new SView[]{debugTree,new TreeTextView("Text",liveViews)};
+	}
+	protected STarget[]newContentRootTargets(){
+		return new STarget[]{};
+	}
+	protected TreeTextFeatures newTreeTextFeatures(SContentAreaTargeter area){
+		return new TreeTextFeatures(app,area);
 	}
 	@Override
 	public boolean hasChanged(){
@@ -96,20 +129,20 @@ public final class TreeTextContenter extends ViewerContenter{
 		return (false||app.actions instanceof FileAppActions)&&changed;
 	}
 	@Override
-	public FileSpecifier[]sinkFileSpecifiers(){
+	final public FileSpecifier[]sinkFileSpecifiers(){
 		Object sink=sink();
 		String name=sink instanceof File?((File)sink).getName()
 				:((TypedNode)sink).title()+"."+((TypedNode)sink).type();
-		return FileSpecifier.filterByName(app.getFileSpecifiers(),name);?
+		return FileSpecifier.filterByName(xmlPolicy.fileSpecifiers(),name);
 	}
 	@Override
-	public boolean setSink(Object sink){
+	final public boolean setSink(Object sink){
 		if(sink instanceof File&&((File)sink).getName().startsWith("_")||
 			!app.spec.canOverwriteContent())return false;
 		else return super.setSink(sink);
 	}
 	@Override
-	public void saveToSink(Object sink)throws IOException{
+	final public void saveToSink(Object sink)throws IOException{
 		File file=(File)sink;
 		String name=file.getName();
 		if(file.exists()&&!name.startsWith("_"))
@@ -118,7 +151,7 @@ public final class TreeTextContenter extends ViewerContenter{
 		DataNode tree=(DataNode)frame.framed;
 		tree.setTitle(name);
 		tree.setValidType("File");
-		new XmlDocRoot(tree,textTreeSpec().xmlPolicy()).writeToSink(file);
+		new XmlDocRoot(tree,xmlPolicy).writeToSink(file);
 		stateStamp=tree.updateStateStamp();
 		if(false)trace(".setSink: area="+Debug.info(app.activeContentTargeter().target().title())
 				+ "\nfile="+name);

@@ -1,19 +1,8 @@
 package tones.app.tree;
-import static facets.core.app.ActionViewerTarget.Action.*;
 import static facets.facet.app.FacetPreferences.*;
-import static facets.util.tree.DataConstants.*;
-import facets.core.app.ActionAppSurface;
-import facets.core.app.AppActions;
 import facets.core.app.FeatureHost;
-import facets.core.app.NodeViewable;
 import facets.core.app.PagedContenter;
 import facets.core.app.SContenter;
-import facets.core.app.SView;
-import facets.core.app.SViewer;
-import facets.core.app.TreeView;
-import facets.core.app.ViewableAction;
-import facets.core.superficial.STarget;
-import facets.core.superficial.app.SSelection;
 import facets.core.superficial.app.SSurface;
 import facets.facet.FacetFactory;
 import facets.facet.app.FacetAppSpecifier;
@@ -25,6 +14,16 @@ import facets.util.tree.XmlPolicy;
 import facets.util.tree.XmlSpecifier;
 import java.io.File;
 public abstract class TreeTextSpecifier extends FacetAppSpecifier{
+	final XmlPolicy xmlPolicy=new XmlPolicy(){
+		@Override
+		protected boolean dataUsesAttributes(){
+			return false;
+		}
+		public XmlSpecifier[]fileSpecifiers(){
+			return TreeTextSpecifier.this.fileSpecifiers(xmlPolicy);
+		};
+	};
+	int contents;
 	public TreeTextSpecifier(Class appClass){
 		super(appClass);
 	}
@@ -47,37 +46,19 @@ public abstract class TreeTextSpecifier extends FacetAppSpecifier{
 		return new FacetAppSurface(this,ff){
 			@Override
 			public FileSpecifier[]getFileSpecifiers(){
-				return((TreeTextSpecifier)spec).xmlPolicy().fileSpecifiers();?
+				return xmlPolicy.fileSpecifiers();
 			}
 			@Override
 			protected Object getInternalContentSource(){
 				return((TreeTextSpecifier)spec).getInternalContentSource();
 			}
 			@Override
-			protected SContenter newContenter(Object source){?
-				return new TreeTextContenter(source,this);
+			protected SContenter newContenter(Object source){
+				return TreeTextSpecifier.this.newContenter(source,this);
 			}
 		};
 	}
-	protected XmlPolicy xmlPolicy(){
-		return new XmlPolicy(){?
-			@Override
-			protected boolean treeAsXmlRoot(){
-				return false?true:super.treeAsXmlRoot();
-			}
-			@Override
-			protected boolean dataUsesAttributes(){
-				return false?false:super.dataUsesAttributes();
-			}
-			public XmlSpecifier[]fileSpecifiers(){
-				return new XmlSpecifier[]{
-					new XmlSpecifier("txt.xml","Text in XML",this),
-				};
-			};
-		};
-	}
-	int contents;
-	protected Object getInternalContentSource(){?
+	protected Object getInternalContentSource(){
 		return false?new File("Test.txt.xml")
 				:new ValueNode("xml","Content"+contents++,new Object[]{
 						new ValueNode("TextTree","Test",new Object[]{
@@ -86,42 +67,12 @@ public abstract class TreeTextSpecifier extends FacetAppSpecifier{
 							new ValueNode("TextLine",TypedNode.UNTITLED,
 									new Object[]{"Second line"})})});
 	}
-	protected SView[]newContentViews(NodeViewable viewable){?
-		TypedNode root=(TypedNode)viewable.framed;
-		final String rootCheck=false?root.title():root.type();
-		final boolean liveViews=canEditContent();
-		SView tree=new TreeView("Tree"){
-			@Override
-			public boolean allowMultipleSelection(){
-				return true;
-			}
-			@Override
-			public boolean hideRoot(){
-				return rootCheck.endsWith(TYPE_XML);
-			}
-			@Override
-			public boolean isLive(){
-				return liveViews;
-			}
-		},
-		text=new TreeTextView("Text",canEditContent());
-		return new SView[]{tree,text};?
+	private XmlSpecifier[]fileSpecifiers(XmlPolicy policy){
+		return new XmlSpecifier[]{
+			new XmlSpecifier("txt.xml","Text in XML",policy),
+		};
 	}
-	protected STarget[]newContentRootTargets(FacetAppSurface app){?
-		return new STarget[]{};
-	}
-	protected ViewableAction[]viewerActions(SView view){?
-		ViewableAction[]all={COPY,
-				     CUT,
-				     PASTE,
-				     DELETE,
-				     MODIFY,
-				     UNDO,
-				     REDO};
-		return view.isLive()?all:new ViewableAction[]{COPY};
-	}
-	public boolean viewerSelectionChanged(NodeViewable viewable,SViewer viewer,
-			SSelection selection){?
-		return false;
+	protected TreeTextContenter newContenter(Object source,FacetAppSurface app){
+		return new TreeTextContenter(source,app){};
 	}
 }
