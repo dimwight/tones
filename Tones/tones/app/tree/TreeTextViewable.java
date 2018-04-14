@@ -50,7 +50,7 @@ public class TreeTextViewable extends NodeViewable{
 	public ViewableAction[]viewerActions(SView view){
 		return textTreeSpec().viewerActions(view);?
 	}
-	private TreeTextSpecifier textTreeSpec(){
+	private TreeTextSpecifier textTreeSpec(){//?
 		return (TreeTextSpecifier)app.spec;
 	}
 	@Override
