@@ -47,20 +47,20 @@ public abstract class TreeTextSpecifier extends FacetAppSpecifier{
 		return new FacetAppSurface(this,ff){
 			@Override
 			public FileSpecifier[]getFileSpecifiers(){
-				return((TreeTextSpecifier)spec).xmlPolicy().fileSpecifiers();
+				return((TreeTextSpecifier)spec).xmlPolicy().fileSpecifiers();?
 			}
 			@Override
 			protected Object getInternalContentSource(){
 				return((TreeTextSpecifier)spec).getInternalContentSource();
 			}
 			@Override
-			protected SContenter newContenter(Object source){
+			protected SContenter newContenter(Object source){?
 				return new TreeTextContenter(source,this);
 			}
 		};
 	}
 	protected XmlPolicy xmlPolicy(){
-		return new XmlPolicy(){
+		return new XmlPolicy(){?
 			@Override
 			protected boolean treeAsXmlRoot(){
 				return false?true:super.treeAsXmlRoot();
@@ -77,7 +77,7 @@ public abstract class TreeTextSpecifier extends FacetAppSpecifier{
 		};
 	}
 	int contents;
-	protected Object getInternalContentSource(){
+	protected Object getInternalContentSource(){?
 		return false?new File("Test.txt.xml")
 				:new ValueNode("xml","Content"+contents++,new Object[]{
 						new ValueNode("TextTree","Test",new Object[]{
@@ -86,7 +86,7 @@ public abstract class TreeTextSpecifier extends FacetAppSpecifier{
 							new ValueNode("TextLine",TypedNode.UNTITLED,
 									new Object[]{"Second line"})})});
 	}
-	protected SView[]newContentViews(NodeViewable viewable){
+	protected SView[]newContentViews(NodeViewable viewable){?
 		TypedNode root=(TypedNode)viewable.framed;
 		final String rootCheck=false?root.title():root.type();
 		final boolean liveViews=canEditContent();
@@ -107,10 +107,10 @@ public abstract class TreeTextSpecifier extends FacetAppSpecifier{
 		text=new TreeTextView("Text",canEditContent());
 		return new SView[]{tree,text};
 	}
-	protected STarget[]newContentRootTargets(FacetAppSurface app){
+	protected STarget[]newContentRootTargets(FacetAppSurface app){?
 		return new STarget[]{};
 	}
-	protected ViewableAction[]viewerActions(SView view){
+	protected ViewableAction[]viewerActions(SView view){?
 		ViewableAction[]all={COPY,
 				     CUT,
 				     PASTE,
@@ -121,7 +121,7 @@ public abstract class TreeTextSpecifier extends FacetAppSpecifier{
 		return view.isLive()?all:new ViewableAction[]{COPY};
 	}
 	public boolean viewerSelectionChanged(NodeViewable viewable,SViewer viewer,
-			SSelection selection){
+			SSelection selection){?
 		return false;
 	}
 }
