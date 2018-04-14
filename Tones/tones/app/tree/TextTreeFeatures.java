@@ -21,7 +21,7 @@ final public class TextTreeFeatures extends FacetFactory{
 	@Override
 	public SFacet toolbar(){
 		ItemList<SFacet>facets=new ItemList(SFacet.class);
-		if(app.spec.canEditContent()){
+		if(app.spec.canEditContent()){//?view?
 			SFacet[]editTools=editTools(area.viewer());
 			TitledList<STargeter>files=!app.spec.canSaveContent()?null
 					:new TitledList(Notice.findElement(
@@ -36,15 +36,15 @@ final public class TextTreeFeatures extends FacetFactory{
 	}
 	@Override
 	public SFacet[]header(){
-		return newAdjustedMenus(app,area);
+		return newAdjustedMenus(app,area);//?
 	}
 	@Override
-	protected STargeter findPaneTargeter(SContentAreaTargeter area){
+	protected STargeter findPaneTargeter(SContentAreaTargeter area){//?
 		return area.elements()[TextTreeContenter.TARGETS_PANE];
 	}
 	@Override
 	protected MenuFacets[]adjustMenuRoots(MenuFacets[]menus){
-		return new MenuFacets[]{
+		return new MenuFacets[]{//? view
 			menus[MENU_APP],
 			menus[MENU_EDIT],
 			menus[MENU_PANE],
@@ -54,11 +54,11 @@ final public class TextTreeFeatures extends FacetFactory{
 	}
 	@Override
 	public SFacet extras(){
-		return false?null:appExtras(app);
+		return false?null:appExtras(app);//?
 	}
 	@Override
 	protected MenuFacets getServicesContextMenuFacets(){
-		MenuFacets context=new MenuFacets(area,"Tree facets"){
+		MenuFacets context=new MenuFacets(area,"Tree facets"){//?
 			SFacet[]editFacets=new EditFacets(area).getFacets();
 			public SFacet[]getContextFacets(ViewerTarget viewer,SFacet[]viewerFacets){
 				return editFacets.length==0?viewerFacets
@@ -68,7 +68,7 @@ final public class TextTreeFeatures extends FacetFactory{
 		return context;
 	}
 	@Override
-	public SFacet status(){
+	public SFacet status(){//? view
 		STargeter targeter=area.selection().elements()[0];
 		return toolGroups(targeter,HINT_NONE,spacerTall(2),
 			textualLabel(targeter,HINT_NONE));
