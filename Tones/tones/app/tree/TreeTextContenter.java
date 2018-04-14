@@ -69,7 +69,7 @@ public final class TreeTextContenter extends ViewerContenter{
 	@Override
 	protected FacetedTarget[]newContentViewers(ViewableFrame viewable){
 		return ActionViewerTarget.newViewerAreas(viewable,ViewerTarget.newViewFrames(
-				textTreeSpec().newContentViews((NodeViewable)viewable)
+				textTreeSpec().newContentViews((NodeViewable)viewable)?
 		));
 	}
 	@Override
@@ -78,14 +78,14 @@ public final class TreeTextContenter extends ViewerContenter{
 	}
 	@Override
 	public LayoutFeatures newContentFeatures(SContentAreaTargeter area){
-		return new TreeTextFeatures(app,area);
+		return new TreeTextFeatures(app,area);?
 	}
 	@Override
 	public STarget[]lazyContentAreaElements(SAreaTarget area){
 		return new STarget[]{
 				app.ff.areas().panesGetTarget(area),
 				new TargetCore("ContentRootTargets",
-						textTreeSpec().newContentRootTargets(app)),
+						textTreeSpec().newContentRootTargets(app)),?
 		};
 	}
 	@Override
@@ -100,7 +100,7 @@ public final class TreeTextContenter extends ViewerContenter{
 		Object sink=sink();
 		String name=sink instanceof File?((File)sink).getName()
 				:((TypedNode)sink).title()+"."+((TypedNode)sink).type();
-		return FileSpecifier.filterByName(app.getFileSpecifiers(),name);
+		return FileSpecifier.filterByName(app.getFileSpecifiers(),name);?
 	}
 	@Override
 	public boolean setSink(Object sink){
