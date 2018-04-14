@@ -1,5 +1,4 @@
 package tones.app.tree;
-import static tones.app.tree.TreeTargets.*;
 import facets.core.app.ActionViewerTarget;
 import facets.core.app.AreaRoot;
 import facets.core.app.FeatureHost.LayoutFeatures;
@@ -18,7 +17,6 @@ import facets.core.superficial.Notice;
 import facets.core.superficial.Notifying.Impact;
 import facets.core.superficial.SFrameTarget;
 import facets.core.superficial.STarget;
-import facets.core.superficial.STrigger;
 import facets.core.superficial.TargetCore;
 import facets.core.superficial.app.FacetedTarget;
 import facets.core.superficial.app.SSelection;
@@ -38,29 +36,21 @@ import facets.util.tree.XmlDocRoot;
 import facets.util.tree.XmlSpecifier;
 import java.io.File;
 import java.io.IOException;
-/**
-{@link ViewerContenter} that manages content for {@link TreeAppSpecifier}. 
-<p>Effectively a package-private class; 
-declared <code>public</code> for documentation purposes only. 
-<p>The code exemplifies 'filling out' the <code>abstract</code> {@link ViewerContenter} 
-to provide real-world functionality.  
- */
-public final class TreeAppContenter extends ViewerContenter{
-	/** Index into return of {@link #lazyContentAreaElements(SAreaTarget)}. */
+
+public final class TextTreeContenter extends ViewerContenter{
+	
 	public static final int TARGETS_PANE=0,TARGETS_CONTENT=1;
 	public static final String STATE_OFFSETS="selectionOffsets";
 	private final FacetAppSurface app;
-	private final TreeAppSpecifier treeSpec;
+	private final TextTreeSpecifier treeSpec;
 	private Object stateStamp=null;
 	private NodeViewable viewable;
-	TreeAppContenter(Object source,FacetAppSurface app){
+	TextTreeContenter(Object source,FacetAppSurface app){
 		super(source);
 		this.app=app;
-		treeSpec=(TreeAppSpecifier)app.spec;
+		treeSpec=(TextTreeSpecifier)app.spec;
 	}
-	/**
-	Delegates to {@link TreeAppSpecifier} 
-	 */
+	
 	@Override
 	protected FacetedTarget[]newContentViewers(ViewableFrame viewable){
 		return ActionViewerTarget.newViewerAreas(viewable,ViewerTarget.newViewFrames(
@@ -73,14 +63,9 @@ public final class TreeAppContenter extends ViewerContenter{
 	}
 	@Override
 	public LayoutFeatures newContentFeatures(SContentAreaTargeter area){
-		return new TreeAppFeatures(app,area);
+		return new TextTreeFeatures(app,area);
 	}
-	/**
-	Re-implementation returning pane and extra tree menu targets. 
-	@return {@link STarget}<code>[]</code> indexable by {@link #TARGETS_PANE}
-	and {@link #TARGETS_CONTENT}; the latter created in 
-		{@link TreeAppSpecifier#newContentRootTargets(FacetAppSurface)}
-	 */
+	
 	@Override
 	public STarget[]lazyContentAreaElements(SAreaTarget area){
 		return new STarget[]{
@@ -167,11 +152,6 @@ public final class TreeAppContenter extends ViewerContenter{
 				putSelectionState(state,STATE_OFFSETS);
 			}
 			@Override
-			protected STarget[]lazyElements(){
-				return !treeSpecifier().usesTreeTargets()?super.lazyElements() 
-						:new TreeTargets(app,this).appTargets();
-			}
-			@Override
 			public boolean editSelection(){
 				return new ValueEdit(((PathSelection)selection())){
 					protected String getDialogInput(String title,String rubric,
@@ -184,12 +164,7 @@ public final class TreeAppContenter extends ViewerContenter{
 		viewable.readSelectionState(state,STATE_OFFSETS);
 		return this.viewable=viewable;
 	}
-	@Override
-	public void wasAdded(){
-		if(false&&Debug.natureDebug)
-			((STrigger)contentFrame().elements()[TARGET_SEARCH].elements()[0]).fire();
-	}
-	private TreeAppSpecifier treeSpecifier(){
-		return (TreeAppSpecifier)app.spec;
+	private TextTreeSpecifier treeSpecifier(){
+		return (TextTreeSpecifier)app.spec;
 	}
 }
