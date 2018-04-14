@@ -38,7 +38,7 @@ public abstract class TreeTextContenter extends ViewerContenter{
 	private final FacetAppSurface app;
 	private Object stateStamp=null;
 	private NodeViewable viewable;
-	private final XmlPolicy xmlPolicy;
+	private final XmlPolicy xmlPolicy;?
 	TreeTextContenter(Object source,FacetAppSurface app){
 		super(source);
 		this.app=app;
@@ -49,7 +49,7 @@ public abstract class TreeTextContenter extends ViewerContenter{
 		DataNode tree=null;
 		if(source instanceof File){
 			File file=(File)source;
-			for(FileSpecifier fileType:app.getFileSpecifiers()){
+			for(FileSpecifier fileType:app.getFileSpecifiers()){?
 				if(!fileType.specifies(file))continue;
 				XmlSpecifier xml=(XmlSpecifier)fileType;
 				XmlDocRoot root=xml.newTreeRoot(xml.newRootNode(file));
@@ -68,7 +68,7 @@ public abstract class TreeTextContenter extends ViewerContenter{
 		viewable.readSelectionState(state,STATE_OFFSETS);
 		return this.viewable=viewable;
 	}
-	private TreeTextSpecifier textTreeSpec(){
+	private TreeTextSpecifier textTreeSpec(){?
 		return (TreeTextSpecifier)app.spec;
 	}
 	@Override
@@ -76,7 +76,7 @@ public abstract class TreeTextContenter extends ViewerContenter{
 		TypedNode root=(TypedNode)viewable.framed;
 		final String rootCheck=false?root.title():root.type();
 		final boolean liveViews=textTreeSpec().canEditContent();
-		SView tree=new TreeView("Debug"){
+		SView tree=new TreeView("Debug"){?
 			@Override
 			public boolean allowMultipleSelection(){
 				return true;
@@ -103,7 +103,7 @@ public abstract class TreeTextContenter extends ViewerContenter{
 	}
 	@Override
 	final protected void attachContentAreaFacets(AreaRoot area){
-		app.ff.areas().attachViewerAreaPanes(area,"",AreaFacets.PANE_SPLIT_VERTICAL);
+		app.ff.areas().attachViewerAreaPanes(area,"",AreaFacets.PANE_SPLIT_VERTICAL);?
 	}
 	@Override
 	final public LayoutFeatures newContentFeatures(SContentAreaTargeter area){
@@ -126,7 +126,7 @@ public abstract class TreeTextContenter extends ViewerContenter{
 		Object framedStamp=((Stateful)contentFrame().framed).stateStamp();
 		boolean changed=framedStamp!=stateStamp;
 		if(false&&changed)trace(".hasChanged: framedStamp=",framedStamp);
-		return (false||app.actions instanceof FileAppActions)&&changed;
+		return (false||app.actions instanceof FileAppActions)&&changed;?
 	}
 	@Override
 	final public FileSpecifier[]sinkFileSpecifiers(){
@@ -137,7 +137,7 @@ public abstract class TreeTextContenter extends ViewerContenter{
 	}
 	@Override
 	final public boolean setSink(Object sink){
-		if(sink instanceof File&&((File)sink).getName().startsWith("_")||
+		if(sink instanceof File&&((File)sink).getName().startsWith("_")||?
 			!app.spec.canOverwriteContent())return false;
 		else return super.setSink(sink);
 	}
