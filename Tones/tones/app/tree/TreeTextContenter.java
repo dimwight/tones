@@ -58,7 +58,7 @@ public final class TreeTextContenter extends ViewerContenter{
 		}
 		else tree=(DataNode)source;
 		final ValueNode state=app.spec.state();
-		NodeViewable viewable=new TreeTextViewable(
+		NodeViewable viewable=new TreeTextViewable(?
 				tree,app.ff.statefulClipperSource(false),app);
 		viewable.readSelectionState(state,STATE_OFFSETS);
 		return this.viewable=viewable;
