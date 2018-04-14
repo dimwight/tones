@@ -67,7 +67,7 @@ public abstract class TreeTextSpecifier extends FacetAppSpecifier{
 							new ValueNode("TextLine",TypedNode.UNTITLED,
 									new Object[]{"Second line"})})});
 	}
-	private XmlSpecifier[]fileSpecifiers(XmlPolicy policy){
+	private XmlSpecifier[]fileSpecifiers(XmlPolicy policy){?
 		return new XmlSpecifier[]{
 			new XmlSpecifier("txt.xml","Text in XML",policy),
 		};
