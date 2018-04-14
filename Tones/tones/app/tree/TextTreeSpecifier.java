@@ -129,7 +129,7 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 		ViewableAction[]all={COPY,
 				     CUT,
 				     PASTE,
-				     PASTE_INTO,
+				     PASTE_INTO,//?
 				     DELETE,
 				     MODIFY,
 				     UNDO,
