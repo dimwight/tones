@@ -10,10 +10,10 @@ import facets.facet.FacetFactory;
 import facets.facet.app.FacetAppSurface;
 import facets.util.ItemList;
 import facets.util.TitledList;
-final public class TextTreeFeatures extends FacetFactory{
+final public class TreeTextFeatures extends FacetFactory{
 	private final FacetAppSurface app;
 	private final SContentAreaTargeter area;
-	protected TextTreeFeatures(FacetAppSurface app,SContentAreaTargeter root){
+	protected TreeTextFeatures(FacetAppSurface app,SContentAreaTargeter root){
 		super(app.ff);
 		this.app=app;
 		this.area=root;
@@ -40,7 +40,7 @@ final public class TextTreeFeatures extends FacetFactory{
 	}
 	@Override
 	protected STargeter findPaneTargeter(SContentAreaTargeter area){
-		return area.elements()[TextTreeContenter.TARGETS_PANE];
+		return area.elements()[TreeTextContenter.TARGETS_PANE];
 	}
 	@Override
 	protected MenuFacets[]adjustMenuRoots(MenuFacets[]menus){

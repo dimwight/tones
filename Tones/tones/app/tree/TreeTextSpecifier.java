@@ -24,8 +24,8 @@ import facets.util.tree.ValueNode;
 import facets.util.tree.XmlPolicy;
 import facets.util.tree.XmlSpecifier;
 import java.io.File;
-public abstract class TextTreeSpecifier extends FacetAppSpecifier{
-	public TextTreeSpecifier(Class appClass){
+public abstract class TreeTextSpecifier extends FacetAppSpecifier{
+	public TreeTextSpecifier(Class appClass){
 		super(appClass);
 	}
 	@Override
@@ -47,15 +47,15 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 		return new FacetAppSurface(this,ff){
 			@Override
 			public FileSpecifier[]getFileSpecifiers(){
-				return((TextTreeSpecifier)spec).xmlPolicy().fileSpecifiers();
+				return((TreeTextSpecifier)spec).xmlPolicy().fileSpecifiers();
 			}
 			@Override
 			protected Object getInternalContentSource(){
-				return((TextTreeSpecifier)spec).getInternalContentSource();
+				return((TreeTextSpecifier)spec).getInternalContentSource();
 			}
 			@Override
 			protected SContenter newContenter(Object source){
-				return new TextTreeContenter(source,this);
+				return new TreeTextContenter(source,this);
 			}
 		};
 	}
@@ -104,7 +104,7 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 				return liveViews;
 			}
 		},
-		text=new TextTreeView("Text",canEditContent());
+		text=new TreeTextView("Text",canEditContent());
 		return new SView[]{tree,text};
 	}
 	protected STarget[]newContentRootTargets(FacetAppSurface app){

@@ -40,7 +40,7 @@ import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
 import java.util.HashSet;
 import java.util.Set;
-import tones.app.tree.TextTreeSpecifier;
+import tones.app.tree.TreeTextSpecifier;
 import tones.bar.Bars;
 import tones.view.PageView;
 final public class TonesEdit extends ViewerContenter{
@@ -254,7 +254,7 @@ final public class TonesEdit extends ViewerContenter{
 				};
 			}
 		},
-		now=new TextTreeSpecifier(TonesEdit.class){
+		now=new TreeTextSpecifier(TonesEdit.class){
 		};
 		(true?now:then).buildAndLaunchApp(args);
 	}

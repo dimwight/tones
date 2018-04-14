@@ -2,9 +2,9 @@ package tones.app.tree;
 
 import facets.core.app.TextView;
 
-public class TextTreeView extends TextView{
+public class TreeTextView extends TextView{
 	private final boolean canEdit;
-	public TextTreeView(String title, boolean canEdit){
+	public TreeTextView(String title, boolean canEdit){
 		super(title);
 		this.canEdit=canEdit;
 	}

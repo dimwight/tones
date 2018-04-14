@@ -1,12 +1,10 @@
 package tones.app.tree;
-import static facets.core.app.ActionViewerTarget.Action.*;
 import facets.core.app.ActionViewerTarget;
 import facets.core.app.AreaRoot;
 import facets.core.app.FeatureHost.LayoutFeatures;
 import facets.core.app.NodeViewable;
 import facets.core.app.SAreaTarget;
 import facets.core.app.SContentAreaTargeter;
-import facets.core.app.StatefulViewable;
 import facets.core.app.ViewableFrame;
 import facets.core.app.ViewerContenter;
 import facets.core.app.ViewerTarget;
@@ -24,20 +22,19 @@ import facets.util.FileSpecifier;
 import facets.util.Stateful;
 import facets.util.TextLines;
 import facets.util.tree.DataNode;
-import facets.util.tree.Nodes;
 import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
 import facets.util.tree.XmlDocRoot;
 import facets.util.tree.XmlSpecifier;
 import java.io.File;
 import java.io.IOException;
-public final class TextTreeContenter extends ViewerContenter{
+public final class TreeTextContenter extends ViewerContenter{
 	public static final int TARGETS_PANE=0,TARGETS_CONTENT=1;
 	public static final String STATE_OFFSETS="selectionOffsets";
 	private final FacetAppSurface app;
 	private Object stateStamp=null;
 	private NodeViewable viewable;
-	TextTreeContenter(Object source,FacetAppSurface app){
+	TreeTextContenter(Object source,FacetAppSurface app){
 		super(source);
 		this.app=app;
 	}
@@ -61,13 +58,13 @@ public final class TextTreeContenter extends ViewerContenter{
 		}
 		else tree=(DataNode)source;
 		final ValueNode state=app.spec.state();
-		NodeViewable viewable=new TextTreeViewable(
+		NodeViewable viewable=new TreeTextViewable(
 				tree,app.ff.statefulClipperSource(false),app);
 		viewable.readSelectionState(state,STATE_OFFSETS);
 		return this.viewable=viewable;
 	}
-	private TextTreeSpecifier textTreeSpec(){
-		return (TextTreeSpecifier)app.spec;
+	private TreeTextSpecifier textTreeSpec(){
+		return (TreeTextSpecifier)app.spec;
 	}
 	@Override
 	protected FacetedTarget[]newContentViewers(ViewableFrame viewable){
@@ -81,7 +78,7 @@ public final class TextTreeContenter extends ViewerContenter{
 	}
 	@Override
 	public LayoutFeatures newContentFeatures(SContentAreaTargeter area){
-		return new TextTreeFeatures(app,area);
+		return new TreeTextFeatures(app,area);
 	}
 	@Override
 	public STarget[]lazyContentAreaElements(SAreaTarget area){

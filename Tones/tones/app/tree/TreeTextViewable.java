@@ -1,5 +1,4 @@
 package tones.app.tree;
-
 import static facets.core.app.ActionViewerTarget.Action.*;
 import facets.core.app.NodeViewable;
 import facets.core.app.PathSelection;
@@ -7,17 +6,15 @@ import facets.core.app.SView;
 import facets.core.app.SViewer;
 import facets.core.app.ValueEdit;
 import facets.core.app.ViewableAction;
-import facets.core.app.StatefulViewable.ClipperSource;
 import facets.core.superficial.app.SSelection;
 import facets.core.superficial.app.SelectionView;
 import facets.facet.app.FacetAppSurface;
 import facets.util.OffsetPath;
 import facets.util.tree.NodePath;
 import facets.util.tree.TypedNode;
-
-public class TextTreeViewable extends NodeViewable{
+public class TreeTextViewable extends NodeViewable{
 	private final FacetAppSurface app;
-	public TextTreeViewable(TypedNode tree,ClipperSource clipperSource,
+	public TreeTextViewable(TypedNode tree,ClipperSource clipperSource,
 			FacetAppSurface app){
 		super(tree,clipperSource);
 		this.app=app;
@@ -53,14 +50,14 @@ public class TextTreeViewable extends NodeViewable{
 	public ViewableAction[]viewerActions(SView view){
 		return textTreeSpec().viewerActions(view);
 	}
-	private TextTreeSpecifier textTreeSpec(){
-		return (TextTreeSpecifier)app.spec;
+	private TreeTextSpecifier textTreeSpec(){
+		return (TreeTextSpecifier)app.spec;
 	}
 	@Override
 	protected void viewerSelectionChanged(SViewer viewer,SSelection selection){
 		if(!textTreeSpec().viewerSelectionChanged(this,viewer,selection))
 			super.viewerSelectionChanged(viewer,selection);
-		putSelectionState(app.spec.state(),TextTreeContenter.STATE_OFFSETS);
+		putSelectionState(app.spec.state(),TreeTextContenter.STATE_OFFSETS);
 	}
 	@Override
 	public String title(){
