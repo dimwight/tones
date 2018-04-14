@@ -40,6 +40,7 @@ import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
 import java.util.HashSet;
 import java.util.Set;
+import tones.app.tree.TextTreeSpecifier;
 import tones.bar.Bars;
 import tones.view.PageView;
 final public class TonesEdit extends ViewerContenter{
@@ -53,7 +54,7 @@ final public class TonesEdit extends ViewerContenter{
 			+"x,x,x,x,"
 			+"x,x,x,x,"
 			+"x,x,"
-//			+"x,x,"
+		+"x,x,"
 			,
 			"s:" 
 			+"16,x,x,x,x,"
@@ -89,7 +90,7 @@ final public class TonesEdit extends ViewerContenter{
 			+"6,g,2,e,6,a,2,f,"
 			+"16,b,"
 			+"4,b"
-	//		+""
+		+""
 		};
 	private final FacetAppSurface app;
 	private ViewableFrame viewable;
@@ -199,7 +200,7 @@ final public class TonesEdit extends ViewerContenter{
 		return false;
 	}
 	public static void main(String[]args){
-		new FacetAppSpecifier(TonesEdit.class){
+		FacetAppSpecifier then=new FacetAppSpecifier(TonesEdit.class){
 			@Override
 			protected void addNatureDefaults(ValueNode root){
 				super.addNatureDefaults(root);
@@ -252,6 +253,9 @@ final public class TonesEdit extends ViewerContenter{
 					}
 				};
 			}
-		}.buildAndLaunchApp(args);
+		},
+		now=new TextTreeSpecifier(TonesEdit.class){
+		};
+		(true?now:then).buildAndLaunchApp(args);
 	}
 }

@@ -19,13 +19,14 @@ import facets.facet.FacetFactory;
 import facets.facet.app.FacetAppSpecifier;
 import facets.facet.app.FacetAppSurface;
 import facets.util.FileSpecifier;
+import facets.util.tree.DataNode;
 import facets.util.tree.Nodes;
 import facets.util.tree.TypedNode;
+import facets.util.tree.ValueNode;
 import facets.util.tree.XmlPolicy;
 import facets.util.tree.XmlSpecifier;
 import java.io.File;
 public abstract class TextTreeSpecifier extends FacetAppSpecifier{
-	public static final String ARG_TREE_SIZE="treeSize";//?
 	public TextTreeSpecifier(Class appClass){
 		super(appClass);
 	}
@@ -60,7 +61,7 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 			}
 			@Override
 			protected SContenter newContenter(Object source){
-				return new TextTreeContenter(source,this);//?
+				return new TextTreeContenter(source,this);
 			}
 		};
 	}
@@ -75,52 +76,41 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 				return false?false:super.dataUsesAttributes();
 			}
 			public XmlSpecifier[]fileSpecifiers(){
-				return false?new XmlSpecifier[]{//?
-					new XmlSpecifier("state.xml","Facets state files",this),
-					super.fileSpecifiers()[0],
-					super.fileSpecifiers()[1],
-				}
-				:super.fileSpecifiers();
+				return new XmlSpecifier[]{
+					new XmlSpecifier("txt.xml","Text in XML",this),
+				};
 			};
 		};
 	}
-	protected Object getInternalContentSource(){//?
-		return false?new File("Test.xml")
-				:Nodes.newTestTree("Test",nature().getOrPutInt(ARG_TREE_SIZE,false?-1:3));
+	int contents;
+	protected Object getInternalContentSource(){
+		return false?new File("Test.txt.xml")
+				:new ValueNode("xml","Content"+contents++,new Object[]{
+						new ValueNode("TextTree","Test",new Object[]{
+							new ValueNode("TextLine",TypedNode.UNTITLED,
+									new Object[]{"First line"}),
+							new ValueNode("TextLine",TypedNode.UNTITLED,
+									new Object[]{"Second line"})})});
 	}
 	protected SView[]newContentViews(NodeViewable viewable){
-		final String rootTitle=((TypedNode)viewable.framed).title();
-		final boolean liveViews=canEditContent(),multiples=true;
-		SView basic=new TreeView(multiples?"Single":"Basic"){//?
-			@Override
-			public String contentIconKey(Object content){
-				return null;
-			}
-			@Override
-			public boolean isLive(){
-				return liveViews;
-			}
-			@Override
-			public boolean allowMultipleSelection(){
-				return false;
-			}
-		},
-		view=new TreeView(multiples?"Multiple":"View"){
+		TypedNode root=(TypedNode)viewable.framed;
+		final String rootCheck=false?root.title():root.type();
+		final boolean liveViews=canEditContent();
+		SView tree=new TreeView("Tree"){
 			@Override
 			public boolean allowMultipleSelection(){
 				return true;
 			}
 			@Override
 			public boolean hideRoot(){
-				return false&&rootTitle.endsWith(TYPE_XML);
+				return rootCheck.endsWith(TYPE_XML);
 			}
 			@Override
 			public boolean isLive(){
 				return liveViews;
 			}
 		};
-		return System.getProperty("XmlViewDebug")!=null?new SView[]{basic,view}//?
-			:new SView[]{view};
+		return new SView[]{tree};
 	}
 	protected STarget[]newContentRootTargets(FacetAppSurface app){
 		return new STarget[]{};
@@ -129,7 +119,6 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 		ViewableAction[]all={COPY,
 				     CUT,
 				     PASTE,
-				     PASTE_INTO,//?
 				     DELETE,
 				     MODIFY,
 				     UNDO,

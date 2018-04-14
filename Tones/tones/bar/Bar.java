@@ -81,7 +81,7 @@ final public class Bar extends Tracer{
 	}
 	public String toString(){
 		return Debug.info(this)+" at="+at
-//			+" incipits=\n"+Objects.toLines(((Collection)incipits).toArray())
+		+" incipits=\n"+Objects.toLines(((Collection)incipits).toArray())
 			;
 	}
 }

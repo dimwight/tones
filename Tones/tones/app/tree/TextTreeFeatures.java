@@ -36,10 +36,10 @@ final public class TextTreeFeatures extends FacetFactory{
 	}
 	@Override
 	public SFacet[]header(){
-		return newAdjustedMenus(app,area);//?
+		return newAdjustedMenus(app,area);
 	}
 	@Override
-	protected STargeter findPaneTargeter(SContentAreaTargeter area){//?
+	protected STargeter findPaneTargeter(SContentAreaTargeter area){
 		return area.elements()[TextTreeContenter.TARGETS_PANE];
 	}
 	@Override
@@ -58,7 +58,7 @@ final public class TextTreeFeatures extends FacetFactory{
 	}
 	@Override
 	protected MenuFacets getServicesContextMenuFacets(){
-		MenuFacets context=new MenuFacets(area,"Tree facets"){//?
+		MenuFacets context=new MenuFacets(area,"Area facets!"){
 			SFacet[]editFacets=new EditFacets(area).getFacets();
 			public SFacet[]getContextFacets(ViewerTarget viewer,SFacet[]viewerFacets){
 				return editFacets.length==0?viewerFacets
