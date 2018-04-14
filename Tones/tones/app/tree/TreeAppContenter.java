@@ -1,5 +1,5 @@
-package app.tree;
-import static app.tree.TreeTargets.*;
+package tones.app.tree;
+import static tones.app.tree.TreeTargets.*;
 import facets.core.app.ActionViewerTarget;
 import facets.core.app.AreaRoot;
 import facets.core.app.FeatureHost.LayoutFeatures;

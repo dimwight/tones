@@ -1,8 +1,8 @@
-package app.tree;
-import static app.tree.TreeTargets.*;
+package tones.app.tree;
 import static facets.core.app.ActionViewerTarget.Action.*;
 import static facets.facet.app.FacetPreferences.*;
 import static facets.util.tree.DataConstants.*;
+import static tones.app.tree.TreeTargets.*;
 import facets.XmlView;
 import facets.core.app.ActionAppSurface;
 import facets.core.app.AppActions;

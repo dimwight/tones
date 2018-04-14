@@ -1,8 +1,8 @@
-package app.tree;
+package tones.app.tree;
 
-import static app.tree.TreeTargets.*;
 import static facets.util.Strings.*;
 import static facets.util.tree.Nodes.*;
+import static tones.app.tree.TreeTargets.*;
 import facets.core.app.Dialogs;
 import facets.core.app.HideableHost;
 import facets.core.app.NodeViewable;

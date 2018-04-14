@@ -1,7 +1,7 @@
-package app.tree;
+package tones.app.tree;
 
-import static app.tree.TreeTargets.*;
 import static facets.facet.app.FileAppActions.*;
+import static tones.app.tree.TreeTargets.*;
 import facets.core.app.AreaTargeter;
 import facets.core.app.FeatureHost;
 import facets.core.app.MenuFacets;

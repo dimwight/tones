@@ -1,4 +1,4 @@
-package app.tree;
+package tones.app.tree;
 
 import static facets.util.tree.Nodes.*;
 import facets.core.app.AppConstants;
