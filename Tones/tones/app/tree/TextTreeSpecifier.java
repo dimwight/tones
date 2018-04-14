@@ -91,7 +91,7 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 	protected SView[]newContentViews(NodeViewable viewable){
 		final String rootTitle=((TypedNode)viewable.framed).title();
 		final boolean liveViews=canEditContent(),multiples=true;
-		SView basic=new TreeView(multiples?"Single":"Basic"){
+		SView basic=new TreeView(multiples?"Single":"Basic"){//?
 			@Override
 			public String contentIconKey(Object content){
 				return null;
@@ -119,14 +119,21 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 				return liveViews;
 			}
 		};
-		return System.getProperty("XmlViewDebug")!=null?new SView[]{basic,view}
+		return System.getProperty("XmlViewDebug")!=null?new SView[]{basic,view}//?
 			:new SView[]{view};
 	}
 	protected STarget[]newContentRootTargets(FacetAppSurface app){
 		return new STarget[]{};
 	}
 	protected ViewableAction[]viewerActions(SView view){
-		ViewableAction[]all={COPY,CUT,PASTE,PASTE_INTO,DELETE,MODIFY,UNDO,REDO};
+		ViewableAction[]all={COPY,
+				     CUT,
+				     PASTE,
+				     PASTE_INTO,
+				     DELETE,
+				     MODIFY,
+				     UNDO,
+				     REDO};
 		return view.isLive()?all:new ViewableAction[]{COPY};
 	}
 	public boolean viewerSelectionChanged(NodeViewable viewable,SViewer viewer,
