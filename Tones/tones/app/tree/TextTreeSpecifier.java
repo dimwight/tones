@@ -24,11 +24,8 @@ import facets.util.tree.TypedNode;
 import facets.util.tree.XmlPolicy;
 import facets.util.tree.XmlSpecifier;
 import java.io.File;
-
 public abstract class TextTreeSpecifier extends FacetAppSpecifier{
-	
 	public static final String ARG_TREE_SIZE="treeSize";
-	
 	public TextTreeSpecifier(Class appClass){
 		super(appClass);
 	}
@@ -42,7 +39,6 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 			contenters[PREFERENCES_VIEW],
 		};
 	}
-	
 	@Override
 	protected final AppActions newActions(ActionAppSurface app){
 		return super.newActions(app);
@@ -51,7 +47,6 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 	public boolean headerIsRibbon(){
 		return args().getOrPutBoolean(ARG_RIBBON,false);
 	}
-	
 	@Override
 	final protected FacetAppSurface newApp(FacetFactory ff,FeatureHost host){
 		return new FacetAppSurface(this,ff){
@@ -69,7 +64,6 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 			}
 		};
 	}
-	
 	protected XmlPolicy xmlPolicy(){
 		return new XmlPolicy(){
 			@Override
@@ -90,12 +84,10 @@ public abstract class TextTreeSpecifier extends FacetAppSpecifier{
 			};
 		};
 	}
-	
 	protected Object getInternalContentSource(){
 		return false?new File("Test.xml")
 				:Nodes.newTestTree("Test",nature().getOrPutInt(ARG_TREE_SIZE,false?-1:3));
 	}
-	
 	protected SView[]newContentViews(NodeViewable viewable){
 		final String rootTitle=((TypedNode)viewable.framed).title();
 		final boolean liveViews=canEditContent(),multiples=true;

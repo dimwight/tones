@@ -36,9 +36,7 @@ import facets.util.tree.XmlDocRoot;
 import facets.util.tree.XmlSpecifier;
 import java.io.File;
 import java.io.IOException;
-
 public final class TextTreeContenter extends ViewerContenter{
-	
 	public static final int TARGETS_PANE=0,TARGETS_CONTENT=1;
 	public static final String STATE_OFFSETS="selectionOffsets";
 	private final FacetAppSurface app;
@@ -50,7 +48,6 @@ public final class TextTreeContenter extends ViewerContenter{
 		this.app=app;
 		treeSpec=(TextTreeSpecifier)app.spec;
 	}
-	
 	@Override
 	protected FacetedTarget[]newContentViewers(ViewableFrame viewable){
 		return ActionViewerTarget.newViewerAreas(viewable,ViewerTarget.newViewFrames(
@@ -65,7 +62,6 @@ public final class TextTreeContenter extends ViewerContenter{
 	public LayoutFeatures newContentFeatures(SContentAreaTargeter area){
 		return new TextTreeFeatures(app,area);
 	}
-	
 	@Override
 	public STarget[]lazyContentAreaElements(SAreaTarget area){
 		return new STarget[]{

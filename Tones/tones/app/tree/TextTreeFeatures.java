@@ -1,5 +1,4 @@
 package tones.app.tree;
-
 import static facets.facet.app.FileAppActions.*;
 import facets.core.app.MenuFacets;
 import facets.core.app.SContentAreaTargeter;
@@ -11,17 +10,14 @@ import facets.facet.FacetFactory;
 import facets.facet.app.FacetAppSurface;
 import facets.util.ItemList;
 import facets.util.TitledList;
-
 final public class TextTreeFeatures extends FacetFactory{
 	private final FacetAppSurface app;
 	private final SContentAreaTargeter area;
-	
 	protected TextTreeFeatures(FacetAppSurface app,SContentAreaTargeter root){
 		super(app.ff);
 		this.app=app;
 		this.area=root;
 	}
-	
 	@Override
 	public SFacet toolbar(){
 		ItemList<SFacet>facets=new ItemList(SFacet.class);
@@ -38,17 +34,14 @@ final public class TextTreeFeatures extends FacetFactory{
 		}
 		return toolGroups(area,HINT_PANEL_MIDDLE,facets.items());
 	}
-	
 	@Override
 	public SFacet[]header(){
 		return newAdjustedMenus(app,area);
 	}
-	
 	@Override
 	protected STargeter findPaneTargeter(SContentAreaTargeter area){
 		return area.elements()[TextTreeContenter.TARGETS_PANE];
 	}
-	
 	@Override
 	protected MenuFacets[]adjustMenuRoots(MenuFacets[]menus){
 		return new MenuFacets[]{
@@ -59,7 +52,6 @@ final public class TextTreeFeatures extends FacetFactory{
 			menus[MENU_HELP],
 		};
 	}
-
 	@Override
 	public SFacet extras(){
 		return false?null:appExtras(app);
@@ -75,7 +67,6 @@ final public class TextTreeFeatures extends FacetFactory{
 		};
 		return context;
 	}
-	
 	@Override
 	public SFacet status(){
 		STargeter targeter=area.selection().elements()[0];
