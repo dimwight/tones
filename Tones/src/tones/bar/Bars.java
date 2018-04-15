@@ -18,13 +18,13 @@ import tones.Tone;
 import tones.Voice;
 import tones.app.TonesEdit;
 public final class Bars extends Tracer implements Titled{//?
-	public static final boolean eighthsCheck=false;
-	private static int instances=1;
+	public static final boolean eighthsCheck=false;//?
+	private static int instances=1;//?
 	private final List<Bar>bars=new ArrayList();
 	private final Map<Voice,VoicePart>parts=new HashMap();
 	private final String title;//?
 	private VoicePart selectedPart;
-	int barEighths;
+	private int barEighths;
 	public Bars(String...codeLines){//?viewable
 		title="Tones"+instances++;//?
 		for(String line:codeLines){
