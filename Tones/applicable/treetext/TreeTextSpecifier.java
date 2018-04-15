@@ -23,7 +23,7 @@ public abstract class TreeTextSpecifier extends FacetAppSpecifier{
 			return TreeTextSpecifier.this.fileSpecifiers(xmlPolicy);
 		};
 	};
-	int contents;
+	protected int contents;
 	public TreeTextSpecifier(Class appClass){
 		super(appClass);
 	}
@@ -66,11 +66,9 @@ public abstract class TreeTextSpecifier extends FacetAppSpecifier{
 	protected Object getInternalContentSource(){
 		return false?new File("Test.txt.xml")
 				:new ValueNode("xml","Content"+contents++,new Object[]{
-						new ValueNode("TextTree","Test",new Object[]{
-							new ValueNode("TextLine",TypedNode.UNTITLED,
-									new Object[]{"First line"}),
-							new ValueNode("TextLine",TypedNode.UNTITLED,
-									new Object[]{"Second line"})})});
+						new ValueNode("TextTree",new Object[]{
+							new ValueNode("TextLine",new Object[]{"First line"}),
+							new ValueNode("TextLine",new Object[]{"Second line"})})});
 	}
 	protected TreeTextContenter newContenter(Object source,FacetAppSurface app){
 		return new TreeTextContenter(source,app){};

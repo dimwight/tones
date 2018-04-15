@@ -30,7 +30,8 @@ public abstract class TreeTextViewable extends NodeViewable{
 		boolean empty=arrayCount==0;
 		TypedNode selectedNode=(TypedNode)selected[0];
 		OffsetPath firstPath=((PathSelection)selection).paths[0];
-		boolean valueSelected=((NodePath)firstPath).valueAt()>=0,
+		boolean valueSelected=firstPath instanceof NodePath
+					&&((NodePath)firstPath).valueAt()>=0,
 				belowRoot=selectedNode.parent()!=tree,nodeSelected=!valueSelected;
 		return action==COPY?nodeSelected||valueSelected
 				:action==MODIFY?valueSelected&&selectionCount==1

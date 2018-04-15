@@ -77,7 +77,7 @@ public abstract class TreeTextContenter extends ViewerContenter{
 				root.readFromSource(file);
 				tree=root.tree;
 				tree.setTitle(file.getName());
-				tree.setValidType("File");
+				tree.setValidType("xml");
 				stateStamp=tree.stateStamp();
 				break;
 			}
@@ -167,7 +167,7 @@ public abstract class TreeTextContenter extends ViewerContenter{
 		SFrameTarget frame=contentFrame();
 		DataNode tree=(DataNode)frame.framed;
 		tree.setTitle(name);
-		tree.setValidType("File");
+		tree.setValidType(tree.type());
 		new XmlDocRoot(tree,xmlPolicy).writeToSink(file);
 		stateStamp=tree.updateStateStamp();
 		if(false)trace(".setSink: area="+Debug.info(app.activeContentTargeter().target().title())

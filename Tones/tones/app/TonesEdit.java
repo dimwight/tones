@@ -38,8 +38,6 @@ import facets.util.app.HostBounds;
 import facets.util.tree.Nodes;
 import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
-import java.util.HashSet;
-import java.util.Set;
 import applicable.treetext.TreeTextSpecifier;
 import tones.bar.Bars;
 import tones.view.PageView;
@@ -253,9 +251,8 @@ final public class TonesEdit extends ViewerContenter{
 					}
 				};
 			}
-		},
-		now=new TreeTextSpecifier(TonesEdit.class){
 		};
-		(true?now:then).buildAndLaunchApp(args);
+		(false?new TreeTextSpecifier(TonesEdit.class){
+		}:true?new TonesEdit_():then).buildAndLaunchApp(args);
 	}
 }
