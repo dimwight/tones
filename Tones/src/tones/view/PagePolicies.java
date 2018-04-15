@@ -30,11 +30,11 @@ import tones.view.pane.PaneItem.PaneTie;
 import tones.view.pane.PaneNote;
 final class PagePolicies extends AvatarPolicies{
 	@Override
-	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){
+	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable? bars){
 		Object content=viewable.content();
 		PaneItem[]items=PaneStaves.newPageItems((Bars)content,(PageView)viewer.view());
 		Object selected=viewable.single();
-		if(selected==content||selected instanceof SView)
+		if(selected==content||selected instanceof SView)?
 			return PathSelection.newMinimal(items);
 		PaneBar matchBar=null;
 		for(PaneItem item:items)
