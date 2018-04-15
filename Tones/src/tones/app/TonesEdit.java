@@ -52,14 +52,14 @@ final public class TonesEdit extends ViewerContenter{
 			+"x,x,x,x,"
 			+"x,x,x,x,"
 			+"x,x,"
-		+"x,x,"
+		+"x,x"
 			,
 			"s:" 
 			+"16,x,x,x,x,"
 			+"8,x,sg,b," 
 			+"4,c,e,d,c,"
 			+"8,b,2,b,1,a,g,4,a,"
-			+"sc,a,g,f,e,d,"
+			+"sc,a,g,f,e,d"
 			,
 			"a:" 
 			+"16,x,x,x,"
@@ -197,8 +197,8 @@ final public class TonesEdit extends ViewerContenter{
 	public boolean hasChanged(){
 		return false;
 	}
-	public static void main(String[]args){
-		FacetAppSpecifier then=new FacetAppSpecifier(TonesEdit.class){
+	private static FacetAppSpecifier newSpecifier(){
+		return new FacetAppSpecifier(TonesEdit.class){
 			@Override
 			protected void addNatureDefaults(ValueNode root){
 				super.addNatureDefaults(root);
@@ -252,7 +252,9 @@ final public class TonesEdit extends ViewerContenter{
 				};
 			}
 		};
-		if(false)then.buildAndLaunchApp(args);
+	}
+	public static void main(String[]args){
+		if(false)newSpecifier().buildAndLaunchApp(args);
 		else TonesEdit_.main(args);
 	}
 }

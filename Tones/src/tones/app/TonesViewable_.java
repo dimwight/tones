@@ -4,10 +4,12 @@ import facets.core.superficial.SFrameTarget;
 import facets.core.superficial.STarget;
 import facets.core.superficial.STextual;
 import facets.facet.app.FacetAppSurface;
+import facets.util.Debug;
 import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
 import applicable.treetext.TreeTextViewable;
 import tones.bar.Bars;
+import tones.bar.VoicePart;
 final class TonesViewable_ extends TreeTextViewable{
 	TonesViewable_(TypedNode tree,ClipperSource clipperSource,
 			FacetAppSurface app){
@@ -16,15 +18,21 @@ final class TonesViewable_ extends TreeTextViewable{
 	public SFrameTarget selectionFrame(){
 		return new SFrameTarget(selection().single()){
 			protected STarget[]lazyElements(){
-				ValueNode node=(ValueNode)selection().single();
-				STextual textual=new STextual("Text",node.values()[0],
+				ValueNode selected=(ValueNode)framed;
+				STextual textual=new STextual("Part",selected.values()[0],
 						new STextual.Coupler(){
 					@Override
 					protected String getText(STextual t){
-						return node.values()[0];
+						return selected.values()[0];
 					}
 					public void textSet(STextual t){
-						node.putAt(0,t.text());
+						String src=t.text();
+						try {
+							VoicePart.checkSource(src);
+							selected.putAt(0,src);
+						} catch (Exception e) {
+							t.trace(".textSet: "+e.getMessage());
+						}
 					}
 					public boolean updateInterim(STextual t){
 						return false;

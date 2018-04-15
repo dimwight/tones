@@ -1,4 +1,5 @@
 package applicable.treetext;
+import static applicable.treetext.TreeTextContenter.*;
 import static facets.core.app.ActionViewerTarget.Action.*;
 import facets.core.app.NodeViewable;
 import facets.core.app.PathSelection;
@@ -20,6 +21,7 @@ public abstract class TreeTextViewable extends NodeViewable{
 			FacetAppSurface app){
 		super(tree,clipperSource);
 		this.app=app;
+		readSelectionState(app.spec.state(),STATE_OFFSETS);
 	}
 	@Override
 	public boolean actionIsLive(SViewer viewer,ViewableAction action){
@@ -47,10 +49,10 @@ public abstract class TreeTextViewable extends NodeViewable{
 	}
 	@Override
 	final protected void viewerSelectionChanged(SViewer viewer,SSelection selection){
-		putSelectionState(app.spec.state(),TreeTextContenter.STATE_OFFSETS);
 		if(viewer.view() instanceof TreeView)
 			super.viewerSelectionChanged(viewer,selection);
 		else nonTreeViewerSelectionChanged(viewer,selection);
+		putSelectionState(app.spec.state(),STATE_OFFSETS);
 	}
 	@Override
 	final protected void viewerSelectionEdited(SViewer viewer,Object edit,

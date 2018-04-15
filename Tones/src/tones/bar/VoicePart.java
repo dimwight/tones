@@ -1,4 +1,5 @@
 package tones.bar;
+import static facets.util.Util.*;
 import static java.lang.Character.*;
 import static tones.ScaleNote.*;
 import static tones.Tone.*;
@@ -62,14 +63,18 @@ public final class VoicePart extends Tracer{
 	private final List<List<Tone>>barTones=new ArrayList();
 	VoicePart(String src){
 		this.src=src;
+		voice=parseSource(src,barTones);
+	}
+	private static Voice parseSource(String src,List<List<Tone>>barTones){
 		String splitVoice[]=src.split(":",2),
 			voiceCode=splitVoice[0].substring(0).toLowerCase();
-		voice=voiceCode.equals("e")?Empty:
+		Voice voice=voiceCode.equals("e")?Empty:
 			voiceCode.equals("b")?Bass:voiceCode.equals("t")?Tenor
 			:voiceCode.equals("a")?Alto:voiceCode.equals("s")?Soprano:null;
 		if(voice==null)throw new IllegalArgumentException(
 				"Voice not specified in src="+src);
-		final Iterator<String>nextCodes=Arrays.asList(splitVoice[1].split(",")).iterator();
+		final Iterator<String>nextCodes=Arrays.asList(
+				splitVoice[1].split(",",-1)).iterator();
 		int codeAt=0,toneAt;
 		Context context=null;
 		Tone before=null;
@@ -83,11 +88,13 @@ public final class VoicePart extends Tracer{
 			int barAt=barTones.size();
 			while(eighthAt<barEighths){
 				int[]toneValues=null;
+				String code="No code";
 				while(toneValues==null&nextCodes.hasNext()){
-					String code=nextCodes.next();
+					code=nextCodes.next();
 					int charCount=code.length();
-					if(charCount==0)throw new IllegalStateException(
-							"Empty code at="+codeAt+" in voice="+voice);
+					if(!code.matches("([abcdefgxs12468-]|\\+){1,2}")) 
+						throw new IllegalStateException(
+							"Bad code '"+code+ "' at="+codeAt+" in voice="+voice);
 					else codeAt++;
 					char firstChar=code.toLowerCase().charAt(0),secondChar=charCount==1?'z'
 							:code.charAt(1);
@@ -107,8 +114,9 @@ public final class VoicePart extends Tracer{
 								:octaved+(toneNote.pitch<scaleNote.pitch?Octave.pitches:0);
 						toneValues=new int[]{tonePitch,eighths};
 					}
-					if(isUpperCase(secondChar))
-						throw new RuntimeException("Not implemented in "+this);
+					else if(isUpperCase(secondChar))
+						throw new RuntimeException("Not implemented for secondChar="+secondChar);
+					else throw new RuntimeException("Unparsed code="+code);
 				}
 				if(toneValues==null){
 					if(padBar&&eighthAt>0)
@@ -133,10 +141,11 @@ public final class VoicePart extends Tracer{
 			if(beam.tones.size()>1)tones.get(tones.size()-1).marks.add(beam);
 			if(eighthsCheck)tones.add(0,new Tone(voice,barAt,-1,(byte)-1,(short)barEighths));
 			barTones.add(tones);
-			if(false)trace(".nextBarTones: barAt="+barAt+" barTones="+barTones.size()+
-					" nextCodes="+nextCodes.hasNext());
+			if(false)printOut("VoicePart.parseSource: barAt="+barAt+
+					" barTones="+barTones.size()+" nextCodes="+nextCodes.hasNext());
 		}
 		barTones.add(Collections.EMPTY_LIST);
+		return voice;
 	}
 	public List<Tone>getBarTones(int barAt){
 		List<Tone>tones=barAt<barTones.size()?
@@ -149,13 +158,16 @@ public final class VoicePart extends Tracer{
 				new Context(voice.midNote,voice.octave,NOTE_NONE));
 		return contexts;
 	}
-	private ScaleNote codeNote(char noteChar){
+	private static ScaleNote codeNote(char noteChar){
 		return noteChar=='x'?ScaleNote.REST
 				:ScaleNote.pitchNote((byte)((noteChar-0x61+5)%Octave.pitches));
 	}
 	@Override
 	protected void traceOutput(String msg){
 		if(voice==Bass)Util.printOut(voice+msg);
+	}
+	public static void checkSource(String src){
+		parseSource(src,new ArrayList());
 	}
 	public String toString(){
 		return Debug.info(this)+": "+voice+" barTones="+barTones.size();

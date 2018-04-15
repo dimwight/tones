@@ -18,7 +18,7 @@ public final class TonesEdit_ extends TreeTextContenter{
 					+"x,x,x,x,"
 					+"x,x,x,x,"
 					+"x,x,"
-					+"x,x,"
+					+"x,x"
 				),
 			newPartNode(
 					"b:"
@@ -57,7 +57,7 @@ public final class TonesEdit_ extends TreeTextContenter{
 					+"8,x,sg,b," 
 					+"4,c,e,d,c,"
 					+"8,b,2,b,1,a,g,4,a,"
-					+"sc,a,g,f,e,d,"
+					+"sc,a,g,f,e,d"
 				)
 		};
 	private static ValueNode newPartNode(String src){

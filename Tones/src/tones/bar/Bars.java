@@ -21,7 +21,7 @@ public final class Bars extends Tracer implements Titled{
 	public static final boolean eighthsCheck=false;
 	private static int instances=1;
 	private final List<Bar>bars=new ArrayList();
-	private final Map<Voice,VoicePart>voiceLines=new HashMap();
+	private final Map<Voice,VoicePart>parts=new HashMap();
 	private final String title;
 	private VoicePart selectedPart;
 	int barEighths;
@@ -29,7 +29,7 @@ public final class Bars extends Tracer implements Titled{
 		title="Tones"+instances++;
 		for(String line:codeLines){
 			VoicePart voice=new VoicePart(line);
-			voiceLines.put(voice.voice,voice);
+			parts.put(voice.voice,voice);
 		}
 		selectPart(Tenor);
 		int barAt=0;
@@ -39,19 +39,19 @@ public final class Bars extends Tracer implements Titled{
 			if(bar!=null)bars.add(bar);
 			else break;
 		}
-		if(false)trace(".readCodes~: bars="+bars.size()+" barAt="+barAt);
+		if(true)trace(".readCodes~: bars="+bars.size()+" barAt="+barAt);
 	}
 	private Bar newPartsBar(int barAt){
 		Map<Integer,Incipit>incipits=new HashMap();
-		for(VoicePart line:voiceLines.values()){
-			List<Tone>tones=line.getBarTones(barAt);
-			if(false&&line.voice==Bass)trace(".newVoiceLinesBar: tones="+tones.size()+" barAt="+barAt);
+		for(VoicePart part:parts.values()){
+			List<Tone>tones=part.getBarTones(barAt);
+			if(false&&part.voice==Bass)trace(".newVoiceLinesBar: tones="+tones.size()+" barAt="+barAt);
 			int barEighthsNow=tones.isEmpty()?barEighths
 					:(eighthsCheck?tones.remove(0):tones.get(0)).eighths;
 			if(tones.isEmpty())continue;
 			if(eighthsCheck&&barEighths!=0&&barEighthsNow!=barEighths)throw new IllegalStateException(
 					"New barEighths="+barEighths+", barEighthsNow="+barEighthsNow+
-					" in "+Debug.info(line));
+					" in "+Debug.info(part));
 			else barEighths=barEighthsNow;
 			int eighthAt=0;
 			for(Tone tone:tones){
@@ -66,7 +66,7 @@ public final class Bars extends Tracer implements Titled{
 	}
 	public void updateSelectedPart(String codes){
 		VoicePart nowPart=new VoicePart(codes),
-			thenPart=voiceLines.replace(nowPart.voice,nowPart);
+			thenPart=parts.replace(nowPart.voice,nowPart);
 		selectPart(nowPart.voice);
 		int count=bars.size();
 		trace(".updateSelectedPart: count=",count);
@@ -87,7 +87,7 @@ public final class Bars extends Tracer implements Titled{
 		}
 	}
 	public void selectPart(Voice voice){
-		selectedPart=voiceLines.get(voice);
+		selectedPart=parts.get(voice);
 	}
 	public VoicePart selectedPart(){
 		return selectedPart;
