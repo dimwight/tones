@@ -1,4 +1,4 @@
-package path;
+package applicable.path;
 import static facets.util.Regex.*;
 import static facets.util.Strings.*;
 import facets.core.app.avatar.PainterMaster.Outlined;

@@ -1,4 +1,4 @@
-package path;
+package applicable.path;
 import facets.core.app.avatar.PainterMaster.Outlined;
 import facets.util.FileSpecifier;
 import facets.util.Tracer;

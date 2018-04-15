@@ -1,4 +1,4 @@
-package tones.app.tree;
+package applicable.treetext;
 import static facets.core.app.ActionViewerTarget.Action.*;
 import facets.core.app.NodeViewable;
 import facets.core.app.PathSelection;
@@ -13,7 +13,7 @@ import facets.facet.app.FacetAppSurface;
 import facets.util.OffsetPath;
 import facets.util.tree.NodePath;
 import facets.util.tree.TypedNode;
-import tones.app.tree.TreeTextContenter.TreeTextView;
+import applicable.treetext.TreeTextContenter.TreeTextView;
 public abstract class TreeTextViewable extends NodeViewable{
 	private final FacetAppSurface app;
 	public TreeTextViewable(TypedNode tree,ClipperSource clipperSource,

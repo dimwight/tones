@@ -1,9 +1,9 @@
-package path;
+package applicable.path;
+import static applicable.path.SvgPath.*;
+import static applicable.path.SvgShape.*;
 import static facets.core.app.AppConstants.*;
 import static facets.util.Doubles.*;
 import static facets.util.tree.Nodes.*;
-import static path.SvgPath.*;
-import static path.SvgShape.*;
 import facets.core.app.AppSurface;
 import facets.core.app.AppSurface.ContentStyle;
 import facets.core.app.FeatureHost;

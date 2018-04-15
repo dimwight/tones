@@ -1,4 +1,4 @@
-package path;
+package applicable.path;
 import facets.core.app.ActionViewerTarget;
 import facets.core.app.AreaRoot;
 import facets.core.app.FeatureHost.LayoutFeatures;
@@ -37,7 +37,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import applicable.FileModifiedChecker;
-import path.PathView.ReadValues;
+import applicable.path.PathView.ReadValues;
 public final class PathContenter extends ViewerContenter{
 	final static class Paths implements AvatarContent{
 		final SvgPath[]paths;

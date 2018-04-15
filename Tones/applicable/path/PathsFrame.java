@@ -1,5 +1,5 @@
-package path;
-import static path.PathContenter.*;
+package applicable.path;
+import static applicable.path.PathContenter.*;
 import facets.core.superficial.SFrameTarget;
 import facets.core.superficial.SNumeric;
 import facets.core.superficial.SNumeric.Coupler;

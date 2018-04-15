@@ -1,4 +1,4 @@
-package tones.app.tree;
+package applicable.treetext;
 import static facets.facet.app.FileAppActions.*;
 import facets.core.app.MenuFacets;
 import facets.core.app.SContentAreaTargeter;

@@ -1,4 +1,4 @@
-package path;
+package applicable.path;
 import facets.core.app.SViewer;
 import facets.core.app.avatar.AvatarContent;
 import facets.core.app.avatar.AvatarPolicies;
@@ -11,7 +11,7 @@ import facets.util.shade.Shade;
 import facets.util.shade.Shades;
 import java.util.ArrayList;
 import java.util.List;
-import path.PathContenter.Paths;
+import applicable.path.PathContenter.Paths;
 final class PathAvatars extends AvatarPolicies{
 	private final PathContenter pc;
 	PathAvatars(PathContenter pc){

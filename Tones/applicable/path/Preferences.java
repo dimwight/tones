@@ -1,5 +1,5 @@
-package path;
-import static path.PathContenter.*;
+package applicable.path;
+import static applicable.path.PathContenter.*;
 import facets.core.app.Dialogs;
 import facets.core.app.HideableHost;
 import facets.core.app.PagedActionDefaults;
@@ -20,7 +20,7 @@ import facets.facet.app.FacetAppSurface;
 import facets.facet.app.FacetPagedSurface;
 import facets.util.tree.ValueNode;
 import java.awt.Dimension;
-import path.PathView.ReadValues;
+import applicable.path.PathView.ReadValues;
 final class Preferences{
 	private final FacetAppSurface app;
 	private final ValueNode state;
