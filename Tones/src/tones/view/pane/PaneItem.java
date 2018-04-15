@@ -50,7 +50,5 @@ public abstract class PaneItem extends Tracer implements AvatarContent{
 	}
 	public static final int STAVE_GRID=11;
 	final static Vector scaleToNoteWidth=new Vector(Bar.WIDTH_NOTE,1);
-	protected boolean marking(){
-		return false;
-	}
+	
 }
