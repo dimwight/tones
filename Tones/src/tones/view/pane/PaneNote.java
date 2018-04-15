@@ -20,7 +20,7 @@ public abstract class PaneNote extends PaneItem{
 	private final String debugString;
 	public final Line tail;
 	public final Vector at;
-	PaneNote(PaneBar bar,Tone tone,PaneIncipit i,double barStaveY,Clef clef){
+	PaneNote(PaneBar bar,Tone tone,PaneIncipit i,double barStaveY,Clef clef){? selected
 		this.bar=bar;
 		this.tone=tone;
 		incipit=i.content;
