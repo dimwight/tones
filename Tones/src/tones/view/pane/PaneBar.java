@@ -31,25 +31,19 @@ public class PaneBar extends PaneItem{
 		staveYs=new double[]{staveY,staveY+STAVE_GRID+staveGap};
 	}
 	PaneItem[]newItems(){
-		final boolean marking=marking();
 		ItemList<PaneIncipit>incipits=new ItemList(PaneIncipit.class);
 		for(Incipit bar:content.incipits)
 			incipits.addItem(new PaneIncipit(bar,staveX));
 		for(PaneIncipit incipit:incipits)incipit.scaleStaveX(staveXScale);
-		ItemList<PaneNote>voiceNotes=new ItemList(PaneItem.class);
 		ItemList<PaneItem>items=new ItemList(PaneItem.class);
-		if(!marking)items.addItem(this);
-		final Voice selected=null;
 		for(PaneIncipit incipit:incipits)
 			for(Tone tone:incipit.content.tones){
-				final Voice voice=tone.voice;
+				Voice voice=tone.voice;
 				Clef clef=Clef.forVoice(voice);
 				PaneNote note=new PaneNote(this,tone,incipit,staveYs[clef.staveAt],clef,
 						voice==selectedVoice);
 				 items.add(note);
 			}
-		if(!voiceNotes.isEmpty())
-			items.addItem(new VoiceNotes(voiceNotes.items()));
 		return items.items();
 	}
 	public String toString(){
