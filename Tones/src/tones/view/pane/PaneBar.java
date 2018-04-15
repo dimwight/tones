@@ -14,7 +14,7 @@ import tones.Tone;
 import tones.Voice;
 import tones.bar.Bar;
 import tones.bar.Incipit;
-import tones.view.pane.PaneItem.PaneBeam;
+
 public class PaneBar extends PaneItem{
 	public final double staveX,staveYs[],staveGap,staveXScale,staveWidth;
 	
