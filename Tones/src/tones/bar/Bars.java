@@ -25,7 +25,7 @@ public final class Bars extends Tracer implements Titled{
 	private final String title;
 	private VoicePart selectedPart;
 	int barEighths;
-	public Bars(String...codeLines){?
+	public Bars(String...codeLines){?viewable
 		title="Tones"+instances++;
 		for(String line:codeLines){
 			VoicePart voice=new VoicePart(line);
@@ -86,7 +86,7 @@ public final class Bars extends Tracer implements Titled{
 			}
 		}
 	}
-	public void selectPart(Voice voice){?
+	public void selectPart(Voice voice){
 		selectedPart=parts.get(voice);
 	}
 	public VoicePart selectedPart(){?-
