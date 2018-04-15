@@ -17,12 +17,7 @@ import tones.bar.Incipit;
 import tones.view.pane.PaneItem.PaneBeam;
 public class PaneBar extends PaneItem{
 	public final double staveX,staveYs[],staveGap,staveXScale,staveWidth;
-	public final class VoiceNotes extends PaneItem{
-		public final PaneItem[]items;
-		public VoiceNotes(PaneItem[]items){
-			this.items=items;
-		}
-	}
+	
 	public final Bar content;
 	private final Voice selectedVoice;
 	PaneBar(Bar content,double staveX,double staveY,double staveGap,
@@ -50,15 +45,8 @@ public class PaneBar extends PaneItem{
 				final Voice voice=tone.voice;
 				Clef clef=Clef.forVoice(voice);
 				PaneNote note=new PaneNote(this,tone,incipit,staveYs[clef.staveAt],clef,
-						voice==selectedVoice){
-					@Override
-					public boolean marking(){
-						return marking;
-					}
-				};
-				if(marking)return new PaneItem[]{note};
-				else if(selected!=null&&voice==selected)voiceNotes.add(note);
-				else items.add(note);
+						voice==selectedVoice);
+				 items.add(note);
 			}
 		if(!voiceNotes.isEmpty())
 			items.addItem(new VoiceNotes(voiceNotes.items()));
