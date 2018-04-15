@@ -17,21 +17,21 @@ import java.util.Set;
 import tones.Tone;
 import tones.Voice;
 import tones.app.TonesEdit;
-public final class Bars extends Tracer implements Titled{
+public final class Bars extends Tracer implements Titled{//?
 	public static final boolean eighthsCheck=false;
 	private static int instances=1;
 	private final List<Bar>bars=new ArrayList();
 	private final Map<Voice,VoicePart>parts=new HashMap();
-	private final String title;
+	private final String title;//?
 	private VoicePart selectedPart;
 	int barEighths;
 	public Bars(String...codeLines){//?viewable
-		title="Tones"+instances++;
+		title="Tones"+instances++;//?
 		for(String line:codeLines){
 			VoicePart voice=new VoicePart(line);
 			parts.put(voice.voice,voice);
 		}
-		selectPart(Tenor);//?
+		selectPart(Tenor);//? Empty
 		int barAt=0;
 		barEighths=0;
 		while(true){
@@ -89,7 +89,7 @@ public final class Bars extends Tracer implements Titled{
 	public void selectPart(Voice voice){
 		selectedPart=parts.get(voice);
 	}
-	public VoicePart selectedPart(){//?-
+	public VoicePart selectedPart(){
 		return selectedPart;
 	}
 	public int barCount(){
