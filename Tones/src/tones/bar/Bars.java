@@ -31,7 +31,7 @@ public final class Bars extends Tracer implements Titled{
 			VoicePart voice=new VoicePart(line);
 			parts.put(voice.voice,voice);
 		}
-		selectPart(Tenor);
+		selectPart(Tenor);//?
 		int barAt=0;
 		barEighths=0;
 		while(true){
