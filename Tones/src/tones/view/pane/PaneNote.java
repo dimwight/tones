@@ -17,12 +17,15 @@ public abstract class PaneNote extends PaneItem{
 	public final Incipit incipit;
 	public final double staveX,staveY,ledgerLineShift,dotAt;
 	public final int ledgerLines;
+	public boolean selected;
 	private final String debugString;
 	public final Line tail;
 	public final Vector at;
-	PaneNote(PaneBar bar,Tone tone,PaneIncipit i,double barStaveY,Clef clef){? selected
+	PaneNote(PaneBar bar,Tone tone,PaneIncipit i,double barStaveY,Clef clef, 
+			boolean selected){
 		this.bar=bar;
 		this.tone=tone;
+		this.selected=selected;
 		incipit=i.content;
 		staveX=i.scaledStaveX(tone);
 		final int stavePitch=tone.pitch-clef.staveMidPitch,

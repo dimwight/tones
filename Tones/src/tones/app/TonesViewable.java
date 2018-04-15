@@ -32,7 +32,7 @@ final class TonesViewable extends ViewableFrame{
 						return bars.selectedPart().src;
 					}
 					public void textSet(STextual t){
-						bars.updateSelectedPart(t.text());
+						bars.updatePart(t.text());
 					}
 					public boolean updateInterim(STextual t){
 						return false;

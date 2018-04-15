@@ -24,12 +24,14 @@ public class PaneBar extends PaneItem{
 		}
 	}
 	public final Bar content;
+	private final Voice selectedVoice;
 	PaneBar(Bar content,double staveX,double staveY,double staveGap,
-			double staveXScale){? selectedVoice
+			double staveXScale,Voice selectedVoice){
 		this.content=content;
 		this.staveX=staveX;
 		this.staveGap=staveGap;
 		this.staveXScale=staveXScale;
+		this.selectedVoice=selectedVoice;
 		staveWidth=content.width*staveXScale;
 		staveYs=new double[]{staveY,staveY+STAVE_GRID+staveGap};
 	}
@@ -47,7 +49,8 @@ public class PaneBar extends PaneItem{
 			for(Tone tone:incipit.content.tones){
 				final Voice voice=tone.voice;
 				Clef clef=Clef.forVoice(voice);
-				PaneNote note=new PaneNote(this,tone,incipit,staveYs[clef.staveAt],clef){
+				PaneNote note=new PaneNote(this,tone,incipit,staveYs[clef.staveAt],clef,
+						voice==selectedVoice){
 					@Override
 					public boolean marking(){
 						return marking;

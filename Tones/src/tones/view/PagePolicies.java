@@ -30,20 +30,10 @@ import tones.view.pane.PaneItem.PaneTie;
 import tones.view.pane.PaneNote;
 final class PagePolicies extends AvatarPolicies{
 	@Override
-	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable? bars){
+	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){//? bars
 		Object content=viewable.content();
 		PaneItem[]items=PaneStaves.newPageItems((Bars)content,(PageView)viewer.view());
-		Object selected=viewable.single();
-		if(selected==content||selected instanceof SView)?
-			return PathSelection.newMinimal(items);
-		PaneBar matchBar=null;
-		for(PaneItem item:items)
-			if(matchBar!=null)break;
-			else if(item instanceof PaneBar&&((PaneBar)item).content==selected)
-				matchBar=(PaneBar)item;
-		if(matchBar==null)throw new IllegalStateException(
-				"Null matchBar in "+Debug.info(this));
-		return new PathSelection(items,new ArrayPath(items,matchBar));
+		return PathSelection.newMinimal(items);
 	}
 	@Override
 	public AvatarPolicy avatarPolicy(SViewer viewer,final AvatarContent content,

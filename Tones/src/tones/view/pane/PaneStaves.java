@@ -21,9 +21,11 @@ import tones.view.pane.PaneItem.PaneTie;
 public final class PaneStaves{
 	static final double STAVE_X_SCALE_DEFAULT=1.5;
 	private final List<Bar>thisBars=new ArrayList();
+	private final Voice selectedVoice;
 	double rise=0,staveGap=0,fall=0,staveXUsed=0;
 	final Bar endBar;
-	PaneStaves(Iterator<Bar>bars,Bar bar,final double useWidth){
+	PaneStaves(Iterator<Bar>bars,Bar bar,final double useWidth,Voice selectedVoice){
+		this.selectedVoice=selectedVoice;
 		while(bars.hasNext()||bar!=null){
 			if(bar==null)bar=bars.next();
 			double barWidth=bar.width;
@@ -41,7 +43,7 @@ public final class PaneStaves{
 		double paneX=0;
 		ItemList<PaneItem>items=new ItemList(PaneItem.class);
 		for(Bar bar:thisBars){
-			PaneBar paneBar=new PaneBar(bar,paneX,paneY,staveGap,paneXScale);
+			PaneBar paneBar=new PaneBar(bar,paneX,paneY,staveGap,paneXScale,selectedVoice);
 			items.addItems(paneBar.newItems());
 			paneX+=paneBar.staveWidth;
 		}
@@ -87,7 +89,8 @@ public final class PaneStaves{
 		ItemList<PaneItem>items=new ItemList(PaneItem.class);
 		Bar bar=null;
 		while(bars.hasNext()||bar!=null){
-			PaneStaves block=new PaneStaves(bars,bar,paneWidth/unitWidth);
+			PaneStaves block=new PaneStaves(bars,bar,paneWidth/unitWidth,
+					content.selectedPart().voice);
 			bar=block.endBar;
 			double blockStaveHeight=PaneItem.STAVE_GRID*2+block.staveGap+block.fall;
 			if(((paneY+=block.rise)+blockStaveHeight)*pitchHeight>useHeight)break;
