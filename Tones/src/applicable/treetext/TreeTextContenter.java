@@ -53,11 +53,11 @@ public abstract class TreeTextContenter extends ViewerContenter{
 			return viewable;
 		}
 	}
-	private final FacetAppSurface app;
+	protected final FacetAppSurface app;
 	private final XmlPolicy xmlPolicy;
 	private Object stateStamp=null;
 	private NodeViewable viewable;
-	TreeTextContenter(Object source,FacetAppSurface app){
+	public TreeTextContenter(Object source,FacetAppSurface app){
 		super(source);
 		this.app=app;
 		xmlPolicy=textTreeSpec().xmlPolicy;

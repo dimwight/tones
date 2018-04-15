@@ -10,10 +10,10 @@ import facets.facet.FacetFactory;
 import facets.facet.app.FacetAppSurface;
 import facets.util.ItemList;
 import facets.util.TitledList;
-final public class TreeTextFeatures extends FacetFactory{
+public class TreeTextFeatures extends FacetFactory{
 	private final FacetAppSurface app;
 	private final SContentAreaTargeter area;
-	protected TreeTextFeatures(FacetAppSurface app,SContentAreaTargeter root){
+	public TreeTextFeatures(FacetAppSurface app,SContentAreaTargeter root){
 		super(app.ff);
 		this.app=app;
 		this.area=root;

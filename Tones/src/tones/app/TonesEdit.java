@@ -252,7 +252,7 @@ final public class TonesEdit extends ViewerContenter{
 				};
 			}
 		};
-		(false?new TreeTextSpecifier(TonesEdit.class){
-		}:true?new TonesEdit_():then).buildAndLaunchApp(args);
+		if(false)then.buildAndLaunchApp(args);
+		else TonesEdit_.main(args);
 	}
 }
