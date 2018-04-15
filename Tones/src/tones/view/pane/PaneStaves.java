@@ -70,14 +70,19 @@ public final class PaneStaves{
 				other=check;
 				break;
 			}
-		return new PaneTie(isBefore?tied:other,isBefore?other:tied,tied.bar);
+		return new PaneTie(isBefore?tied:other,isBefore?other:tied,tied.bar,
+				selectedVoice==tied.tone.voice);
 	}
 	private PaneItem newPaneBeam(Beam mark,PaneNote[]staveNotes){
 		ItemList<PaneNote>beamed=new ItemList(PaneNote.class);
+		boolean selected=false;
 		for(Tone tone:mark.tones)
 			for(PaneNote check:staveNotes)
-				if(check.tone==tone)beamed.add(check);
-		return new PaneBeam(beamed.items());
+				if(check.tone==tone){
+					selected=selectedVoice==tone.voice;
+					beamed.add(check);
+				}
+		return new PaneBeam(beamed.items(),selected);
 	}
 	public static PaneItem[]newPageItems(Bars content,PageView page){
 		Iterator<Bar>bars=content.barsFrom(page.barAt()).iterator();

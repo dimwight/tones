@@ -14,9 +14,11 @@ import tones.view.pane.PaneItem.PaneBeam;
 public final class BeamPainters extends PagePainters{
 	private final Line line;
 	private final boolean tailsUp;
+	private final boolean paintSelected;
 	public BeamPainters(PageView page,PaneBeam beam,PainterSource p){
 		super(page,p);
 		Line geom=beam.geom;
+		paintSelected=beam.from.selected;
 		tailsUp=beam.from.tone.voice.tailsUp;
 		line=new Line(new Point(geom.from.at().plus(beam.from.at).scaled(scaleToPage)),
 			new Point(geom.to.at().plus(beam.to.at).scaled(scaleToPage)));
@@ -29,7 +31,7 @@ public final class BeamPainters extends PagePainters{
 		ItemList<Painter>painters=new ItemList(Painter.class);
 		for(int i=0;i<4;i++){
 			from.shift(shift);to.shift(shift);
-			painters.addItem(p.line(new Line(from,to),Shades.blue,1,false));
+			painters.addItem(p.line(new Line(from,to),selectionShade(paintSelected),1,false));
 		}
 		return painters.items();
 	}

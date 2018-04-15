@@ -16,10 +16,12 @@ public abstract class PaneItem extends Tracer implements AvatarContent{
 		public final Voice voice;
 		public final Vector beforeAt,afterAt;
 		public final PaneNote before,after;
-		PaneTie(PaneNote before,PaneNote after,PaneBar bar){
+		public final boolean selected;
+		PaneTie(PaneNote before,PaneNote after,PaneBar bar,boolean selected){
 			this.before=before;
 			this.after=after;
 			this.bar=bar;
+			this.selected=selected;
 			type=after==null?AfterNull:before==null?BeforeNull:BeforeAfter;
 			voice=(type==AfterNull?before:after).tone.voice;
 			this.beforeAt=before==null?null:before.staveAt();
@@ -36,8 +38,10 @@ public abstract class PaneItem extends Tracer implements AvatarContent{
 		private final PaneNote[]notes;
 		public final Line geom;
 		public final PaneNote from,to;
-		PaneBeam(PaneNote[]notes){
+		public final boolean selected;
+		PaneBeam(PaneNote[]notes,boolean selected){
 			this.notes=notes;
+			this.selected=selected;
 			Tone tone=notes[0].tone;
 			if(false&&tone.barAt==6&&tone.voice==Voice.Alto)trace(": ",notes);
 			from=notes[0];

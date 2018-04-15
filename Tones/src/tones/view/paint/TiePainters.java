@@ -23,6 +23,7 @@ public final class TiePainters extends PagePainters{
 	private final double noteWidth,noteHeight;
 	private final PaneTie tie;
 	private final boolean tailsUp;
+	private final Shade shade;
 	public TiePainters(PageView page,PaneTie tie,PainterSource p){
 		super(page,p);
 		this.tie=tie;
@@ -30,6 +31,7 @@ public final class TiePainters extends PagePainters{
 		noteWidth=Bar.WIDTH_NOTE*unitWidth;
 		noteHeight=pitchHeight*2;
 		tailsUp=tie.voice.tailsUp;
+		shade=selectionShade(tie.selected);
 	}
 	@Override
 	public
@@ -40,7 +42,6 @@ public final class TiePainters extends PagePainters{
 	}
 	private Painter beforeNull(PaneTie tie){
 		double x=tie.bar.staveX,y=tie.afterAt.y;
-		Shade shade=true?blue:red;
 		Painter painter=p.mastered(BeforeNull_.newOutlined(shade,null,false));
 		p.applyTransforms(new Transform[]{
 			p.transformAt(x*unitWidth,y*pitchHeight-noteHeight),
@@ -54,7 +55,6 @@ public final class TiePainters extends PagePainters{
 				x=tie.beforeAt.x+pastNote,
 				y=tie.beforeAt.y;
 		final boolean isBoth=type==BeforeAfter;
-		Shade shade=true?blue:isBoth?magenta:cyan;
 		Outlined path=(isBoth?BeforeAfter_:true?AfterNullLong_:AfterNullShort_
 				).newOutlined(shade,null,false);
 		Vector bounds=path.bounds().scaled(noteHeight);

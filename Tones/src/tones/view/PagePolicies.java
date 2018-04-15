@@ -1,7 +1,6 @@
 package tones.view;
 import static tones.view.PageView.*;
 import facets.core.app.PathSelection;
-import facets.core.app.SView;
 import facets.core.app.SViewer;
 import facets.core.app.avatar.AvatarContent;
 import facets.core.app.avatar.AvatarPolicies;
@@ -12,7 +11,6 @@ import facets.core.app.avatar.Painter;
 import facets.core.app.avatar.PainterSource;
 import facets.core.app.avatar.PlaneView;
 import facets.core.superficial.app.SSelection;
-import facets.util.ArrayPath;
 import facets.util.Debug;
 import facets.util.shade.Shades;
 import tones.bar.Bars;
@@ -22,12 +20,11 @@ import tones.view.paint.NotePainters;
 import tones.view.paint.PagePainters;
 import tones.view.paint.TiePainters;
 import tones.view.pane.PaneBar;
-import tones.view.pane.PaneBar.VoiceNotes;
-import tones.view.pane.PaneStaves;
 import tones.view.pane.PaneItem;
 import tones.view.pane.PaneItem.PaneBeam;
 import tones.view.pane.PaneItem.PaneTie;
 import tones.view.pane.PaneNote;
+import tones.view.pane.PaneStaves;
 final class PagePolicies extends AvatarPolicies{
 	@Override
 	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){//? bars
@@ -43,8 +40,6 @@ final class PagePolicies extends AvatarPolicies{
 		final PagePainters painters=
 			item instanceof PaneNote?
 				new NotePainters(view,(PaneNote)item,p)
-			:false&&item instanceof VoiceNotes?
-					NotePainters.newVoiceNotePainters(view,(VoiceNotes)item,p)
 			:item instanceof PaneBar?new BarPainters(view,(PaneBar)item,p)
 			:item instanceof PaneTie?new TiePainters(view,(PaneTie)item,p)
 			:item instanceof PaneBeam?new BeamPainters(view,(PaneBeam)item,p)

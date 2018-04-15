@@ -10,7 +10,7 @@ import tones.Clef;
 import tones.Tone;
 import tones.bar.Bar;
 import tones.bar.Incipit;
-public abstract class PaneNote extends PaneItem{
+public class PaneNote extends PaneItem{
 	public static final int DOT_NONE=0,DOT_LEVEL=1,DOT_BELOW=-1;
 	public final PaneBar bar;
 	public final Tone tone;

@@ -6,9 +6,11 @@ import facets.util.ItemList;
 import facets.util.Tracer;
 import facets.util.geom.Line;
 import facets.util.geom.Vector;
+import facets.util.shade.Shade;
 import facets.util.shade.Shades;
 import tones.view.PageView;
 public abstract class PagePainters extends Tracer{
+	private final Shade SHADE_NOTE_PLAIN=Shades.blue,SHADE_NOTE_SELECTED=Shades.green;
 	static final int TEXT_POINTS=13;
 	final PageView page;
 	final PainterSource p;
@@ -46,5 +48,8 @@ public abstract class PagePainters extends Tracer{
 	}
 	public Painter[]newPickPainters(){
 		throw new RuntimeException("Not implemented in "+Debug.info(this));
+	}
+	protected final Shade selectionShade(boolean selected){
+		return selected?SHADE_NOTE_SELECTED:SHADE_NOTE_PLAIN;
 	}
 }
