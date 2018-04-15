@@ -39,7 +39,7 @@ public final class Bars extends Tracer implements Titled{
 			if(bar!=null)bars.add(bar);
 			else break;
 		}
-		if(true)trace(".readCodes~: bars="+bars.size()+" barAt="+barAt);
+		if(false)trace(": bars="+bars.size()+" barAt="+barAt);
 	}
 	private Bar newPartsBar(int barAt){
 		Map<Integer,Incipit>incipits=new HashMap();
