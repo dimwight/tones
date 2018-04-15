@@ -25,7 +25,7 @@ public class PaneBar extends PaneItem{
 	}
 	public final Bar content;
 	PaneBar(Bar content,double staveX,double staveY,double staveGap,
-			double staveXScale){
+			double staveXScale){? selectedVoice
 		this.content=content;
 		this.staveX=staveX;
 		this.staveGap=staveGap;
