@@ -25,7 +25,7 @@ public final class Bars extends Tracer implements Titled{
 	private final String title;
 	private VoicePart selectedPart;
 	int barEighths;
-	public Bars(String...codeLines){
+	public Bars(String...codeLines){?
 		title="Tones"+instances++;
 		for(String line:codeLines){
 			VoicePart voice=new VoicePart(line);
@@ -64,12 +64,12 @@ public final class Bars extends Tracer implements Titled{
 		}
 		return incipits.isEmpty()?null:new Bar(barAt++,incipits.values(),barEighths);
 	}
-	public void updateSelectedPart(String codes){
-		VoicePart nowPart=new VoicePart(codes),
+	public void updatePart(String src){
+		VoicePart nowPart=new VoicePart(),
 			thenPart=parts.replace(nowPart.voice,nowPart);
 		selectPart(nowPart.voice);
 		int count=bars.size();
-		trace(".updateSelectedPart: count=",count);
+		trace(".updatePart: count=",count);
 		for(int start=true?0:count-5,stop=false?2:count,
 				barAt=start;barAt<stop;barAt++){
 			List<Tone>thenTones=thenPart.getBarTones(barAt),
@@ -86,10 +86,10 @@ public final class Bars extends Tracer implements Titled{
 			}
 		}
 	}
-	public void selectPart(Voice voice){
+	public void selectPart(Voice voice){?
 		selectedPart=parts.get(voice);
 	}
-	public VoicePart selectedPart(){
+	public VoicePart selectedPart(){?-
 		return selectedPart;
 	}
 	public int barCount(){
