@@ -50,7 +50,7 @@ final class TonesViewable extends ViewableFrame{
 			barAt=page.barAt();
 			return page.avatars().newAvatarSelection(viewer,selection);
 		}
-		return((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(
+		else return((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(
 				((Bars)framed).newDebugRoot(barAt)));
 	}
 	protected void viewerSelectionChanged(SViewer viewer,SSelection selection){

@@ -43,8 +43,8 @@ import tones.bar.Bars;
 import tones.view.PageView;
 final public class TonesEdit extends ViewerContenter{
 	public static void main(String[]args){
-		if(true)newSpecifier().buildAndLaunchApp(args);
-		else TonesEdit_.main(args);
+		if(false)newSpecifier().buildAndLaunchApp(args);
+		else TonesEdit2.main(args);
 	}
 	public static final String ARG_BAR_FROM="barFrom",ARG_RESCALE="rescale";
 	public static final char CODE_SCALE='s',CODE_OCTAVE_UP='+',CODE_OCTAVE_DOWN='-',

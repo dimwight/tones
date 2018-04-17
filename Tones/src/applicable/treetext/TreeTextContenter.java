@@ -91,25 +91,9 @@ public abstract class TreeTextContenter extends ViewerContenter{
 	}
 	@Override
 	final protected FacetedTarget[]newContentViewers(ViewableFrame viewable){
-		TypedNode root=(TypedNode)viewable.framed;
-		boolean liveViews=textTreeSpec().canEditContent();
-		TreeView debug=new TreeView("Debug"){
-			@Override
-			public boolean allowMultipleSelection(){
-				return true;
-			}
-			@Override
-			public boolean hideRoot(){
-				return root.type().endsWith(TYPE_XML);
-			}
-			@Override
-			public boolean isLive(){
-				return liveViews;
-			}
-		};
+		TreeView tree=((TreeTextViewable)viewable).debugView;
 		return ActionViewerTarget.newViewerAreas(viewable,
-				ViewerTarget.newViewFrames(newViews(debug,liveViews)
-		));
+				newViewTargets(tree,tree.isLive()));
 	}
 	@Override
 	final public STarget[]lazyContentAreaElements(SAreaTarget area){
@@ -129,8 +113,8 @@ public abstract class TreeTextContenter extends ViewerContenter{
 	protected TreeTextViewable newViewable(DataNode tree){
 		return new TreeTextViewable(tree,app.ff.statefulClipperSource(false),app){};
 	}
-	protected SView[]newViews(TreeView debugTree,boolean liveViews){
-		return new SView[]{debugTree,new TreeTextView("Text",liveViews)};
+	protected SFrameTarget[] newViewTargets(TreeView debugTree,boolean liveViews){
+		return ViewerTarget.newViewFrames(new SView[]{debugTree,new TreeTextView("Text",liveViews)});
 	}
 	protected STarget[]newContentRootTargets(){
 		return new STarget[]{};

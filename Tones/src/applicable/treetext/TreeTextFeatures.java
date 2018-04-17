@@ -21,7 +21,7 @@ public class TreeTextFeatures extends FacetFactory{
 	@Override
 	public SFacet toolbar(){
 		ItemList<SFacet>facets=new ItemList(SFacet.class);
-		if(app.spec.canEditContent()){//?view?
+		if(app.spec.canEditContent()){
 			SFacet[]editTools=editTools(area.viewer());
 			TitledList<STargeter>files=!app.spec.canSaveContent()?null
 					:new TitledList(Notice.findElement(
@@ -44,7 +44,7 @@ public class TreeTextFeatures extends FacetFactory{
 	}
 	@Override
 	protected MenuFacets[]adjustMenuRoots(MenuFacets[]menus){
-		return new MenuFacets[]{//? view
+		return new MenuFacets[]{
 			menus[MENU_APP],
 			menus[MENU_EDIT],
 			menus[MENU_PANE],
@@ -54,7 +54,7 @@ public class TreeTextFeatures extends FacetFactory{
 	}
 	@Override
 	public SFacet extras(){
-		return false?null:appExtras(app);//?
+		return false?null:appExtras(app);
 	}
 	@Override
 	protected MenuFacets getServicesContextMenuFacets(){

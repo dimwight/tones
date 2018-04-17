@@ -13,7 +13,7 @@ import facets.core.app.avatar.PlaneView;
 import facets.core.superficial.app.SSelection;
 import facets.util.Debug;
 import facets.util.shade.Shades;
-import tones.bar.Bars;
+import tones.bar.Bars2;
 import tones.view.paint.BarPainters;
 import tones.view.paint.BeamPainters;
 import tones.view.paint.NotePainters;
@@ -25,11 +25,12 @@ import tones.view.pane.PaneItem.PaneBeam;
 import tones.view.pane.PaneItem.PaneTie;
 import tones.view.pane.PaneNote;
 import tones.view.pane.PaneStaves;
-final class PagePolicies extends AvatarPolicies{
+import tones.view.pane.PaneStaves2;
+final class PagePolicies2 extends AvatarPolicies{
 	@Override
 	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){
-		Bars bars=(Bars)viewable.content();
-		PaneItem[]items=PaneStaves.newPageItems(bars,(PageView)viewer.view());
+		Bars2 bars=(Bars2)viewable.content();
+		PaneItem[]items=PaneStaves2.newPageItems(bars,(PageView)viewer.view());
 		return PathSelection.newMinimal(items);
 	}
 	@Override

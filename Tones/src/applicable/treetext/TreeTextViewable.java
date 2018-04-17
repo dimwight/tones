@@ -1,6 +1,8 @@
 package applicable.treetext;
 import static applicable.treetext.TreeTextContenter.*;
 import static facets.core.app.ActionViewerTarget.Action.*;
+import static facets.util.tree.DataConstants.*;
+import facets.core.app.ActionViewerTarget;
 import facets.core.app.NodeViewable;
 import facets.core.app.PathSelection;
 import facets.core.app.SView;
@@ -11,17 +13,34 @@ import facets.core.app.ValueEdit;
 import facets.core.app.ViewableAction;
 import facets.core.superficial.app.SSelection;
 import facets.facet.app.FacetAppSurface;
+import facets.util.Debug;
 import facets.util.OffsetPath;
 import facets.util.tree.NodePath;
 import facets.util.tree.TypedNode;
 import applicable.treetext.TreeTextContenter.TreeTextView;
 public abstract class TreeTextViewable extends NodeViewable{
 	private final FacetAppSurface app;
+	final TreeView debugView;
 	public TreeTextViewable(TypedNode tree,ClipperSource clipperSource,
 			FacetAppSurface app){
 		super(tree,clipperSource);
 		this.app=app;
 		readSelectionState(app.spec.state(),STATE_OFFSETS);
+		boolean liveViews=app.spec.canEditContent();
+		debugView=new TreeView("Debug"){
+			@Override
+			public boolean allowMultipleSelection(){
+				return true;
+			}
+			@Override
+			public boolean hideRoot(){
+				return tree.type().endsWith(TYPE_XML);
+			}
+			@Override
+			public boolean isLive(){
+				return liveViews;
+			}
+		};
 	}
 	@Override
 	public boolean actionIsLive(SViewer viewer,ViewableAction action){
@@ -44,7 +63,7 @@ public abstract class TreeTextViewable extends NodeViewable{
 	}
 	@Override
 	final protected SSelection newViewerSelection(SViewer viewer){
-		if(viewer.view()instanceof TreeView)return selection();
+		if(viewer.view()==debugView)return selection();
 		else return newNonTreeViewerSelection(viewer);
 	}
 	@Override
@@ -102,6 +121,10 @@ public abstract class TreeTextViewable extends NodeViewable{
 		String title=super.title();
 		int dotAt=title.indexOf(".");
 		return dotAt<0?title:title.substring(0,dotAt);
+	}
+	@Override
+	public String toString(){
+		return Debug.info(this);
 	}
 	@Override
 	public boolean editSelection(){

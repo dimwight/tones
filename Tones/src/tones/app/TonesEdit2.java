@@ -1,9 +1,20 @@
 package tones.app;
+import static facets.facet.FacetFactory.*;
+import facets.core.app.AreaRoot;
+import facets.core.app.SAreaTarget;
 import facets.core.app.SContentAreaTargeter;
+import facets.core.app.SView;
+import facets.core.app.SViewer;
+import facets.core.app.TreeView;
 import facets.core.superficial.SFacet;
+import facets.core.superficial.SFrameTarget;
 import facets.core.superficial.STargeter;
+import facets.facet.AreaFacets;
+import facets.facet.FacetFactory;
+import facets.facet.ViewerAreaMaster;
 import facets.facet.app.FacetAppSurface;
 import facets.util.tree.DataNode;
+import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
 import facets.util.tree.XmlPolicy;
 import facets.util.tree.XmlSpecifier;
@@ -11,7 +22,13 @@ import applicable.treetext.TreeTextContenter;
 import applicable.treetext.TreeTextFeatures;
 import applicable.treetext.TreeTextSpecifier;
 import applicable.treetext.TreeTextViewable;
-public final class TonesEdit_ extends TreeTextContenter{
+import applicable.treetext.TreeTextContenter.TreeTextView;
+import tones.bar.Bars;
+import tones.view.PageView;
+public final class TonesEdit2 extends TreeTextContenter{
+	public static void main(String[]args){
+		newSpecifier().buildAndLaunchApp(args);
+	}
 	private static final Object[]TEST_CODES={
 			newPartNode(
 					"e:16," 
@@ -63,12 +80,55 @@ public final class TonesEdit_ extends TreeTextContenter{
 	private static ValueNode newPartNode(String src){
 		return new ValueNode("VoicePart",new Object[]{src});
 	}
-	public TonesEdit_(Object source,FacetAppSurface app){
+	public TonesEdit2(Object source,FacetAppSurface app){
 		super(source,app);
 	}
 	@Override
 	protected TreeTextViewable newViewable(DataNode tree){
-		return new TonesViewable_(tree,app.ff.statefulClipperSource(false),app);
+		return new TonesViewable2(tree,app.ff.statefulClipperSource(false),app);
+	}
+	@Override
+	protected SFrameTarget[]newViewTargets(TreeView debugTree,boolean liveViews){
+		SFrameTarget page=PageView.newFramed(8,app.spec,
+				((TonesViewable2)this.contentFrame()).bars.barCount()),
+				debug=new SFrameTarget(new TreeView("Bar Content"){
+					@Override
+					public boolean hideRoot(){
+						return true;
+					}
+					@Override
+					public boolean canChangeSelection(){
+						return false;
+					}
+					@Override
+					public String nodeRenderText(TypedNode node){
+						return node.title();
+					}
+				}){};
+		return new SFrameTarget[]{page,
+				debug,
+				new SFrameTarget(debugTree)};
+	}
+	@Override
+	protected void attachContentAreaFacets(AreaRoot area){
+		final FacetFactory ff=app.ff;
+		ViewerAreaMaster vam=new ViewerAreaMaster(){
+			protected ViewerAreaMaster newChildMaster(SAreaTarget child){
+				return !(((SViewer)child.activeFaceted()).view()instanceof PageView)?null
+						:new ViewerAreaMaster(){
+					protected SFacet newViewTools(STargeter viewTargeter){
+						return ff.toolGroups(viewTargeter,HINT_NONE,ff.spacerWide(8),
+								true?null:ff.spacerTall(45),
+					  		ff.numericSliders(viewTargeter.elements()[PageView.TARGET_BAR],
+					  				400,HINT_SLIDER_TICKS+HINT_SLIDER_LABELS+HINT_SLIDER_LOCAL));
+					}
+					protected String hintString(){
+						return HINT_NO_FLASH+HINT_PANEL_BORDER+HINT_BARE;
+					}
+				};
+			}
+		};
+		ff.areas().attachViewerAreaPanes(area,vam,AreaFacets.PANE_SPLIT_HORIZONTAL);
 	}
 	@Override
 	protected TreeTextFeatures newTreeTextFeatures(SContentAreaTargeter area){
@@ -81,8 +141,8 @@ public final class TonesEdit_ extends TreeTextContenter{
 			}
 		};
 	}
-	public static void main(String[]args){
-		new TreeTextSpecifier(TonesEdit.class){
+	private static TreeTextSpecifier newSpecifier(){
+		return new TreeTextSpecifier(TonesEdit.class){
 			protected XmlSpecifier[]fileSpecifiers(XmlPolicy policy){
 				return new XmlSpecifier[]{
 					new XmlSpecifier("tones.xml","Tones",policy),
@@ -95,8 +155,8 @@ public final class TonesEdit_ extends TreeTextContenter{
 			}
 			@Override
 			protected TreeTextContenter newContenter(Object source,FacetAppSurface app){
-				return new TonesEdit_(source,app);
+				return new TonesEdit2(source,app);
 			}
-		}.buildAndLaunchApp(args);
+		};
 	}
 }

@@ -23,7 +23,7 @@ public abstract class PageView extends PlaneViewWorks{
 	public static final int TARGET_BAR=0,TARGET_HEIGHT_SETS_PAGE=1,
 		TARGET_TIME=2,TARGET_BAR_SIZE=3;
 	private int barAt;
-	PageView(String title,double width,double height,PagePolicies policies){
+	PageView(String title,double width,double height,PagePolicies2 policies){
 		super(title,width,height,new Vector(-width/2+INSET,INSET),policies);
 	}
 	public Object backgroundStyle(){
@@ -59,8 +59,8 @@ public abstract class PageView extends PlaneViewWorks{
 				state.put(KEY_HEIGHT_SETS,t.isSet());
 			}
 		});
-		final PageView view=new PageView(""+(int)notePoints,
-				0,state.getOrPutDouble(KEY_HEIGHT,DEFAULT_HEIGHT)*INCH_PTS,new PagePolicies()){
+		final PageView view=new PageView("Page",
+				0,state.getOrPutDouble(KEY_HEIGHT,DEFAULT_HEIGHT)*INCH_PTS,new PagePolicies2()){
 			public boolean scaleToViewer(){
 				return showWidth()>0&&!resizeSetsPage.isSet();
 			}
