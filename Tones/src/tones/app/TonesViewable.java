@@ -3,79 +3,94 @@ import facets.core.app.PathSelection;
 import facets.core.app.SView;
 import facets.core.app.SViewer;
 import facets.core.app.TreeView;
-import facets.core.app.ViewableFrame;
 import facets.core.app.avatar.AvatarView;
 import facets.core.superficial.SFrameTarget;
 import facets.core.superficial.STarget;
 import facets.core.superficial.STextual;
 import facets.core.superficial.app.SSelection;
-import facets.util.Debug;
-import tones.bar.Bar;
+import facets.facet.app.FacetAppSurface;
+import facets.util.tree.TypedNode;
+import facets.util.tree.ValueNode;
+import applicable.treetext.TreeTextViewable;
+import tones.Voice;
 import tones.bar.Bars;
+import tones.bar.VoicePart;
 import tones.view.PageView;
 import tones.view.pane.PaneNote;
-final class TonesViewable extends ViewableFrame{
+public final class TonesViewable extends TreeTextViewable{
 	private int barAt;
-	TonesViewable(Bars bars){
-		super(bars.title(),bars);
-		defineSelection(bars);
+	public final Bars bars;
+	TonesViewable(TypedNode tree,ClipperSource clipperSource,
+			FacetAppSurface app){
+		super(tree,clipperSource,app);
+		bars=new Bars(this);
 	}
 	public SFrameTarget selectionFrame(){
 		return new SFrameTarget(selection().single()){
 			protected STarget[]lazyElements(){
-				final Bars bars=framedBars();
-				String src=bars.selectedPart().src;
-				STextual textual=new STextual("Text",src,
+				ValueNode selected=(ValueNode)framed;
+				String[]values=selected.values();
+				boolean noSelection=values.length==0;
+				STextual textual=new STextual("Part",
+						noSelection?"[No selection]":values[0],
 						new STextual.Coupler(){
 					@Override
 					protected String getText(STextual t){
-						return bars.selectedPart().src;
+						return values[0];
 					}
 					public void textSet(STextual t){
-						bars.updatePart(t.text());
+						String src=t.text();
+						try {
+							VoicePart.checkSource(src);
+							selected.putAt(0,src);
+							bars.updatePart(src);
+						} catch (Exception e) {
+							t.trace(".textSet: "+e.getMessage());
+						}
 					}
 					public boolean updateInterim(STextual t){
 						return false;
 					}
 				});
+				textual.setLive(!noSelection);
 				return new STextual[]{textual};
 			}
 		};
 	}
-	protected SSelection newViewerSelection(SViewer viewer){
+	@Override
+	protected SSelection newNonTreeViewerSelection(SViewer viewer){
 		SView view=viewer.view();
 		SSelection selection=selection();
 		if(view instanceof AvatarView){
 			PageView page=(PageView)view;
 			barAt=page.barAt();
-			return page.avatars().newAvatarSelection(viewer,selection);
+			return page.avatars().newAvatarSelection(viewer,new SSelection(){
+				@Override
+				public Object content(){
+					return bars;
+				}
+				@Override
+				public Object single(){
+					throw new RuntimeException("Not implemented in "+this);
+				}
+				@Override
+				public Object[] multiple(){
+					throw new RuntimeException("Not implemented in "+this);
+				}
+			});
 		}
-		else return((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(
-				((Bars)framed).newDebugRoot(barAt)));
+		return((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(
+				bars.newDebugRoot(barAt)));
+	
 	}
-	protected void viewerSelectionChanged(SViewer viewer,SSelection selection){
-		Object thenSelection=selection().single();
-		defineSelection(selection.single());
+	@Override
+	protected void nonTreeViewerSelectionChanged(SViewer viewer,SSelection selection){
+		Object single=selection.single();
+		if(false)traceDebug(".nonTreeViewerSelectionChanged: selection=",single);
+		if(single instanceof PageView)bars.selectPart(Voice.Empty);
+		else if(single instanceof PaneNote)bars.selectPart(((PaneNote)single).tone.voice);
 	}
-	public SSelection defineSelection(final Object definition){
-		return setSelection(new SSelection(){
-			public Object content(){
-				return framed;
-			}
-			public Object single(){
-				if(!(definition instanceof PaneNote))return framed;
-				PaneNote note=(PaneNote)definition;
-				Bar bar=note.bar.content;
-				if(bar==null)throw new RuntimeException("Not implemented in "+Debug.info(this));
-				framedBars().selectPart(note.tone.voice);
-				return bar;
-			}
-			public Object[]multiple(){
-				throw new RuntimeException("Not implemented in "+Debug.info(this));
-			}
-		});
-	}
-	Bars framedBars(){
-		return (Bars)TonesViewable.this.framed;
+	public TypedNode contentTree(){
+		return ((TypedNode)framed).children()[0];
 	}
 }

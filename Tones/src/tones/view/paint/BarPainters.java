@@ -5,7 +5,6 @@ import facets.core.app.avatar.PainterSource;
 import facets.util.ItemList;
 import facets.util.geom.Line;
 import facets.util.shade.Shades;
-import applicable.path.SvgPath;
 import tones.Clef;
 import tones.view.PageView;
 import tones.view.pane.PaneBar;

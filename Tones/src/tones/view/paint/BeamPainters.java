@@ -1,15 +1,11 @@
 package tones.view.paint;
 import facets.core.app.avatar.Painter;
 import facets.core.app.avatar.PainterSource;
-import facets.core.app.avatar.PainterSource.Transform;
-import facets.facet.kit.avatar.SwingPainterSource;
 import facets.util.ItemList;
 import facets.util.geom.Line;
 import facets.util.geom.Point;
 import facets.util.geom.Vector;
-import facets.util.shade.Shades;
 import tones.view.PageView;
-import tones.view.pane.PaneItem;
 import tones.view.pane.PaneItem.PaneBeam;
 public final class BeamPainters extends PagePainters{
 	private final Line line;

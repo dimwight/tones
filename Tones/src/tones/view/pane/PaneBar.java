@@ -10,7 +10,7 @@ public class PaneBar extends PaneItem{
 	
 	public final Bar content;
 	private final Voice selectedVoice;
-	PaneBar(Bar content,double staveX,double staveY,double staveGap,
+	public PaneBar(Bar content,double staveX,double staveY,double staveGap,
 			double staveXScale,Voice selectedVoice){
 		this.content=content;
 		this.staveX=staveX;
@@ -20,7 +20,7 @@ public class PaneBar extends PaneItem{
 		staveWidth=content.width*staveXScale;
 		staveYs=new double[]{staveY,staveY+STAVE_GRID+staveGap};
 	}
-	PaneItem[]newItems(){
+	public PaneItem[]newItems(){
 		ItemList<PaneIncipit>incipits=new ItemList(PaneIncipit.class);
 		for(Incipit bar:content.incipits)
 			incipits.addItem(new PaneIncipit(bar,staveX));

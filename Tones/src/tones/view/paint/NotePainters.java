@@ -13,7 +13,6 @@ import applicable.path.SvgPath;
 import tones.ScaleNote;
 import tones.bar.Bar;
 import tones.view.PageView;
-import tones.view.pane.PaneItem;
 import tones.view.pane.PaneNote;
 public final class NotePainters extends PagePainters{
 	private static final SvgPath Empty=new SvgPath("Empty","",0),

@@ -3,10 +3,13 @@ import static tones.ScaleNote.*;
 import facets.util.Strings;
 import facets.util.Tracer;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import tones.Mark.Tie;
 public final class Tone extends Tracer{
+	public static final char CODE_SCALE='s',CODE_OCTAVE_UP='+',CODE_OCTAVE_DOWN='-',
+			CODE_TIE='T',CODE_BEAM='B',CODE_BAR_SIZE='Z';
+	public static final int BAR_EIGHTHS_DEFAULT=16;
+	public static final String CODES_NOTE="abcdefgx";
 	public static final short NOTE_WHOLE=8,NOTE_HALF=NOTE_WHOLE/2,
 		NOTE_QUARTER=NOTE_WHOLE/4,NOTE_EIGHTH=NOTE_WHOLE/8,
 		NOTE_DOUBLE=NOTE_WHOLE*2,NOTE_NONE=0;

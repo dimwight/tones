@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import tones.Mark;
 import tones.Tone;
 import tones.Voice;
 final public class Bar extends Tracer{

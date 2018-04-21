@@ -4,10 +4,8 @@ import static java.lang.Character.*;
 import static tones.ScaleNote.*;
 import static tones.Tone.*;
 import static tones.Voice.*;
-import static tones.app.TonesEdit.*;
 import static tones.bar.Bars.*;
 import facets.util.Debug;
-import facets.util.Objects;
 import facets.util.Tracer;
 import facets.util.Util;
 import java.util.ArrayList;
@@ -17,19 +15,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import tones.Mark;
+import tones.Mark.Beam;
 import tones.Octave;
 import tones.ScaleNote;
 import tones.Tone;
 import tones.Voice;
-import tones.Mark.Beam;
-import tones.app.TonesEdit;
 public final class VoicePart extends Tracer{
 	private static final boolean padBar=false;
 	final static class Context{
 		final ScaleNote scaleNote;
 		final Octave octave;
-		final int barEighths=TonesEdit.BAR_EIGHTHS_DEFAULT,eighths;
+		final int barEighths=Tone.BAR_EIGHTHS_DEFAULT,eighths;
 		Context(ScaleNote scaleNote,Octave octave,int eighths){
 			if(scaleNote==null)throw new IllegalArgumentException(
 					"Null keyPitch in "+Debug.info(this));
@@ -61,7 +57,7 @@ public final class VoicePart extends Tracer{
 	public final String src;
 	public final Voice voice;
 	private final List<List<Tone>>barTones=new ArrayList();
-	VoicePart(String src){
+	public VoicePart(String src){
 		this.src=src;
 		voice=parseSource(src,barTones);
 	}

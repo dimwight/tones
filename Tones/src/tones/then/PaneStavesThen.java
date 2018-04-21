@@ -1,4 +1,4 @@
-package tones.view.pane;
+package tones.then;
 import static tones.view.PageView.*;
 import facets.util.ItemList;
 import facets.util.Objects;
@@ -14,17 +14,19 @@ import tones.Voice;
 import tones.Mark.Beam;
 import tones.Mark.Tie;
 import tones.bar.Bar;
-import tones.bar.Bars2;
 import tones.view.PageView;
+import tones.view.pane.PaneBar;
+import tones.view.pane.PaneItem;
+import tones.view.pane.PaneNote;
 import tones.view.pane.PaneItem.PaneBeam;
 import tones.view.pane.PaneItem.PaneTie;
-public final class PaneStaves2{
+public final class PaneStavesThen{
 	static final double STAVE_X_SCALE_DEFAULT=1.5;
-	private final List<Bar>thisBars_=new ArrayList();
+	private final List<Bar>thisBars=new ArrayList();
 	private final Voice selectedVoice;
 	double rise=0,staveGap=0,fall=0,staveXUsed=0;
 	final Bar endBar;
-	PaneStaves2(Iterator<Bar>bars,Bar bar,final double useWidth,Voice selectedVoice){
+	PaneStavesThen(Iterator<Bar>bars,Bar bar,final double useWidth,Voice selectedVoice){
 		this.selectedVoice=selectedVoice;
 		while(bars.hasNext()||bar!=null){
 			if(bar==null)bar=bars.next();
@@ -34,7 +36,7 @@ public final class PaneStaves2{
 			rise=Math.max(rise,bar.rise);
 			staveGap=Math.max(staveGap,bar.staveGap);
 			fall=Math.max(fall,bar.fall);
-			thisBars_.add(bar);
+			thisBars.add(bar);
 			bar=null;
 		}
 		endBar=bar;
@@ -42,7 +44,7 @@ public final class PaneStaves2{
 	PaneItem[]newItems(double paneY,double paneXScale){
 		double paneX=0;
 		ItemList<PaneItem>items=new ItemList(PaneItem.class);
-		for(Bar bar:thisBars_){
+		for(Bar bar:thisBars){
 			PaneBar paneBar=new PaneBar(bar,paneX,paneY,staveGap,paneXScale,selectedVoice);
 			items.addItems(paneBar.newItems());
 			paneX+=paneBar.staveWidth;
@@ -84,7 +86,7 @@ public final class PaneStaves2{
 				}
 		return new PaneBeam(beamed.items(),selected);
 	}
-	public static PaneItem[]newPageItems(Bars2 content,PageView page){
+	public static PaneItem[]newPageItems(BarsThen content,PageView page){
 		Iterator<Bar>bars=content.barsFrom(page.barAt()).iterator();
 		final double paneWidth=page.showWidth()-2*INSET,
 			useHeight=page.showHeight()-2*INSET,
@@ -94,7 +96,7 @@ public final class PaneStaves2{
 		ItemList<PaneItem>items=new ItemList(PaneItem.class);
 		Bar bar=null;
 		while(bars.hasNext()||bar!=null){
-			PaneStaves2 block=new PaneStaves2(bars,bar,paneWidth/unitWidth,
+			PaneStavesThen block=new PaneStavesThen(bars,bar,paneWidth/unitWidth,
 					content.selectedPart().voice);
 			bar=block.endBar;
 			double blockStaveHeight=PaneItem.STAVE_GRID*2+block.staveGap+block.fall;

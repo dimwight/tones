@@ -1,4 +1,4 @@
-package tones.view;
+package tones.then;
 import static tones.view.PageView.*;
 import facets.core.app.PathSelection;
 import facets.core.app.SViewer;
@@ -13,7 +13,7 @@ import facets.core.app.avatar.PlaneView;
 import facets.core.superficial.app.SSelection;
 import facets.util.Debug;
 import facets.util.shade.Shades;
-import tones.bar.Bars2;
+import tones.view.PageView;
 import tones.view.paint.BarPainters;
 import tones.view.paint.BeamPainters;
 import tones.view.paint.NotePainters;
@@ -24,13 +24,11 @@ import tones.view.pane.PaneItem;
 import tones.view.pane.PaneItem.PaneBeam;
 import tones.view.pane.PaneItem.PaneTie;
 import tones.view.pane.PaneNote;
-import tones.view.pane.PaneStaves;
-import tones.view.pane.PaneStaves2;
-final class PagePolicies2 extends AvatarPolicies{
+final class PagePoliciesThen extends AvatarPolicies{
 	@Override
 	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){
-		Bars2 bars=(Bars2)viewable.content();
-		PaneItem[]items=PaneStaves2.newPageItems(bars,(PageView)viewer.view());
+		BarsThen bars=(BarsThen)viewable.content();
+		PaneItem[]items=PaneStavesThen.newPageItems(bars,(PageView)viewer.view());
 		return PathSelection.newMinimal(items);
 	}
 	@Override

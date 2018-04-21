@@ -3,16 +3,14 @@ import static tones.view.PageView.*;
 import facets.util.ItemList;
 import facets.util.Objects;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
 import tones.Mark;
-import tones.Tone;
-import tones.Voice;
 import tones.Mark.Beam;
 import tones.Mark.Tie;
+import tones.Tone;
+import tones.Voice;
 import tones.bar.Bar;
 import tones.bar.Bars;
 import tones.view.PageView;
@@ -20,7 +18,7 @@ import tones.view.pane.PaneItem.PaneBeam;
 import tones.view.pane.PaneItem.PaneTie;
 public final class PaneStaves{
 	static final double STAVE_X_SCALE_DEFAULT=1.5;
-	private final List<Bar>thisBars=new ArrayList();
+	private final List<Bar>thisBars_=new ArrayList();
 	private final Voice selectedVoice;
 	double rise=0,staveGap=0,fall=0,staveXUsed=0;
 	final Bar endBar;
@@ -34,7 +32,7 @@ public final class PaneStaves{
 			rise=Math.max(rise,bar.rise);
 			staveGap=Math.max(staveGap,bar.staveGap);
 			fall=Math.max(fall,bar.fall);
-			thisBars.add(bar);
+			thisBars_.add(bar);
 			bar=null;
 		}
 		endBar=bar;
@@ -42,7 +40,7 @@ public final class PaneStaves{
 	PaneItem[]newItems(double paneY,double paneXScale){
 		double paneX=0;
 		ItemList<PaneItem>items=new ItemList(PaneItem.class);
-		for(Bar bar:thisBars){
+		for(Bar bar:thisBars_){
 			PaneBar paneBar=new PaneBar(bar,paneX,paneY,staveGap,paneXScale,selectedVoice);
 			items.addItems(paneBar.newItems());
 			paneX+=paneBar.staveWidth;

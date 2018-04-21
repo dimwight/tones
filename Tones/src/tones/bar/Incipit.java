@@ -8,7 +8,7 @@ import java.util.Set;
 import tones.Tone;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
 	public final Collection<Tone>tones=new HashSet();
-	final int eighthAt;
+	public final int eighthAt;
 	public int barAt=-1;
 	int rise,staveGap,fall;
 	public Incipit(int eighthAt){

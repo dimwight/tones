@@ -1,5 +1,4 @@
 package tones.view.paint;
-import static facets.util.shade.Shades.*;
 import static tones.Tone.*;
 import static tones.view.pane.PaneItem.PaneTie.TieType.*;
 import facets.core.app.avatar.Painter;
@@ -9,7 +8,6 @@ import facets.core.app.avatar.PainterSource.Transform;
 import facets.util.geom.Vector;
 import facets.util.shade.Shade;
 import applicable.path.SvgPath;
-import tones.Tone;
 import tones.bar.Bar;
 import tones.view.PageView;
 import tones.view.pane.PaneItem.PaneTie;

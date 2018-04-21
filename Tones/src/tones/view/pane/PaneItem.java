@@ -17,7 +17,7 @@ public abstract class PaneItem extends Tracer implements AvatarContent{
 		public final Vector beforeAt,afterAt;
 		public final PaneNote before,after;
 		public final boolean selected;
-		PaneTie(PaneNote before,PaneNote after,PaneBar bar,boolean selected){
+		public PaneTie(PaneNote before,PaneNote after,PaneBar bar,boolean selected){
 			this.before=before;
 			this.after=after;
 			this.bar=bar;
@@ -39,7 +39,7 @@ public abstract class PaneItem extends Tracer implements AvatarContent{
 		public final Line geom;
 		public final PaneNote from,to;
 		public final boolean selected;
-		PaneBeam(PaneNote[]notes,boolean selected){
+		public PaneBeam(PaneNote[]notes,boolean selected){
 			this.notes=notes;
 			this.selected=selected;
 			Tone tone=notes[0].tone;

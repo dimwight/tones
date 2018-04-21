@@ -3,12 +3,9 @@ import static tones.Tone.*;
 import facets.util.geom.Line;
 import facets.util.geom.Point;
 import facets.util.geom.Vector;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Rectangle2D.Double;
 import java.util.Arrays;
 import tones.Clef;
 import tones.Tone;
-import tones.bar.Bar;
 import tones.bar.Incipit;
 public class PaneNote extends PaneItem{
 	public static final int DOT_NONE=0,DOT_LEVEL=1,DOT_BELOW=-1;
