@@ -84,6 +84,7 @@ public final class Bars extends Tracer implements Titled{
 							+ " equals="+equals+" now=",nowTones);
 					trace(" then=",thenTones);
 				}
+				if(barAt<bars.size()
 				bars.remove(barAt);
 				bars.add(barAt,newPartsBar(barAt));
 			}
