@@ -33,7 +33,7 @@ public final class TonesEdit extends TreeTextContenter{
 		newSpecifier().buildAndLaunchApp(args);
 	}
 	public static final String ARG_BAR_FROM="barFrom",ARG_RESCALE="rescale";
-	private static final Object[]TEST_CODES={
+	private static final Object[]TEST_CODES={?
 			newPartNode(
 					"e:16," 
 					+"x,x,x,x,"
@@ -92,7 +92,7 @@ public final class TonesEdit extends TreeTextContenter{
 	protected SFrameTarget[]newViewTargets(TreeView debugTree,boolean liveViews){
 		SFrameTarget page=PageView.newFramed(8,app.spec,
 				((TonesViewable)this.contentFrame()).bars.barCount()),
-			debug=new SFrameTarget(new TreeView("Bar Contents"){
+			debug=new SFrameTarget(new TreeView("Bar Contents"){?
 				@Override
 				public boolean hideRoot(){
 					return true;
