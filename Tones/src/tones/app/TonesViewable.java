@@ -64,7 +64,7 @@ public final class TonesViewable extends TreeTextViewable{
 		if(view instanceof AvatarView){
 			PageView page=(PageView)view;
 			barAt=page.barAt();
-			return page.avatars().newAvatarSelection(viewer,new SSelection(){
+			return page.avatars().newAvatarSelection(viewer,new SSelection(){?
 				@Override
 				public Object content(){
 					return bars;
@@ -79,7 +79,7 @@ public final class TonesViewable extends TreeTextViewable{
 				}
 			});
 		}
-		return((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(
+		return((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(?
 				bars.newDebugRoot(barAt)));
 	
 	}
