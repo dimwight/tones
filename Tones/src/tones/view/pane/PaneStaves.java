@@ -26,6 +26,8 @@ public final class PaneStaves{
 		this.selectedVoice=selectedVoice;
 		while(bars.hasNext()||bar!=null){
 			if(bar==null)bar=bars.next();
+			if(bar==null)throw new IllegalStateException(
+					"Null bar in "+this);
 			double barWidth=bar.width;
 			if(staveXUsed+barWidth>useWidth)break;
 			staveXUsed+=barWidth;

@@ -1,8 +1,10 @@
 package tones.app;
+import static facets.core.app.ActionViewerTarget.Action.*;
 import facets.core.app.PathSelection;
 import facets.core.app.SView;
 import facets.core.app.SViewer;
 import facets.core.app.TreeView;
+import facets.core.app.ViewableAction;
 import facets.core.app.avatar.AvatarView;
 import facets.core.superficial.SFrameTarget;
 import facets.core.superficial.STarget;
@@ -20,6 +22,24 @@ import tones.view.pane.PaneNote;
 public final class TonesViewable extends TreeTextViewable{
 	private int barAt;
 	public final Bars bars;
+	SFrameTarget barsView=new SFrameTarget(new TreeView("Bar Contents"){
+		@Override
+		public boolean hideRoot(){
+			return true;
+		}
+		@Override
+		public boolean canChangeSelection(){
+			return false;
+		}
+		@Override
+		public String nodeRenderText(TypedNode node){
+			return node.title();
+		}
+	}){};
+	@Override
+	public ViewableAction[]viewerActions(SView view){
+		return new ViewableAction[]{UNDO,REDO};
+	}
 	TonesViewable(TypedNode tree,ClipperSource clipperSource,
 			FacetAppSurface app){
 		super(tree,clipperSource,app);
@@ -31,7 +51,7 @@ public final class TonesViewable extends TreeTextViewable{
 				ValueNode selected=(ValueNode)framed;
 				String[]values=selected.values();
 				boolean noSelection=values.length==0;
-				STextual textual=new STextual("Part",
+				STextual textual=new STextual("Codes",
 						noSelection?"[No selection]":values[0],
 						new STextual.Coupler(){
 					@Override
@@ -42,10 +62,10 @@ public final class TonesViewable extends TreeTextViewable{
 						String src=t.text();
 						try {
 							VoicePart.checkSource(src);
-							selected.putAt(0,src);
+							TonesViewable.this.doUndoableEdit(selected,src);
 							bars.updatePart(src);
 						} catch (Exception e) {
-							t.trace(".textSet: "+e.getMessage());
+							TonesViewable.this.trace(".textSet: "+e.getMessage());
 						}
 					}
 					public boolean updateInterim(STextual t){
@@ -57,6 +77,14 @@ public final class TonesViewable extends TreeTextViewable{
 			}
 		};
 	}
+	protected void doUndoableEdit(ValueNode selected,String src){
+		selected.putAt(0,src);
+		maybeModify();
+	}
+	@Override
+	public boolean editSelection(){
+		return true;
+	}
 	@Override
 	protected SSelection newNonTreeViewerSelection(SViewer viewer){
 		SView view=viewer.view();
@@ -64,7 +92,7 @@ public final class TonesViewable extends TreeTextViewable{
 		if(view instanceof AvatarView){
 			PageView page=(PageView)view;
 			barAt=page.barAt();
-			return page.avatars().newAvatarSelection(viewer,new SSelection(){?
+			return page.avatars().newAvatarSelection(viewer,new SSelection(){//?
 				@Override
 				public Object content(){
 					return bars;
@@ -79,7 +107,7 @@ public final class TonesViewable extends TreeTextViewable{
 				}
 			});
 		}
-		return((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(?
+		return((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(//?
 				bars.newDebugRoot(barAt)));
 	
 	}

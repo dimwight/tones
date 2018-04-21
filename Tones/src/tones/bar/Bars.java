@@ -73,10 +73,10 @@ public final class Bars extends Tracer implements Titled{
 				barAt=start;true;barAt++){
 			List<Tone>thenTones=thenPart.getBarTones(barAt),
 					nowTones=nowPart.getBarTones(barAt);
-			if(nowTones.isEmpty()&&thenTones.isEmpty()) break;
-			
-			barEighths=eighthsCheck&&!nowTones.isEmpty()?nowTones.remove(0).eighths
-					:Tone.BAR_EIGHTHS_DEFAULT;
+			boolean nowEmpty=nowTones.isEmpty();
+			if(nowEmpty&&thenTones.isEmpty())break;			
+			barEighths=eighthsCheck&&!nowEmpty?nowTones.remove(0).eighths
+					:VoicePart.BAR_EIGHTHS_DEFAULT;
 			boolean equals=thenTones.equals(nowTones);
 			if(!equals) {
 				if(false) {
@@ -84,11 +84,16 @@ public final class Bars extends Tracer implements Titled{
 							+ " equals="+equals+" now=",nowTones);
 					trace(" then=",thenTones);
 				}
-				
 				if(barAt<bars.size())bars.remove(barAt);
 				bars.add(barAt,newPartsBar(barAt));
 			}
 		}
+		int stop=bars.size();
+		for(int at=0;at<stop;at++)if(bars.get(at)==null){
+			bars.remove(at--);
+			stop--;
+		}
+		if(false)trace(".updatePart: bars=",bars.size());
 	}
 	public void selectPart(Voice voice){
 		selectedPart=parts.get(voice);

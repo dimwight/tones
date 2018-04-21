@@ -19,7 +19,7 @@ public class TreeTextFeatures extends FacetFactory{
 		this.area=root;
 	}
 	@Override
-	public SFacet toolbar(){
+	final public SFacet toolbar(){
 		ItemList<SFacet>facets=new ItemList(SFacet.class);
 		if(app.spec.canEditContent()){
 			SFacet[]editTools=editTools(area.viewer());
@@ -32,7 +32,10 @@ public class TreeTextFeatures extends FacetFactory{
 				spacerWide(5));
 			facets.addItems(editTools);
 		}
-		return toolGroups(area,HINT_PANEL_MIDDLE,facets.items());
+		return toolGroups(area,HINT_PANEL_MIDDLE,adjustToolbarItems(facets));
+	}
+	protected SFacet[]adjustToolbarItems(ItemList<SFacet>facets){
+		return facets.items();
 	}
 	@Override
 	public SFacet[]header(){

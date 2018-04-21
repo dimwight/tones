@@ -8,6 +8,7 @@ import static tones.bar.Bars.*;
 import facets.util.Debug;
 import facets.util.Tracer;
 import facets.util.Util;
+import facets.util.tree.ValueNode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,11 +22,61 @@ import tones.ScaleNote;
 import tones.Tone;
 import tones.Voice;
 public final class VoicePart extends Tracer{
+	private static final char CODE_SCALE='s',CODE_OCTAVE_UP='+',CODE_OCTAVE_DOWN='-',
+			CODE_TIE='T',CODE_BEAM='B',CODE_BAR_SIZE='Z';
+	public static final int BAR_EIGHTHS_DEFAULT=16;
+	public static final String CODES_NOTE="abcdefgx";
+	public static final Object[]TEST_CODES={
+			newPartNode(
+					"e:16," 
+					+"x,x,x,x,"
+					+"x,x,x,x,x"
+				),
+			newPartNode(
+					"b:"
+					+"sb,-,8,e,4,f,a," 
+					+"g,f,2,e,1,d,c,2,d,b," 
+					+"2,+,sc,e,f,g,a,1,b,f,4,b,2,a," 
+					+"a,1,g,f,4,g,g,4,f," 
+					+"g,2,a,1,b,a,2,g,f,e,d," 
+					+"8,c,-,4,b,f,"
+					+"6,g,2,e,6,a,2,f,"
+					+"16,b,"
+					+"4,b"
+				),
+			newPartNode(
+					"t:" 
+					+"16,x,8,x,sf,8,b,"
+					+"4,c,e,d,c,6,"
+					+"b,2,b,a,b,c,d," 
+					+"1,e,b,4,e,2,d,4,e,2,g,f,"
+					+"sb,-,4,g,e,8,f,"
+					+"2,f,b,4,e,2,e,c,4,f,"
+					+"2,se,+,f,1,e,f,2,g,a,1,b,f,4,b,2,a,"
+					+"4,b"
+				),
+			newPartNode(
+					"a:" 
+					+"16,x,x,x,"
+					+"8,sb,-,e,4,f,a,g,f,e,2,x,b,"
+					+"se,+,e,f,g,a,1,b,f,4,b,2,a,"
+					+"sc,a,1,g,f,4,g,6,c,1,d,e,"
+					+"4,d,4,e,2,e,d,4,c,-,f"
+				),
+			newPartNode(
+					"s:" 
+					+"16,x,x,x,x,"
+					+"8,x,sg,b," 
+					+"4,c,e,d,c,"
+					+"8,b,2,b,1,a,g,4,a,"
+					+"sc,a,g,f,e,d"
+				)
+		};
 	private static final boolean padBar=false;
 	final static class Context{
 		final ScaleNote scaleNote;
 		final Octave octave;
-		final int barEighths=Tone.BAR_EIGHTHS_DEFAULT,eighths;
+		final int barEighths=BAR_EIGHTHS_DEFAULT,eighths;
 		Context(ScaleNote scaleNote,Octave octave,int eighths){
 			if(scaleNote==null)throw new IllegalArgumentException(
 					"Null keyPitch in "+Debug.info(this));
@@ -88,7 +139,7 @@ public final class VoicePart extends Tracer{
 				while(toneValues==null&nextCodes.hasNext()){
 					code=nextCodes.next();
 					int charCount=code.length();
-					if(!code.matches("([abcdefgxs12468-]|\\+){1,2}")) 
+					if(!code.matches("([abcdefgxs12468-]|\\+)|([s1].)")) 
 						throw new IllegalStateException(
 							"Bad code '"+code+ "' at="+codeAt+" in voice="+voice);
 					else codeAt++;
@@ -164,6 +215,9 @@ public final class VoicePart extends Tracer{
 	}
 	public static void checkSource(String src){
 		parseSource(src,new ArrayList());
+	}
+	private static ValueNode newPartNode(String src){
+		return new ValueNode("VoicePart",new Object[]{src});
 	}
 	public String toString(){
 		return Debug.info(this)+": "+voice+" barTones="+barTones.size();

@@ -79,8 +79,8 @@ final public class Bar extends Tracer{
 		return new Bar(at,Collections.singleton(incipit),rise,staveGap,fall,width);
 	}
 	public String toString(){
-		return Debug.info(this)+" at="+at
-		+" incipits=\n"+Objects.toLines(((Collection)incipits).toArray())
+		return Debug.info(this)+" at="+at+" incipits="
+		+ (true?incipits.size():"\n"+Objects.toLines(((Collection)incipits).toArray()))
 			;
 	}
 }

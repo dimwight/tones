@@ -108,7 +108,7 @@ public abstract class TreeTextContenter extends ViewerContenter{
 	}
 	@Override
 	final public LayoutFeatures newContentFeatures(SContentAreaTargeter area){
-		return newTreeTextFeatures(area);
+		return newFeatures(area);
 	}
 	protected TreeTextViewable newViewable(DataNode tree){
 		return new TreeTextViewable(tree,app.ff.statefulClipperSource(false),app){};
@@ -119,7 +119,7 @@ public abstract class TreeTextContenter extends ViewerContenter{
 	protected STarget[]newContentRootTargets(){
 		return new STarget[]{};
 	}
-	protected TreeTextFeatures newTreeTextFeatures(SContentAreaTargeter area){
+	protected TreeTextFeatures newFeatures(SContentAreaTargeter area){
 		return new TreeTextFeatures(app,area);
 	}
 	@Override
