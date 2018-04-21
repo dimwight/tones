@@ -27,7 +27,7 @@ import tones.view.pane.PaneNote;
 import tones.view.pane.PaneStaves;
 final class PagePolicies extends AvatarPolicies{
 	@Override
-	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){
+	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){?
 		Bars bars=(Bars)viewable.content();
 		PaneItem[]items=PaneStaves.newPageItems(bars,(PageView)viewer.view());
 		return PathSelection.newMinimal(items);
