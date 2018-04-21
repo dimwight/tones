@@ -143,7 +143,7 @@ public final class VoicePart extends Tracer{
 		barTones.add(Collections.EMPTY_LIST);
 		return voice;
 	}
-	public List<Tone>getBarTones(int barAt){
+	public List<Tone>getBarTones(int barAt){?
 		List<Tone>tones=barAt<barTones.size()?
 				barTones.get(barAt):Collections.EMPTY_LIST;
 		return tones;
