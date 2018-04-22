@@ -139,7 +139,7 @@ public final class VoicePart extends Tracer{
 				while(toneValues==null&nextCodes.hasNext()){
 					code=nextCodes.next();
 					int charCount=code.length();
-					if(!code.matches("([abcdefgxs12468-]|\\+)|([s1].)")) 
+					if(!code.matches("([abcdefgxs123468-]|\\+)|([s1].)")) 
 						throw new IllegalStateException(
 							"Bad code '"+code+ "' at="+codeAt+" in voice="+voice);
 					else codeAt++;

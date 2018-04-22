@@ -37,10 +37,8 @@ public abstract class PageView extends PlaneViewWorks{
 		return barAt;
 	}
 	public static SFrameTarget newFramed(final double notePoints,
-			final AppValues spec,final int barCount){
+			final AppValues spec,final int barCount,int barFrom){
 		final ValueNode state=spec.state();
-		ValueNode args=spec.args();
-		final int barFrom=args.getOrPutInt(TonesEdit.ARG_BAR_FROM,1);
 		final SIndexing time=new SIndexing("Time Signature",new Object[]{"2:2","4:4","4:2"},0,
 				new Coupler(){
 			public void indexSet(SIndexing i){

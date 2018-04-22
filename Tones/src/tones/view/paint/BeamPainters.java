@@ -21,11 +21,11 @@ public final class BeamPainters extends PagePainters{
 	}
 	@Override
 	public Painter[]newViewPainters(boolean selected){
-		Vector shift=new Vector(0,tailsUp?-1:1);
+		Vector shift=new Vector(0,(tailsUp?-1:1)*.5);
 		Point from=new Point(line.from.at().minus(shift)),
 				to=new Point(line.to.at().minus(shift));
 		ItemList<Painter>painters=new ItemList(Painter.class);
-		for(int i=0;i<4;i++){
+		for(int i=0;i<8;i++){
 			from.shift(shift);to.shift(shift);
 			painters.addItem(p.line(new Line(from,to),selectionShade(paintSelected),1,false));
 		}

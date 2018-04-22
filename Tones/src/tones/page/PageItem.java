@@ -45,15 +45,13 @@ public abstract class PageItem extends Tracer implements AvatarContent{
 			this.notes=notes;
 			this.selected=selected;
 			Tone tone=notes[0].tone;
-			if(true&&tone.barAt==11&&tone.voice==Voice.Tenor)trace(": ",notes);
+			if(false&&tone.barAt==11&&tone.voice==Voice.Tenor)trace(": ",notes);
 			from=notes[0];
 			to=notes[notes.length-1];
 			geom=new Line(from.tail.to,to.tail.to);
 			for(int i=1;i<notes.length-1;i++){
-				Point tailTo=notes[i].tail.to;
-				trace(".PageBeam: tailTo=",tailTo);
-				if(true)tailTo.set(from.tail.to.at());
-				else tailTo.shift(new Vector(0,-1));
+				PageNote note=notes[i];
+				note.tail.to.shift(new Vector(0,from.at.y-note.at.y));
 			}
 		}
 		public String toString(){

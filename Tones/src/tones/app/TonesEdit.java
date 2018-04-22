@@ -43,8 +43,10 @@ public final class TonesEdit extends TreeTextContenter{
 	@Override
 	protected SFrameTarget[]newViewTargets(TreeView debugTree,boolean liveViews){
 		TonesViewable viewable=(TonesViewable)this.contentFrame();
+		int barFrom=app.spec.args().getOrPutInt(TonesEdit.ARG_BAR_FROM,1);
+		if(viewable.bars.barCount()<barFrom)barFrom=1;
 		SFrameTarget page=PageView.newFramed(8,app.spec,
-				viewable.bars.barCount());
+				viewable.bars.barCount(),barFrom);
 		return new SFrameTarget[]{page,
 				viewable.barsView,
 				new SFrameTarget(debugTree)};
@@ -101,7 +103,8 @@ public final class TonesEdit extends TreeTextContenter{
 			}
 			@Override
 			protected Object getInternalContentSource(){
-				return true?new File(userDir(),"E major.tones.xml") 
+				File file=new File(userDir(),"E major.tones.xml");
+				return file.exists()?file 
 						:new ValueNode("xml","Tones"+contents++,new Object[]{
 								new ValueNode("Tones",VoicePart.TEST_CODES)}).copyState();
 			}
