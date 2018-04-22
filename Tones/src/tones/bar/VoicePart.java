@@ -112,7 +112,7 @@ public final class VoicePart extends Tracer{
 		this.src=src;
 		voice=parseSource(src,barTones);
 	}
-	private static Voice parseSource(String src,List<List<Tone>>barTones){
+	private static Voice parseSource(String src,List<List<Tone>>barTones){?
 		String splitVoice[]=src.split(":",2),
 			voiceCode=splitVoice[0].substring(0).toLowerCase();
 		Voice voice=voiceCode.equals("e")?Empty:
@@ -133,11 +133,12 @@ public final class VoicePart extends Tracer{
 			Octave octave=context.octave;
 			int eighths=context.eighths,eighthAt=0,barEighths=context.barEighths;
 			int barAt=barTones.size();
-			while(eighthAt<barEighths){
+			while(eighthAt<barEighths){codes="";
+				
 				int[]toneValues=null;
 				String code="No code";
 				while(toneValues==null&nextCodes.hasNext()){
-					code=nextCodes.next();
+					code=nextCodes.next();codes+=code+","
 					int charCount=code.length();
 					if(!code.matches("([abcdefgxs123468-]|\\+)|([s1].)")) 
 						throw new IllegalStateException(
