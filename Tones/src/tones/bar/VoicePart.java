@@ -108,6 +108,8 @@ public final class VoicePart extends Tracer{
 	public final String src;
 	public final Voice voice;
 	private final List<List<Tone>>barTones=new ArrayList();
+	List barCodes;
+	
 	public VoicePart(String src){
 		this.src=src;
 		voice=parseSource(src,barTones,barCodes);
