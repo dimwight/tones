@@ -17,7 +17,7 @@ public class PageNote extends PageItem{
 	public final int ledgerLines;
 	public boolean selected;
 	private final String debugString;
-	public final Line tail;
+	public final Line tail,tailSwag;
 	public final Vector at;
 	public final Dot dotAt;
 	PageNote(PageBar bar,Tone tone,PageIncipit i,double barPageY,Clef clef, 
@@ -46,6 +46,8 @@ public class PageNote extends PageItem{
 				).at().scaled(scaleToNoteWidth)),
 			tailTo=tailFrom.shifted(new Vector(0,tailHeight*(tailsUp?-1:1)));
 		tail=tone.eighths>6?null:new Line(tailFrom,tailTo);
+		tailSwag=tone.eighths>NOTE_EIGHTH?null
+				:new Line(tailTo,tailTo.shifted(new Vector(3,5)));
 	}
 	public Point tailFrom(short note,boolean tailsUp){
 		return tailsUp?

@@ -36,22 +36,31 @@ public abstract class PageItem extends Tracer implements AvatarContent{
 					" after="+(after==null?"null":after);
 		}
 	}
-	public static final class PageBeam extends PageItem{
+	public static final class PageTails extends PageItem{
 		private final PageNote[]notes;
 		public final Line geom;
 		public final PageNote from,to;
-		public final boolean selected;
-		public PageBeam(PageNote[]notes,boolean selected){
+		public final boolean selected,single;
+		public PageTails(PageNote[]notes,boolean selected){
 			this.notes=notes;
 			this.selected=selected;
 			Tone tone=notes[0].tone;
 			if(false&&tone.barAt==11&&tone.voice==Voice.Tenor)trace(": ",notes);
 			from=notes[0];
-			to=notes[notes.length-1];
-			geom=new Line(from.tail.to,to.tail.to);
-			for(int i=1;i<notes.length-1;i++){
-				PageNote note=notes[i];
-				note.tail.to.shift(new Vector(0,from.at.y-note.at.y));
+			int count=notes.length;
+			to=notes[count-1];
+			single=to==from;
+			Point fromTailTo=from.tail.to;
+			if(single){
+				geom=new Line(fromTailTo,fromTailTo.shifted(new Vector(3,5)));
+				return;
+			}
+			geom=new Line(fromTailTo,to.tail.to);
+			double yDiff=to.at.y-from.at.y;
+			for(int at=1;at<count-1;at++){
+				PageNote note=notes[at];
+				note.tail.to.shift(new Vector(0,from.at.y-note.at.y
+						+(false?0:yDiff/(count-1)*at)));
 			}
 		}
 		public String toString(){

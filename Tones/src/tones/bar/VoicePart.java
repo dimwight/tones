@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import tones.Mark.Beam;
+import tones.Mark.Tails;
 import tones.Octave;
 import tones.ScaleNote;
 import tones.Tone;
@@ -127,7 +127,7 @@ public final class VoicePart extends Tracer{
 		Tone before=null;
 		while(nextCodes.hasNext()){
 			final List<Tone>tones=new ArrayList();
-			Beam beam=new Beam(voice);
+			Tails tails=new Tails(voice);
 			if(context==null)context=newDefaultContexts().get(voice);
 			ScaleNote scaleNote=context.scaleNote;
 			Octave octave=context.octave;
@@ -176,19 +176,30 @@ public final class VoicePart extends Tracer{
 				Tone add=new Tone(voice,barAt,eighthAt,(byte)toneValues[0],
 						(short)toneValues[1]);
 				add.checkTied(before);
+				List<Tone>tailTones=tails.tones;
 				if(add.eighths==NOTE_EIGHTH){
-					if(!beam.tones.isEmpty()||add.isOnBeat(NOTE_QUARTER))
-						beam.addTone(add);
+					boolean onBeat=add.isOnBeat(NOTE_QUARTER);
+					if(onBeat||!tailTones.isEmpty()){//Start or add multiple
+						tails.addTone(add);
+					}
+					else if(!onBeat&&tailTones.isEmpty()){//Add single and close
+						tails.addTone(add);
+						add.marks.add(tails);
+						tails=new Tails(voice);
+					}
 				}
-				else{
-					if(beam.tones.size()>1)add.marks.add(beam);
-					beam=new Beam(voice);
+				else{//Close any multiple
+					if(tailTones.size()>1){
+						add.marks.add(tails);
+						tails=new Tails(voice);
+					}
 				}
 				tones.add(add);
 				eighthAt+=toneValues[1];
 				before=add;
 			}		
-			if(beam.tones.size()>1)tones.get(tones.size()-1).marks.add(beam);
+			if(tails.tones.size()>1)//Close any multiple
+				tones.get(tones.size()-1).marks.add(tails);
 			if(eighthsCheck)tones.add(0,new Tone(voice,barAt,-1,(byte)-1,(short)barEighths));
 			barTones.add(tones);
 			if(false)printOut("VoicePart.parseSource: barAt="+barAt+

@@ -7,13 +7,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import tones.Mark;
-import tones.Mark.Beam;
+import tones.Mark.Tails;
 import tones.Mark.Tie;
 import tones.Tone;
 import tones.Voice;
 import tones.bar.Bar;
 import tones.bar.Bars;
-import tones.page.PageItem.PageBeam;
+import tones.page.PageItem.PageTails;
 import tones.page.PageItem.PageTie;
 import tones.view.PageView;
 public final class PageStaves{
@@ -57,7 +57,7 @@ public final class PageStaves{
 				note.trace(".newItems: marks=",note);
 			for(Mark mark:marks)
 				if(mark instanceof Tie)items.add(newPageTie((Tie)mark,note,notes));
-				else if(mark instanceof Beam)items.add(newPageBeam((Beam)mark,notes));
+				else if(mark instanceof Tails)items.add(newPageEighths((Tails)mark,notes));
 		}
 		return items.items();
 	}
@@ -73,7 +73,7 @@ public final class PageStaves{
 		return new PageTie(isBefore?tied:other,isBefore?other:tied,tied.bar,
 				selectedVoice==tied.tone.voice);
 	}
-	private PageItem newPageBeam(Beam mark,PageNote[]staveNotes){
+	private PageItem newPageEighths(Tails mark,PageNote[]staveNotes){
 		ItemList<PageNote>beamed=new ItemList(PageNote.class);
 		boolean selected=false;
 		for(Tone tone:mark.tones)
@@ -82,7 +82,7 @@ public final class PageStaves{
 					selected=selectedVoice==tone.voice;
 					beamed.add(check);
 				}
-		return new PageBeam(beamed.items(),selected);
+		return new PageTails(beamed.items(),selected);
 	}
 	public static PageItem[]newPageItems(Bars content,PageView page){
 		Iterator<Bar>bars=content.barsFrom(page.barAt()).iterator();

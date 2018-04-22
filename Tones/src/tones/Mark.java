@@ -22,10 +22,10 @@ public abstract class Mark extends Tracer{
 			return that.before.equals(before)&&that.after.equals(after);
 		}
 	}
-	public static final class Beam extends Mark{
+	public static final class Tails extends Mark{
 		public final List<Tone>tones=new ArrayList();
 		public final Voice voice;
-		public Beam(Voice voice){
+		public Tails(Voice voice){
 			this.voice=voice;
 		}
 		public void addTone(Tone add){

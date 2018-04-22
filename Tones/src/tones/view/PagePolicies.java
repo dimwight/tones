@@ -16,12 +16,12 @@ import facets.util.shade.Shades;
 import tones.bar.Bars;
 import tones.page.PageBar;
 import tones.page.PageItem;
-import tones.page.PageItem.PageBeam;
+import tones.page.PageItem.PageTails;
 import tones.page.PageItem.PageTie;
 import tones.page.PageNote;
 import tones.page.PageStaves;
 import tones.view.paint.BarPainters;
-import tones.view.paint.BeamPainters;
+import tones.view.paint.TailPainters;
 import tones.view.paint.NotePainters;
 import tones.view.paint.PagePainters;
 import tones.view.paint.TiePainters;
@@ -42,7 +42,7 @@ final class PagePolicies extends AvatarPolicies{
 				new NotePainters(view,(PageNote)item,p)
 			:item instanceof PageBar?new BarPainters(view,(PageBar)item,p)
 			:item instanceof PageTie?new TiePainters(view,(PageTie)item,p)
-			:item instanceof PageBeam?new BeamPainters(view,(PageBeam)item,p)
+			:item instanceof PageTails?new TailPainters(view,(PageTails)item,p)
 					:null;
 		if(painters==null)
 			throw new IllegalStateException("Null painters for "+Debug.info(item));
