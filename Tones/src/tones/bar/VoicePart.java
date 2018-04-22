@@ -138,7 +138,7 @@ public final class VoicePart extends Tracer{
 				int[]toneValues=null;
 				String code="No code";
 				while(toneValues==null&nextCodes.hasNext()){
-					code=nextCodes.next();codes+=code+","
+					code=nextCodes.next();codes+=code+",";
 					int charCount=code.length();
 					if(!code.matches("([abcdefgxs123468-]|\\+)|([s1].)")) 
 						throw new IllegalStateException(
@@ -202,7 +202,7 @@ public final class VoicePart extends Tracer{
 			if(tails.tones.size()>1)//Close any multiple
 				tones.get(tones.size()-1).marks.add(tails);
 			if(eighthsCheck)tones.add(0,new Tone(voice,barAt,-1,(byte)-1,(short)barEighths));
-			barTones.add(tones);
+			barTones.add(tones);barCodes.add(codes);
 			if(false)printOut("VoicePart.parseSource: barAt="+barAt+
 					" barTones="+barTones.size()+" nextCodes="+nextCodes.hasNext());
 		}
