@@ -127,13 +127,14 @@ public final class VoicePart extends Tracer{
 		Tone before=null;
 		while(nextCodes.hasNext()){
 			final List<Tone>tones=new ArrayList();
+			codes="";
 			Tails tails=new Tails(voice);
 			if(context==null)context=newDefaultContexts().get(voice);
 			ScaleNote scaleNote=context.scaleNote;
 			Octave octave=context.octave;
 			int eighths=context.eighths,eighthAt=0,barEighths=context.barEighths;
 			int barAt=barTones.size();
-			codes="";
+			
 			while(eighthAt<barEighths){
 				
 				int[]toneValues=null;
