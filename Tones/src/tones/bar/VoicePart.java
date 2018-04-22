@@ -205,7 +205,8 @@ public final class VoicePart extends Tracer{
 			if(tails.tones.size()>1)//Close any multiple
 				tones.get(tones.size()-1).marks.add(tails);
 			if(eighthsCheck)tones.add(0,new Tone(voice,barAt,-1,(byte)-1,(short)barEighths));
-			barTones.add(tones);barCodes.add(codes);
+			barTones.add(tones);
+			barCodes.add(codes);
 			if(false)printOut("VoicePart.parseSource: barAt="+barAt+
 					" barTones="+barTones.size()+" nextCodes="+nextCodes.hasNext());
 		}
