@@ -127,7 +127,7 @@ public final class VoicePart extends Tracer{
 		Tone before=null;
 		while(nextCodes.hasNext()){
 			final List<Tone>tones=new ArrayList();
-			codes="";
+			String codes="";
 			Tails tails=new Tails(voice);
 			if(context==null)context=newDefaultContexts().get(voice);
 			ScaleNote scaleNote=context.scaleNote;
