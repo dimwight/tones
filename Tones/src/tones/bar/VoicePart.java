@@ -115,7 +115,7 @@ public final class VoicePart extends Tracer{
 		
 		String splitVoice[]=src.split(":",2),
 			voiceCode=splitVoice[0].substring(0).toLowerCase();
-		Voice voice=voiceCode.equals("e")?Empty:
+		voice=voiceCode.equals("e")?Empty:
 			voiceCode.equals("b")?Bass:voiceCode.equals("t")?Tenor
 			:voiceCode.equals("a")?Alto:voiceCode.equals("s")?Soprano:null;
 		if(voice==null)throw new IllegalArgumentException(
