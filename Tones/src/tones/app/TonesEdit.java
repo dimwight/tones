@@ -21,6 +21,7 @@ import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
 import facets.util.tree.XmlPolicy;
 import facets.util.tree.XmlSpecifier;
+import java.io.File;
 import applicable.treetext.TreeTextContenter;
 import applicable.treetext.TreeTextFeatures;
 import applicable.treetext.TreeTextSpecifier;
@@ -100,7 +101,8 @@ public final class TonesEdit extends TreeTextContenter{
 			}
 			@Override
 			protected Object getInternalContentSource(){
-				return new ValueNode("xml","Tones"+contents++,new Object[]{
+				return true?new File(userDir(),"E major.tones.xml") 
+						:new ValueNode("xml","Tones"+contents++,new Object[]{
 								new ValueNode("Tones",VoicePart.TEST_CODES)}).copyState();
 			}
 			@Override

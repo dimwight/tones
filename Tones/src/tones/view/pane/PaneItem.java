@@ -1,9 +1,11 @@
 package tones.view.pane;
+import static tones.Voice.*;
 import static tones.view.pane.PaneItem.PaneTie.TieType.*;
 import facets.core.app.avatar.AvatarContent;
 import facets.util.Objects;
 import facets.util.Tracer;
 import facets.util.geom.Line;
+import facets.util.geom.Point;
 import facets.util.geom.Vector;
 import tones.Tone;
 import tones.Voice;
@@ -43,10 +45,16 @@ public abstract class PaneItem extends Tracer implements AvatarContent{
 			this.notes=notes;
 			this.selected=selected;
 			Tone tone=notes[0].tone;
-			if(false&&tone.barAt==6&&tone.voice==Voice.Alto)trace(": ",notes);
+			if(true&&tone.barAt==11&&tone.voice==Voice.Tenor)trace(": ",notes);
 			from=notes[0];
 			to=notes[notes.length-1];
 			geom=new Line(from.tail.to,to.tail.to);
+			for(int i=1;i<notes.length-1;i++){
+				Point tailTo=notes[i].tail.to;
+				trace(".PaneBeam: tailTo=",tailTo);
+				if(true)tailTo.set(from.tail.to.at());
+				else tailTo.shift(new Vector(0,-1));
+			}
 		}
 		public String toString(){
 			return Objects.toString(notes);

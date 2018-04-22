@@ -36,10 +36,6 @@ public final class TonesViewable extends TreeTextViewable{
 			return node.title();
 		}
 	}){};
-	@Override
-	public ViewableAction[]viewerActions(SView view){
-		return new ViewableAction[]{UNDO,REDO};
-	}
 	TonesViewable(TypedNode tree,ClipperSource clipperSource,
 			FacetAppSurface app){
 		super(tree,clipperSource,app);
@@ -77,13 +73,22 @@ public final class TonesViewable extends TreeTextViewable{
 			}
 		};
 	}
+	@Override
+	public ViewableAction[]viewerActions(SView view){
+		return new ViewableAction[]{
+				UNDO,REDO,
+				DELETE,
+				MODIFY
+			};
+	}
 	protected void doUndoableEdit(ValueNode selected,String src){
 		selected.putAt(0,src);
 		maybeModify();
+		updateAfterEditAction();
 	}
 	@Override
 	public boolean editSelection(){
-		return true;
+		return true?true:super.editSelection();
 	}
 	@Override
 	protected SSelection newNonTreeViewerSelection(SViewer viewer){

@@ -43,25 +43,6 @@ public abstract class TreeTextViewable extends NodeViewable{
 		};
 	}
 	@Override
-	public boolean actionIsLive(SViewer viewer,ViewableAction action){
-		TypedNode tree=tree();
-		SSelection selection=selection();
-		Object[]selected=selection.multiple();
-		int arrayCount=tree.children().length,selectionCount=selected.length;
-		boolean empty=arrayCount==0;
-		TypedNode selectedNode=(TypedNode)selected[0];
-		OffsetPath firstPath=((PathSelection)selection).paths[0];
-		boolean valueSelected=firstPath instanceof NodePath
-					&&((NodePath)firstPath).valueAt()>=0,
-				belowRoot=selectedNode.parent()!=tree,nodeSelected=!valueSelected;
-		return action==COPY?nodeSelected||valueSelected
-				:action==MODIFY?valueSelected&&selectionCount==1
-				:action==CUT||action==DELETE?belowRoot&&nodeSelected
-	 			:action==PASTE?canPaste()&&!valueSelected
-	 			:action==SELECT_ALL?false
-				:super.actionIsLive(viewer,action);
-	}
-	@Override
 	final protected SSelection newViewerSelection(SViewer viewer){
 		if(viewer.view()==debugView)return selection();
 		else return newNonTreeViewerSelection(viewer);
@@ -115,6 +96,25 @@ public abstract class TreeTextViewable extends NodeViewable{
 		     UNDO,
 		     REDO};
 		return view.isLive()?all:new ViewableAction[]{COPY};
+	}
+	@Override
+	public boolean actionIsLive(SViewer viewer,ViewableAction action){
+		TypedNode tree=tree();
+		SSelection selection=selection();
+		Object[]selected=selection.multiple();
+		int arrayCount=tree.children().length,selectionCount=selected.length;
+		boolean empty=arrayCount==0;
+		TypedNode selectedNode=(TypedNode)selected[0];
+		OffsetPath firstPath=((PathSelection)selection).paths[0];
+		boolean valueSelected=firstPath instanceof NodePath
+					&&((NodePath)firstPath).valueAt()>=0,
+				belowRoot=selectedNode.parent()!=tree,nodeSelected=!valueSelected;
+		return action==COPY?nodeSelected||valueSelected
+				:action==MODIFY?valueSelected&&selectionCount==1
+				:action==CUT||action==DELETE?belowRoot&&nodeSelected
+	 			:action==PASTE?canPaste()&&!valueSelected
+	 			:action==SELECT_ALL?false
+				:super.actionIsLive(viewer,action);
 	}
 	@Override
 	public String title(){
