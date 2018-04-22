@@ -210,8 +210,9 @@ public final class VoicePart extends Tracer{
 			if(false)printOut("VoicePart.parseSource: barAt="+barAt+
 					" barTones="+barTones.size()+" nextCodes="+nextCodes.hasNext());
 		}
-		barTones.add(Collections.EMPTY_LIST);barCodes.toArray().equals(src);
-		return voice;
+		barTones.add(Collections.EMPTY_LIST);
+		barCodes.toArray().equals(src);
+		
 	}
 	public List<Tone>getBarTones(int barAt){
 		List<Tone>tones=barAt<barTones.size()?
