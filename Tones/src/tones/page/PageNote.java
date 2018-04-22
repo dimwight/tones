@@ -1,4 +1,4 @@
-package tones.view.pane;
+package tones.page;
 import static tones.Tone.*;
 import facets.util.geom.Line;
 import facets.util.geom.Point;
@@ -7,28 +7,28 @@ import java.util.Arrays;
 import tones.Clef;
 import tones.Tone;
 import tones.bar.Incipit;
-public class PaneNote extends PaneItem{
+public class PageNote extends PageItem{
 	public static final int DOT_NONE=0,DOT_LEVEL=1,DOT_BELOW=-1;
-	public final PaneBar bar;
+	public final PageBar bar;
 	public final Tone tone;
 	public final Incipit incipit;
-	public final double staveX,staveY,ledgerLineShift,dotAt;
+	public final double pageX,pageY,ledgerLineShift,dotAt;
 	public final int ledgerLines;
 	public boolean selected;
 	private final String debugString;
 	public final Line tail;
 	public final Vector at;
-	PaneNote(PaneBar bar,Tone tone,PaneIncipit i,double barStaveY,Clef clef, 
+	PageNote(PageBar bar,Tone tone,PageIncipit i,double barPageY,Clef clef, 
 			boolean selected){
 		this.bar=bar;
 		this.tone=tone;
 		this.selected=selected;
 		incipit=i.content;
-		staveX=i.scaledStaveX(tone);
+		pageX=i.scaledPageX(tone);
 		final int stavePitch=tone.pitch-clef.staveMidPitch,
 			staveToMidPitch=STAVE_GRID/2-1;
-		staveY=barStaveY+staveToMidPitch-stavePitch;
-		at=new Vector(staveX,staveY);
+		pageY=barPageY+staveToMidPitch-stavePitch;
+		at=new Vector(pageX,pageY);
 		boolean aboveMidPitch=stavePitch>0;
 		int beyondStave=Math.abs(stavePitch)-staveToMidPitch;
 		ledgerLines=beyondStave<=0?0
@@ -58,13 +58,13 @@ public class PaneNote extends PaneItem{
 	}
 	public boolean equals(Object obj){
 		if(true)throw new RuntimeException("Untested");
-		PaneNote that=(PaneNote)obj;
+		PageNote that=(PageNote)obj;
 		return this==that||Arrays.equals(intValues(),that.intValues());
 	}
 	private int[]intValues(){
 		return new int[]{tone.pitch,tone.eighths};
 	}
 	public Vector staveAt(){
-		return new Vector(staveX,staveY);
+		return new Vector(pageX,pageY);
 	}
 }

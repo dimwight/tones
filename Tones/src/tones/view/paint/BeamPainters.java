@@ -5,13 +5,13 @@ import facets.util.ItemList;
 import facets.util.geom.Line;
 import facets.util.geom.Point;
 import facets.util.geom.Vector;
+import tones.page.PageItem.PageBeam;
 import tones.view.PageView;
-import tones.view.pane.PaneItem.PaneBeam;
 public final class BeamPainters extends PagePainters{
 	private final Line line;
 	private final boolean tailsUp;
 	private final boolean paintSelected;
-	public BeamPainters(PageView page,PaneBeam beam,PainterSource p){
+	public BeamPainters(PageView page,PageBeam beam,PainterSource p){
 		super(page,p);
 		Line geom=beam.geom;
 		paintSelected=beam.from.selected;

@@ -12,8 +12,8 @@ import facets.util.shade.Shades;
 import applicable.path.SvgPath;
 import tones.ScaleNote;
 import tones.bar.Bar;
+import tones.page.PageNote;
 import tones.view.PageView;
-import tones.view.pane.PaneNote;
 public final class NotePainters extends PagePainters{
 	private static final SvgPath Empty=new SvgPath("Empty","",0),
 		Double=new SvgPath("Double","M68.6174 -39.5421c15.8781,-10.4427 44.6966,-4.21473 59.6674,15.5225 14.9707,19.7372 15.6271,54.3268 -0.118545,64.4808 -15.7457,10.1541 -45.0672,3.33459 -59.103,-15.5223 -14.0357,-18.8571 -16.3239,-54.0384 -0.445739,-64.4814zm-78.1195 -13.6518c-4.20299,0.0 -7.64183,3.43882 -7.64183,7.64183l0.0 92.9195c0.0,4.20299 3.43882,7.64183 7.64183,7.64183l5.15872 0.0c4.20299,0.0 7.64183,-3.43882 7.64183,-7.64183l0.0 -33.1629c12.9095,31.341 68.3402,40.1608 95.26,40.2947 26.1969,-0.130281 79.4014,-8.48277 94.1375,-37.8144l0.0 30.6826c0.0,4.20299 3.43882,7.64183 7.64183,7.64183l5.15872 0.0c4.20299,0.0 7.64183,-3.43882 7.64183,-7.64183l0.0 -92.9195c0.0,-4.20299 -3.43882,-7.64183 -7.64183,-7.64183l-5.15872 0.0c-4.20299,0.0 -7.64183,3.43882 -7.64183,7.64183l0.0 29.6698c-14.7358,-29.3316 -67.9403,-37.6841 -94.1375,-37.8144 -26.92,0.133861 -82.3508,8.95377 -95.26,40.2947l0.0 -32.1501c0.0,-4.20299 -3.43882,-7.64183 -7.64183,-7.64183l-5.15872 0.0z",2),
@@ -24,15 +24,15 @@ public final class NotePainters extends PagePainters{
 		DotLevel=new SvgPath("DotLevel","M203.764 -21.0603c12.1479,0.0 21.9993,9.85141 21.9993,21.9993 0.0,12.1479 -9.85141,21.9993 -21.9993,21.9993 -12.1479,0.0 -21.9993,-9.85141 -21.9993,-21.9993 0.0,-12.1479 9.85141,-21.9993 21.9993,-21.9993z",2);
 	private final double x,y,width,height;
 	static boolean firstInBar;
-	private final PaneNote note;
+	private final PageNote note;
 	private final Line tail;
 	private final Shade shade;
-	public NotePainters(PageView page,PaneNote note,PainterSource p){
+	public NotePainters(PageView page,PageNote note,PainterSource p){
 		super(page,p);
 		this.note=note;
 		width=Bar.WIDTH_NOTE*unitWidth;
-		x=note.staveX*unitWidth;
-		y=(note.staveY-1)*pitchHeight;
+		x=note.pageX*unitWidth;
+		y=(note.pageY-1)*pitchHeight;
 		height=pitchHeight*2;
 		tail=note.tail;
 		boolean selected=note.selected;
@@ -52,8 +52,8 @@ public final class NotePainters extends PagePainters{
 	private Painter[]newBeadPainters(Shade shade){
 		double dotAt=note.dotAt,time=note.tone.eighths;
 		if(false&&time<NOTE_QUARTER)shade=Shades.gray;
-		SvgPath dot=dotAt==PaneNote.DOT_NONE?Empty
-					:dotAt==PaneNote.DOT_BELOW?DotBelow:DotLevel,
+		SvgPath dot=dotAt==PageNote.DOT_NONE?Empty
+					:dotAt==PageNote.DOT_BELOW?DotBelow:DotLevel,
 				bead=time<NOTE_HALF?Solid:time<NOTE_WHOLE?Half
 						:time<NOTE_DOUBLE?Whole:Double;
 		ItemList<Painter>painters=new ItemList(Painter.class);

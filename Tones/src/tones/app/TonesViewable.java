@@ -17,8 +17,8 @@ import applicable.treetext.TreeTextViewable;
 import tones.Voice;
 import tones.bar.Bars;
 import tones.bar.VoicePart;
+import tones.page.PageNote;
 import tones.view.PageView;
-import tones.view.pane.PaneNote;
 public final class TonesViewable extends TreeTextViewable{
 	private int barAt;
 	public final Bars bars;
@@ -121,7 +121,7 @@ public final class TonesViewable extends TreeTextViewable{
 		Object single=selection.single();
 		if(false)traceDebug(".nonTreeViewerSelectionChanged: selection=",single);
 		if(single instanceof PageView)bars.selectPart(Voice.Empty);
-		else if(single instanceof PaneNote)bars.selectPart(((PaneNote)single).tone.voice);
+		else if(single instanceof PageNote)bars.selectPart(((PageNote)single).tone.voice);
 	}
 	public TypedNode contentTree(){
 		return ((TypedNode)framed).children()[0];

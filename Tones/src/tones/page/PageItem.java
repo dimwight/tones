@@ -1,6 +1,6 @@
-package tones.view.pane;
+package tones.page;
 import static tones.Voice.*;
-import static tones.view.pane.PaneItem.PaneTie.TieType.*;
+import static tones.page.PageItem.PageTie.TieType.*;
 import facets.core.app.avatar.AvatarContent;
 import facets.util.Objects;
 import facets.util.Tracer;
@@ -10,16 +10,16 @@ import facets.util.geom.Vector;
 import tones.Tone;
 import tones.Voice;
 import tones.bar.Bar;
-public abstract class PaneItem extends Tracer implements AvatarContent{
-	public static final class PaneTie extends PaneItem{
+public abstract class PageItem extends Tracer implements AvatarContent{
+	public static final class PageTie extends PageItem{
 		public enum TieType{BeforeAfter,BeforeNull,AfterNull}
-		public final PaneBar bar;
+		public final PageBar bar;
 		public final TieType type;
 		public final Voice voice;
 		public final Vector beforeAt,afterAt;
-		public final PaneNote before,after;
+		public final PageNote before,after;
 		public final boolean selected;
-		public PaneTie(PaneNote before,PaneNote after,PaneBar bar,boolean selected){
+		public PageTie(PageNote before,PageNote after,PageBar bar,boolean selected){
 			this.before=before;
 			this.after=after;
 			this.bar=bar;
@@ -36,12 +36,12 @@ public abstract class PaneItem extends Tracer implements AvatarContent{
 					" after="+(after==null?"null":after);
 		}
 	}
-	public static final class PaneBeam extends PaneItem{
-		private final PaneNote[]notes;
+	public static final class PageBeam extends PageItem{
+		private final PageNote[]notes;
 		public final Line geom;
-		public final PaneNote from,to;
+		public final PageNote from,to;
 		public final boolean selected;
-		public PaneBeam(PaneNote[]notes,boolean selected){
+		public PageBeam(PageNote[]notes,boolean selected){
 			this.notes=notes;
 			this.selected=selected;
 			Tone tone=notes[0].tone;

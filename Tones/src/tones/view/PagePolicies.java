@@ -14,35 +14,35 @@ import facets.core.superficial.app.SSelection;
 import facets.util.Debug;
 import facets.util.shade.Shades;
 import tones.bar.Bars;
+import tones.page.PageBar;
+import tones.page.PageItem;
+import tones.page.PageItem.PageBeam;
+import tones.page.PageItem.PageTie;
+import tones.page.PageNote;
+import tones.page.PageStaves;
 import tones.view.paint.BarPainters;
 import tones.view.paint.BeamPainters;
 import tones.view.paint.NotePainters;
 import tones.view.paint.PagePainters;
 import tones.view.paint.TiePainters;
-import tones.view.pane.PaneBar;
-import tones.view.pane.PaneItem;
-import tones.view.pane.PaneItem.PaneBeam;
-import tones.view.pane.PaneItem.PaneTie;
-import tones.view.pane.PaneNote;
-import tones.view.pane.PaneStaves;
 final class PagePolicies extends AvatarPolicies{
 	@Override
 	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){//?
 		Bars bars=(Bars)viewable.content();
-		PaneItem[]items=PaneStaves.newPageItems(bars,(PageView)viewer.view());
+		PageItem[]items=PageStaves.newPageItems(bars,(PageView)viewer.view());
 		return PathSelection.newMinimal(items);
 	}
 	@Override
 	public AvatarPolicy avatarPolicy(SViewer viewer,final AvatarContent content,
 			final PainterSource p){
 		PageView view=(PageView)viewer.view();
-		PaneItem item=(PaneItem)content;
+		PageItem item=(PageItem)content;
 		final PagePainters painters=
-			item instanceof PaneNote?
-				new NotePainters(view,(PaneNote)item,p)
-			:item instanceof PaneBar?new BarPainters(view,(PaneBar)item,p)
-			:item instanceof PaneTie?new TiePainters(view,(PaneTie)item,p)
-			:item instanceof PaneBeam?new BeamPainters(view,(PaneBeam)item,p)
+			item instanceof PageNote?
+				new NotePainters(view,(PageNote)item,p)
+			:item instanceof PageBar?new BarPainters(view,(PageBar)item,p)
+			:item instanceof PageTie?new TiePainters(view,(PageTie)item,p)
+			:item instanceof PageBeam?new BeamPainters(view,(PageBeam)item,p)
 					:null;
 		if(painters==null)
 			throw new IllegalStateException("Null painters for "+Debug.info(item));
