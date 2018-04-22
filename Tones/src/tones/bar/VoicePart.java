@@ -133,7 +133,8 @@ public final class VoicePart extends Tracer{
 			Octave octave=context.octave;
 			int eighths=context.eighths,eighthAt=0,barEighths=context.barEighths;
 			int barAt=barTones.size();
-			while(eighthAt<barEighths){codes="";
+			codes="";
+			while(eighthAt<barEighths){
 				
 				int[]toneValues=null;
 				String code="No code";
