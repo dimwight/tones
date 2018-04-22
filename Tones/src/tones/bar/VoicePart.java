@@ -176,7 +176,10 @@ public final class VoicePart extends Tracer{
 				Tone add=new Tone(voice,barAt,eighthAt,(byte)toneValues[0],
 						(short)toneValues[1]);
 				add.checkTied(before);
-				if(add.eighths==NOTE_EIGHTH)beam.addTone(add);
+				if(add.eighths==NOTE_EIGHTH){
+					if(!beam.tones.isEmpty()||add.isOnBeat(NOTE_QUARTER))
+						beam.addTone(add);
+				}
 				else{
 					if(beam.tones.size()>1)add.marks.add(beam);
 					beam=new Beam(voice);

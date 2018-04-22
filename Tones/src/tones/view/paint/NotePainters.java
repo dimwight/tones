@@ -13,6 +13,7 @@ import applicable.path.SvgPath;
 import tones.ScaleNote;
 import tones.bar.Bar;
 import tones.page.PageNote;
+import tones.page.PageNote.Dot;
 import tones.view.PageView;
 public final class NotePainters extends PagePainters{
 	private static final SvgPath Empty=new SvgPath("Empty","",0),
@@ -50,14 +51,20 @@ public final class NotePainters extends PagePainters{
 		return painters.items();
 	}
 	private Painter[]newBeadPainters(Shade shade){
-		double dotAt=note.dotAt,time=note.tone.eighths;
+		Dot dotAt=note.dotAt;
+		double time=note.tone.eighths;
 		if(false&&time<NOTE_QUARTER)shade=Shades.gray;
-		SvgPath dot=dotAt==PageNote.DOT_NONE?Empty
-					:dotAt==PageNote.DOT_BELOW?DotBelow:DotLevel,
+		SvgPath dot=dotAt==Dot.NONE?Empty
+					:dotAt==Dot.BELOW||dotAt==Dot.ABOVE?DotBelow:DotLevel,
 				bead=time<NOTE_HALF?Solid:time<NOTE_WHOLE?Half
 						:time<NOTE_DOUBLE?Whole:Double;
 		ItemList<Painter>painters=new ItemList(Painter.class);
-		painters.addItems(p.mastered(dot.newOutlined(shade,null,false)),
+		Painter dotPainter=p.mastered(dot.newOutlined(shade,null,false));
+		if(false&&dotAt==Dot.ABOVE)
+			p.applyTransforms(new PainterSource.Transform[]{
+					p.transformScale(1,-1),
+			},true,dotPainter);
+		painters.addItems(dotPainter,
 				p.mastered(bead.newOutlined(shade,null,true)));
 		p.applyTransforms(new PainterSource.Transform[]{
 				p.transformAt(x+width*0.1,y+pitchHeight),

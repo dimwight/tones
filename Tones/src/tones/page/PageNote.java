@@ -1,5 +1,6 @@
 package tones.page;
 import static tones.Tone.*;
+import static tones.page.PageNote.Dot.*;
 import facets.util.geom.Line;
 import facets.util.geom.Point;
 import facets.util.geom.Vector;
@@ -8,16 +9,17 @@ import tones.Clef;
 import tones.Tone;
 import tones.bar.Incipit;
 public class PageNote extends PageItem{
-	public static final int DOT_NONE=0,DOT_LEVEL=1,DOT_BELOW=-1;
+	public enum Dot{NONE,LEVEL,BELOW,ABOVE};
 	public final PageBar bar;
 	public final Tone tone;
 	public final Incipit incipit;
-	public final double pageX,pageY,ledgerLineShift,dotAt;
+	public final double pageX,pageY,ledgerLineShift;
 	public final int ledgerLines;
 	public boolean selected;
 	private final String debugString;
 	public final Line tail;
 	public final Vector at;
+	public final Dot dotAt;
 	PageNote(PageBar bar,Tone tone,PageIncipit i,double barPageY,Clef clef, 
 			boolean selected){
 		this.bar=bar;
@@ -34,11 +36,11 @@ public class PageNote extends PageItem{
 		ledgerLines=beyondStave<=0?0
 				:beyondStave/2*(aboveMidPitch?1:-1);
 		ledgerLineShift=aboveMidPitch?beyondStave%2+1:(beyondStave+1)%2;
-		dotAt=tone.eighths%3!=0?DOT_NONE:stavePitch%2==0?DOT_BELOW:DOT_LEVEL;
+		boolean tailsUp=tone.voice.tailsUp;
+		dotAt=tone.eighths%3!=0?NONE:stavePitch%2==0?tailsUp?ABOVE:BELOW:LEVEL;
 		debugString=tone.pitchNote()+
 			" stavePitch="+stavePitch+" aboveMidPitch="+aboveMidPitch
 			+" beyondStave="+beyondStave;
-		boolean tailsUp=tone.voice.tailsUp;
 		double tailHeight=tone.eighths>NOTE_QUARTER?4.7:5;
 		Point tailFrom=new Point(tailFrom(tone.eighths,tailsUp
 				).at().scaled(scaleToNoteWidth)),

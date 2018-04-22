@@ -25,10 +25,13 @@ public final class Tone extends Tracer{
 	}
 	public void checkTied(Tone before){
 		if(before==null||before.isRest()||isRest()
-				||before.pitch!=pitch||eighthAt%4!=0)return;
+				||before.pitch!=pitch||!isOnBeat(Tone.NOTE_HALF))return;
 			Tie tie=new Tie(before,this);
 			marks.add(tie);
 			before.marks.add(tie);
+	}
+	public boolean isOnBeat(short note){
+		return eighthAt%note==0;
 	}
 	private boolean isRest(){
 		return this.pitch==PITCH_REST;
