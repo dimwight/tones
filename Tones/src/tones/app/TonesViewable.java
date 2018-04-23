@@ -13,6 +13,7 @@ import facets.core.superficial.app.SSelection;
 import facets.facet.app.FacetAppSurface;
 import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
+import java.util.List;
 import applicable.treetext.TreeTextViewable;
 import tones.Voice;
 import tones.bar.Bars;
@@ -47,13 +48,12 @@ public final class TonesViewable extends TreeTextViewable{
 				ValueNode selected=(ValueNode)framed;
 				String[]values=selected.values();
 				boolean noSelection=values.length==0;
+				List<String>barCodes=bars.selectedPart().barCodes;
+				trace(".lazyElements: barCodes="+barCodes.size()+" barAt="+barAt);
 				STextual textual=new STextual("Codes",
-						noSelection?"[No selection]":values[0],
+						noSelection||barCodes.size()<barAt?"[No codes]":barCodes.get(barAt),
 						new STextual.Coupler(){
 					@Override
-					protected String getText(STextual t){
-						return values[0];
-					}
 					public void textSet(STextual t){
 						String src=t.text();
 						try {

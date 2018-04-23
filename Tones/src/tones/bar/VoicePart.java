@@ -6,6 +6,7 @@ import static tones.Tone.*;
 import static tones.Voice.*;
 import static tones.bar.Bars.*;
 import facets.util.Debug;
+import facets.util.Objects;
 import facets.util.Tracer;
 import facets.util.Util;
 import facets.util.tree.ValueNode;
@@ -108,14 +109,22 @@ public final class VoicePart extends Tracer{
 	public final String src;
 	public final Voice voice;
 	private final List<List<Tone>>barTones=new ArrayList();
-	List<String> barCodes;
-	
+	public final List<String>barCodes=new ArrayList();
 	public VoicePart(String src){
 		this.src=src;
-		
+		voice=parseSource(src,barTones,barCodes);
+		String checkCodes=Objects.toString(barCodes.toArray()
+				).replaceAll(",,",",").replaceAll(",$","");
+		if(!checkCodes.equals(src))
+			throw new IllegalStateException("Bad checkCodes="+checkCodes);
+		else if(false)trace(": check="+checkCodes.length()+" src="+src.length());
+		else if(false)trace(".VoicePart: barCodes=",barCodes.size());
+	}
+	private static Voice parseSource(String src,List<List<Tone>>barTones,
+			List<String> barCodes){
 		String splitVoice[]=src.split(":",2),
 			voiceCode=splitVoice[0].substring(0).toLowerCase();
-		voice=voiceCode.equals("e")?Empty:
+		Voice voice=voiceCode.equals("e")?Empty:
 			voiceCode.equals("b")?Bass:voiceCode.equals("t")?Tenor
 			:voiceCode.equals("a")?Alto:voiceCode.equals("s")?Soprano:null;
 		if(voice==null)throw new IllegalArgumentException(
@@ -127,16 +136,14 @@ public final class VoicePart extends Tracer{
 		Tone before=null;
 		while(nextCodes.hasNext()){
 			final List<Tone>tones=new ArrayList();
-			String codes="";
+			String codes=barCodes.isEmpty()?voiceCode+":":"";
 			Tails tails=new Tails(voice);
 			if(context==null)context=newDefaultContexts().get(voice);
 			ScaleNote scaleNote=context.scaleNote;
 			Octave octave=context.octave;
 			int eighths=context.eighths,eighthAt=0,barEighths=context.barEighths;
 			int barAt=barTones.size();
-			
 			while(eighthAt<barEighths){
-				
 				int[]toneValues=null;
 				String code="No code";
 				while(toneValues==null&nextCodes.hasNext()){
@@ -211,13 +218,7 @@ public final class VoicePart extends Tracer{
 					" barTones="+barTones.size()+" nextCodes="+nextCodes.hasNext());
 		}
 		barTones.add(Collections.EMPTY_LIST);
-		barCodes.toArray().equals(src);
-		
-	}
-	public List<Tone>getBarTones(int barAt){
-		List<Tone>tones=barAt<barTones.size()?
-				barTones.get(barAt):Collections.EMPTY_LIST;
-		return tones;
+		return voice;
 	}
 	private static Map<Voice,Context>newDefaultContexts(){
 		Map<Voice,Context>contexts=new HashMap();
@@ -231,10 +232,15 @@ public final class VoicePart extends Tracer{
 	}
 	@Override
 	protected void traceOutput(String msg){
-		if(voice==Bass)Util.printOut(voice+msg);
+		if(true||voice==Empty)Util.printOut(voice+msg);
+	}
+	public List<Tone>getBarTones(int barAt){
+		List<Tone>tones=barAt<barTones.size()?
+				barTones.get(barAt):Collections.EMPTY_LIST;
+		return tones;
 	}
 	public static void checkSource(String src){
-		parseSource(src,new ArrayList());
+		parseSource(src,new ArrayList(),new ArrayList());
 	}
 	private static ValueNode newPartNode(String src){
 		return new ValueNode("VoicePart",new Object[]{src});
