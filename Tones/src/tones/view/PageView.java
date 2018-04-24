@@ -107,6 +107,7 @@ public abstract class PageView extends PlaneViewWorks{
 		view.barStart=barFrom-1;
 		return new SFrameTarget(view){
 			protected STarget[]lazyElements(){
+				view.frame=this;
 				return new STarget[]{barAt,resizeSetsPage,time,barSize};
 			}
 		};
