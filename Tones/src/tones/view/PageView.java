@@ -22,7 +22,7 @@ public abstract class PageView extends PlaneViewWorks{
 		KEY_HEIGHT_SETS="pageHeightSets";
 	public static final int TARGET_BAR=0,TARGET_HEIGHT_SETS_PAGE=1,
 		TARGET_TIME=2,TARGET_BAR_SIZE=3;
-	private int barAt;
+	private int barStart,barStop;
 	PageView(String title,double width,double height,PagePolicies policies){
 		super(title,width,height,new Vector(-width/2+INSET,INSET),policies);
 	}
@@ -33,8 +33,11 @@ public abstract class PageView extends PlaneViewWorks{
 	public final double widthForPitch(){
 		return 3d/Bar.WIDTH_NOTE;
 	}
-	public final int barAt(){
-		return barAt;
+	public final int barStart(){
+		return barStart;
+	}
+	public final int barStop(){
+		return barStop;
 	}
 	public static SFrameTarget newFramed(final double notePoints,
 			final AppValues spec,final int barCount,int barFrom){
@@ -84,20 +87,31 @@ public abstract class PageView extends PlaneViewWorks{
 		final STarget barAt=new SNumeric("Start Bar ",barFrom,
 				new SNumeric.Coupler(){		
 			public void valueSet(SNumeric n){
-				view.barAt=(int)n.value()-1;				
+				view.barStart=(int)n.value()-1;				
 			}		
-			public NumberPolicy policy(SNumeric n){
-				return new NumberPolicy.Ticked(1,barCount){
-				  final public int format(){return FORMAT_DECIMALS_0;}
-				  public int labelSpacing(){return TICKS_DEFAULT;}
-				};
-			}
+					public NumberPolicy policy(SNumeric n){
+						return new NumberPolicy.Ticked(1,barCount){
+							final public int format(){
+								return FORMAT_DECIMALS_0;
+							}
+							public int labelSpacing(){
+								return TICKS_DEFAULT;
+							}
+							@Override
+							public String[]incrementTitles(){
+								return new String[]{"Back","Forward"};
+							}
+						};
+					}
 		});
-		view.barAt=barFrom-1;
+		view.barStart=barFrom-1;
 		return new SFrameTarget(view){
 			protected STarget[]lazyElements(){
 				return new STarget[]{barAt,resizeSetsPage,time,barSize};
 			}
 		};
+	}
+	public void setBarStop(int barStop){
+		this.barStop=barStop;
 	}
 }

@@ -113,12 +113,15 @@ public final class VoicePart extends Tracer{
 	public VoicePart(String src){
 		this.src=src;
 		voice=parseSource(src,barTones,barCodes);
-		String checkCodes=Objects.toString(barCodes.toArray()
-				).replaceAll(",,",",").replaceAll(",$","");
+		String checkCodes=mergeBarCodes(barCodes);
 		if(!checkCodes.equals(src))
 			throw new IllegalStateException("Bad checkCodes="+checkCodes);
 		else if(false)trace(": check="+checkCodes.length()+" src="+src.length());
 		else if(false)trace(".VoicePart: barCodes=",barCodes.size());
+	}
+	public static String mergeBarCodes(List<String> barCodes){
+		return Objects.toString(barCodes.toArray()
+				).replaceAll(",,",",").replaceAll(",$","");
 	}
 	private static Voice parseSource(String src,List<List<Tone>>barTones,
 			List<String> barCodes){

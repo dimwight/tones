@@ -21,7 +21,7 @@ import tones.bar.VoicePart;
 import tones.page.PageNote;
 import tones.view.PageView;
 public final class TonesViewable extends TreeTextViewable{
-	private int barAt;
+	private int barStart,barStop;
 	public final Bars bars;
 	SFrameTarget barsView=new SFrameTarget(new TreeView("Bar Contents"){
 		@Override
@@ -49,9 +49,11 @@ public final class TonesViewable extends TreeTextViewable{
 				String[]values=selected.values();
 				boolean noSelection=values.length==0;
 				List<String>barCodes=bars.selectedPart().barCodes;
-				trace(".lazyElements: barCodes="+barCodes.size()+" barAt="+barAt);
+				trace(".lazyElements: barCodes="+barCodes.size()+" "+barStart+"-"+barStop);
+				String NO_CODES="[No codes]";
 				STextual textual=new STextual("Codes",
-						noSelection||barCodes.size()<barAt?"[No codes]":barCodes.get(barAt),
+						noSelection||barCodes.size()-1<barStart||barStop<barStart?NO_CODES
+								:VoicePart.mergeBarCodes(barCodes.subList(barStart,barStop)),
 						new STextual.Coupler(){
 					@Override
 					public void textSet(STextual t){
@@ -68,7 +70,7 @@ public final class TonesViewable extends TreeTextViewable{
 						return false;
 					}
 				});
-				textual.setLive(!noSelection);
+				textual.setLive(!noSelection&&!textual.text().equals(NO_CODES));
 				return new STextual[]{textual};
 			}
 		};
@@ -96,7 +98,8 @@ public final class TonesViewable extends TreeTextViewable{
 		SSelection selection=selection();
 		if(view instanceof AvatarView){
 			PageView page=(PageView)view;
-			barAt=page.barAt();
+			barStart=page.barStart();
+			barStop=page.barStop();
 			return page.avatars().newAvatarSelection(viewer,new SSelection(){//?
 				@Override
 				public Object content(){
@@ -113,7 +116,7 @@ public final class TonesViewable extends TreeTextViewable{
 			});
 		}
 		return((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(//?
-				bars.newDebugRoot(barAt)));
+				bars.newDebugRoot(barStart)));
 	
 	}
 	@Override

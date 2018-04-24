@@ -59,10 +59,12 @@ public final class TonesEdit extends TreeTextContenter{
 				return !(((SViewer)child.activeFaceted()).view()instanceof PageView)?null
 						:new ViewerAreaMaster(){
 					protected SFacet newViewTools(STargeter viewTargeter){
-						return ff.toolGroups(viewTargeter,HINT_NONE,ff.spacerWide(8),
-								true?null:ff.spacerTall(45),
-					  		ff.numericSliders(viewTargeter.elements()[PageView.TARGET_BAR],
-					  				400,HINT_SLIDER_TICKS+HINT_SLIDER_LABELS+HINT_SLIDER_LOCAL));
+						STargeter barStart=viewTargeter.elements()[PageView.TARGET_BAR];
+						return ff.toolGroups(viewTargeter,HINT_PANEL_CENTER,ff.spacerWide(8),
+								false?null:ff.spacerTall(45),
+					  		ff.numericSliders(barStart,
+					  				400,HINT_SLIDER_TICKS+HINT_SLIDER_LABELS+HINT_SLIDER_LOCAL),
+					  		ff.numericNudgeButtons(barStart,HINT_NUMERIC_FIELDS+HINT_NUMERIC_NUDGERS_FIRST));
 					}
 					protected String hintString(){
 						return HINT_NO_FLASH+HINT_PANEL_BORDER+HINT_BARE;
