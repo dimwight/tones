@@ -113,5 +113,6 @@ public abstract class PageView extends PlaneViewWorks{
 	}
 	public void setBarStop(int barStop){
 		this.barStop=barStop;
+		frame.notifyParent();
 	}
 }
