@@ -1,6 +1,7 @@
 package tones.view;
 import static facets.util.Util.*;
 import facets.core.app.avatar.PlaneViewWorks;
+import facets.core.superficial.Notifying.Impact;
 import facets.core.superficial.SFrameTarget;
 import facets.core.superficial.SIndexing;
 import facets.core.superficial.SIndexing.Coupler;
@@ -22,7 +23,8 @@ public abstract class PageView extends PlaneViewWorks{
 		KEY_HEIGHT_SETS="pageHeightSets";
 	public static final int TARGET_BAR=0,TARGET_HEIGHT_SETS_PAGE=1,
 		TARGET_TIME=2,TARGET_BAR_SIZE=3;
-	private int barStart,barStop;
+	STarget frame;
+	private int barStart,barStop;	
 	PageView(String title,double width,double height,PagePolicies policies){
 		super(title,width,height,new Vector(-width/2+INSET,INSET),policies);
 	}
@@ -88,21 +90,22 @@ public abstract class PageView extends PlaneViewWorks{
 				new SNumeric.Coupler(){		
 			public void valueSet(SNumeric n){
 				view.barStart=(int)n.value()-1;				
+				if(false)view.frame.notifyParent(Impact.DEFAULT);
 			}		
-					public NumberPolicy policy(SNumeric n){
-						return new NumberPolicy.Ticked(1,barCount){
-							final public int format(){
-								return FORMAT_DECIMALS_0;
-							}
-							public int labelSpacing(){
-								return TICKS_DEFAULT;
-							}
-							@Override
-							public String[]incrementTitles(){
-								return new String[]{"Back","Forward"};
-							}
-						};
+			public NumberPolicy policy(SNumeric n){
+				return new NumberPolicy.Ticked(1,barCount){
+					final public int format(){
+						return FORMAT_DECIMALS_0;
 					}
+					public int labelSpacing(){
+						return TICKS_DEFAULT;
+					}
+					@Override
+					public String[]incrementTitles(){
+						return new String[]{"Back","Forward"};
+					}
+				};
+			}
 		});
 		view.barStart=barFrom-1;
 		return new SFrameTarget(view){
@@ -113,7 +116,10 @@ public abstract class PageView extends PlaneViewWorks{
 		};
 	}
 	public void setBarStop(int barStop){
-		this.barStop=barStop;
-		frame.notifyParent();
+		if(false)trace(".setBarStop: ",barStop);
+		if(this.barStop!=barStop){
+			this.barStop=barStop;
+			frame.notifyParent(Impact.DEFAULT);
+		}
 	}
 }

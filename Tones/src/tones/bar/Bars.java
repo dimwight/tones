@@ -113,9 +113,11 @@ public final class Bars extends Tracer implements Titled{
 	public String title(){
 		return viewable.title();
 	}
-	public DataNode newDebugRoot(int at){
+	public DataNode newDebugRoot(int start,int stop){
+		if(false)trace(".newDebugRoot: start="+start+" stop="+stop);
 		NodeList barsList=new NodeList(new DataNode(Bars.class.getSimpleName(),title()),true);
-		for(Bar bar:barsFrom(at)){
+		for(Bar bar:barsFrom(start)){
+			if(bar.at==stop)break;
 			NodeList barList=new NodeList(new DataNode(Bar.class.getSimpleName(),""+bar.at),true);
 			barsList.add(barList.parent);
 			List<Incipit>incipits=new ArrayList<Incipit>(bar.incipits);

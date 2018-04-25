@@ -2,6 +2,7 @@ package tones.page;
 import static tones.view.PageView.*;
 import facets.util.ItemList;
 import facets.util.Objects;
+import facets.util.Util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -18,7 +19,7 @@ import tones.page.PageItem.PageTie;
 import tones.view.PageView;
 public final class PageStaves{
 	static final double PAGE_X_SCALE=1.5;
-	private final List<Bar>thisBars=new ArrayList();
+	final List<Bar>thisBars=new ArrayList();
 	private final Voice selectedVoice;
 	double rise=0,staveGap=0,fall=0,pageXUsed=0;
 	final Bar endBar;
@@ -85,7 +86,7 @@ public final class PageStaves{
 		return new PageTails(beamed.items(),selected);
 	}
 	public static PageItem[]newPageItems(Bars content,PageView page){
-		int barStart=page.barStart(),barStop=barStart+1;
+		int barStart=page.barStart(),lastBarAt=barStart+1;
 		Iterator<Bar>bars=content.barsFrom(barStart).iterator();
 		final double pageWidth=page.showWidth()-2*INSET,
 			useHeight=page.showHeight()-2*INSET,
@@ -95,7 +96,6 @@ public final class PageStaves{
 		ItemList<PageItem>items=new ItemList(PageItem.class);
 		Bar bar=null;
 		while(bars.hasNext()||bar!=null){
-			barStop++;
 			PageStaves block=new PageStaves(bars,bar,pageWidth/unitWidth,
 					content.selectedPart().voice);
 			bar=block.endBar;
@@ -103,10 +103,12 @@ public final class PageStaves{
 			if(((pageY+=block.rise)+blockStaveHeight)*pitchHeight>useHeight)break;
 			double scaleUpdate=pageWidth/(block.pageXUsed*unitWidth);
 			pageXScale=bars.hasNext()?scaleUpdate:Math.min(scaleUpdate,pageXScale);
+			List<Bar>blockBars=block.thisBars;
+			if(!blockBars.isEmpty())lastBarAt=blockBars.get(blockBars.size()-1).at;
 			items.addItems(block.newItems(pageY,pageXScale));
 			pageY+=blockStaveHeight;
 		}
-		page.setBarStop(barStop);
+		page.setBarStop(lastBarAt+1);
 		return items.items();
 	}
 }

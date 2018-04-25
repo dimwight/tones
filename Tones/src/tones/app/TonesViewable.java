@@ -21,7 +21,7 @@ import tones.bar.VoicePart;
 import tones.page.PageNote;
 import tones.view.PageView;
 public final class TonesViewable extends TreeTextViewable{
-	private int barStart,barStop;
+	private int barStart;
 	public final Bars bars;
 	SFrameTarget barsView=new SFrameTarget(new TreeView("Bar Contents"){
 		@Override
@@ -37,6 +37,7 @@ public final class TonesViewable extends TreeTextViewable{
 			return node.title();
 		}
 	}){};
+	private PageView page;
 	TonesViewable(TypedNode tree,ClipperSource clipperSource,
 			FacetAppSurface app){
 		super(tree,clipperSource,app);
@@ -49,11 +50,13 @@ public final class TonesViewable extends TreeTextViewable{
 				String[]values=selected.values();
 				boolean noSelection=values.length==0;
 				List<String>barCodes=bars.selectedPart().barCodes;
-				trace(".lazyElements: barCodes="+barCodes.size()+" "+barStart+"-"+barStop);
+				barStart=page.barStart();
+				int codeStop=Math.min(page.barStop(),barCodes.size());
+				trace(".selectionFrame: "+barStart+"-"+codeStop);
 				String NO_CODES="[No codes]";
 				STextual textual=new STextual("Codes",
-						noSelection||barCodes.size()-1<barStart||barStop<barStart?NO_CODES
-								:VoicePart.mergeBarCodes(barCodes.subList(barStart,barStop)),
+						noSelection||barCodes.size()-1<barStart||codeStop<barStart?NO_CODES
+								:VoicePart.mergeBarCodes(barCodes.subList(barStart,codeStop)),
 						new STextual.Coupler(){
 					@Override
 					public void textSet(STextual t){
@@ -97,9 +100,7 @@ public final class TonesViewable extends TreeTextViewable{
 		SView view=viewer.view();
 		SSelection selection=selection();
 		if(view instanceof AvatarView){
-			PageView page=(PageView)view;
-			barStart=page.barStart();
-			barStop=page.barStop();
+			page=(PageView)view;
 			return page.avatars().newAvatarSelection(viewer,new SSelection(){//?
 				@Override
 				public Object content(){
@@ -116,7 +117,7 @@ public final class TonesViewable extends TreeTextViewable{
 			});
 		}
 		return((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(//?
-				bars.newDebugRoot(barStart)));
+				bars.newDebugRoot(barStart,page==null?0:page.barStop())));
 	
 	}
 	@Override
