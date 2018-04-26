@@ -1,5 +1,7 @@
 package tones.app;
 import static facets.core.app.ActionViewerTarget.Action.*;
+import static java.lang.Math.*;
+import static tones.bar.VoicePart.*;
 import facets.core.app.PathSelection;
 import facets.core.app.SView;
 import facets.core.app.SViewer;
@@ -49,23 +51,24 @@ public final class TonesViewable extends TreeTextViewable{
 				List<String>codes=bars.selectedPart().barCodes;
 				barStart=page.barStart();
 				int codesCount=codes.size(),
-					codeStop=Math.min(page.barStop(),codesCount);
-				trace(".selectionFrame: "+barStart+"-"+codeStop);
+					codeStop=min(page.barStop(),codesCount);
+				if(false)trace(".selectionFrame: codesCount="+codesCount+" "+
+					+barStart+","+codeStop);
 				String NO_CODES="[No codes]",
-					before=mergeBarCodes(codes.subList(0,barStart)),
-					show=mergeBarCodes(codes.subList(barStart,codeStop)),
-					after=mergeBarCodes(codes.subList(codeStop,codesCount));
-				STextual textual=new STextual("Codes",
-						codesCount-1<barStart||codeStop<barStart?NO_CODES:show,
-								
+					before=mergeBarCodes(codes.subList(0,min(barStart,codesCount))),
+					show=barStart>=codeStop?""
+							:mergeBarCodes(codes.subList(barStart,codeStop)),
+					after=codeStop>=codesCount?""
+							:mergeBarCodes(codes.subList(codeStop,codesCount));
+				STextual textual=new STextual("Codes",show.isEmpty()?NO_CODES:show,
 						new STextual.Coupler(){
 					@Override
 					public void textSet(STextual t){
-						String src=before+","+t.text()+","+after;
+						String src=(before+","+t.text()+","+after).trim();
+						if(false)trace(".textSet: src=",src);
 						try {
-							VoicePart.checkSource(src);
-							TonesViewable.this.doUndoableEdit((ValueNode)framed,src);
 							bars.updatePart(src);
+							TonesViewable.this.doUndoableEdit((ValueNode)framed,src);
 						} catch (Exception e) {
 							TonesViewable.this.trace(".textSet: "+e.getMessage());
 						}

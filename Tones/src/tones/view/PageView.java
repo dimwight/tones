@@ -86,7 +86,7 @@ public abstract class PageView extends PlaneViewWorks{
 				state.put(KEY_HEIGHT,heightNow/INCH_PTS);
 			}
 		};
-		final STarget barAt=new SNumeric("Start Bar ",barFrom,
+		final STarget barAt=new SNumeric("From:",barFrom,
 				new SNumeric.Coupler(){		
 			public void valueSet(SNumeric n){
 				view.barStart=(int)n.value()-1;				
@@ -94,6 +94,7 @@ public abstract class PageView extends PlaneViewWorks{
 			}		
 			public NumberPolicy policy(SNumeric n){
 				return new NumberPolicy.Ticked(1,barCount){
+					
 					final public int format(){
 						return FORMAT_DECIMALS_0;
 					}

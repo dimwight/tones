@@ -63,8 +63,9 @@ public final class TonesEdit extends TreeTextContenter{
 						return ff.toolGroups(viewTargeter,HINT_PANEL_CENTER,ff.spacerWide(8),
 								false?null:ff.spacerTall(45),
 					  		ff.numericSliders(barStart,
-					  				400,HINT_SLIDER_TICKS+HINT_SLIDER_LABELS+HINT_SLIDER_LOCAL),
-					  		ff.numericNudgeButtons(barStart,HINT_NUMERIC_FIELDS+HINT_NUMERIC_NUDGERS_FIRST));
+					  				350,HINT_SLIDER_TICKS+HINT_SLIDER_LABELS+HINT_SLIDER_LOCAL),
+					  		ff.numericNudgeButtons(barStart,
+					  				HINT_NUMERIC_FIELDS+HINT_NUMERIC_NUDGERS_FIRST));
 					}
 					protected String hintString(){
 						return HINT_NO_FLASH+HINT_PANEL_BORDER+HINT_BARE;

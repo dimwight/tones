@@ -111,17 +111,17 @@ public final class VoicePart extends Tracer{
 	private final List<List<Tone>>barTones=new ArrayList();
 	public final List<String>barCodes=new ArrayList();
 	public VoicePart(String src){
-		this.src=src;
-		voice=parseSource(src,barTones,barCodes);
+		this.src=src.replaceAll(",$","");
+		voice=parseSource(this.src,barTones,barCodes);
 		String checkCodes=mergeBarCodes(barCodes);
-		if(!checkCodes.equals(src))
+		if(!checkCodes.equals(this.src))
 			throw new IllegalStateException("Bad checkCodes="+checkCodes);
 		else if(false)trace(": check="+checkCodes.length()+" src="+src.length());
 		else if(false)trace(".VoicePart: barCodes=",barCodes.size());
 	}
 	public static String mergeBarCodes(List<String> barCodes){
 		return Objects.toString(barCodes.toArray()
-				).replaceAll(",,",",").replaceAll(",$","");
+				).replaceAll("\\s*,\\s*,\\s*",",").replaceAll(",$","");
 	}
 	private static Voice parseSource(String src,List<List<Tone>>barTones,
 			List<String> barCodes){
@@ -243,7 +243,7 @@ public final class VoicePart extends Tracer{
 		return tones;
 	}
 	public static void checkSource(String src){
-		parseSource(src,new ArrayList(),new ArrayList());
+		parseSource(src.replaceAll(",$",""),new ArrayList(),new ArrayList());
 	}
 	private static ValueNode newPartNode(String src){
 		return new ValueNode("VoicePart",new Object[]{src});
