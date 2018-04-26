@@ -46,7 +46,6 @@ public final class TonesViewable extends TreeTextViewable{
 	public SFrameTarget selectionFrame(){
 		return new SFrameTarget(selection().single()){
 			protected STarget[]lazyElements(){
-				ValueNode selected=(ValueNode)framed;
 				List<String>codes=bars.selectedPart().barCodes;
 				int barStart=page.barStart(),codesCount=codes.size(),
 					codeStop=Math.min(page.barStop(),codesCount);
@@ -64,7 +63,7 @@ public final class TonesViewable extends TreeTextViewable{
 						String src=before+","+t.text()+","+after;
 						try {
 							VoicePart.checkSource(src);
-							TonesViewable.this.doUndoableEdit(selected,src);
+							TonesViewable.this.doUndoableEdit((ValueNode)framed,src);
 							bars.updatePart(src);
 						} catch (Exception e) {
 							TonesViewable.this.trace(".textSet: "+e.getMessage());
