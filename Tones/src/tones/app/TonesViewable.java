@@ -47,15 +47,13 @@ public final class TonesViewable extends TreeTextViewable{
 		return new SFrameTarget(selection().single()){
 			protected STarget[]lazyElements(){
 				ValueNode selected=(ValueNode)framed;
-				String[]values=selected.values();
-				boolean noSelection=values.length==0;
 				List<String>barCodes=bars.selectedPart().barCodes;
 				barStart=page.barStart();
 				int codeStop=Math.min(page.barStop(),barCodes.size());
 				trace(".selectionFrame: "+barStart+"-"+codeStop);
 				String NO_CODES="[No codes]";
 				STextual textual=new STextual("Codes",
-						noSelection||barCodes.size()-1<barStart||codeStop<barStart?NO_CODES
+						barCodes.size()-1<barStart||codeStop<barStart?NO_CODES
 								:VoicePart.mergeBarCodes(barCodes.subList(barStart,codeStop)),
 						new STextual.Coupler(){
 					@Override
