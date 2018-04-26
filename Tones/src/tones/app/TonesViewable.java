@@ -48,8 +48,7 @@ public final class TonesViewable extends TreeTextViewable{
 			protected STarget[]lazyElements(){
 				ValueNode selected=(ValueNode)framed;
 				List<String>codes=bars.selectedPart().barCodes;
-				barStart=page.barStart();
-				int codesCount=codes.size(),codeStop=Math.min(page.barStop(),codesCount);
+				int barStart=page.barStart(),codesCount=codes.size(),codeStop=Math.min(page.barStop(),codesCount);
 				trace(".selectionFrame: "+barStart+"-"+codeStop);
 				String NO_CODES="[No codes]",
 					before=mergeBarCodes(codes.subList(0,barStart)),
