@@ -52,16 +52,16 @@ public final class TonesViewable extends TreeTextViewable{
 				int codesCount=codes.size(),codeStop=Math.min(page.barStop(),codesCount);
 				trace(".selectionFrame: "+barStart+"-"+codeStop);
 				String NO_CODES="[No codes]",
-					top=mergeBarCodes(codes.subList(0,barStart)),
+					before=mergeBarCodes(codes.subList(0,barStart)),
 					show=mergeBarCodes(codes.subList(barStart,codeStop)),
-					tail=mergeBarCodes(codes.subList(codeStop,codesCount));
+					after=mergeBarCodes(codes.subList(codeStop,codesCount));
 				STextual textual=new STextual("Codes",
 						codesCount-1<barStart||codeStop<barStart?NO_CODES:show,
 								
 						new STextual.Coupler(){
 					@Override
 					public void textSet(STextual t){
-						String src=top+","+t.text()+","+tail;
+						String src=before+","+t.text()+","+after;
 						try {
 							VoicePart.checkSource(src);
 							TonesViewable.this.doUndoableEdit(selected,src);
