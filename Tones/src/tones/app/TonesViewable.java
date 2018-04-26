@@ -53,8 +53,8 @@ public final class TonesViewable extends TreeTextViewable{
 				trace(".selectionFrame: "+barStart+"-"+codeStop);
 				String NO_CODES="[No codes]",
 					show=mergeBarCodes(barCodes.subList(barStart,codeStop)),
-					top="",
-					tail="";
+					top=mergeBarCodes(barCodes.subList(barStart,codeStop)),
+					tail=mergeBarCodes(barCodes.subList(barStart,codeStop));
 				STextual textual=new STextual("Codes",
 						barCodes.size()-1<barStart||codeStop<barStart?NO_CODES
 								:show,
