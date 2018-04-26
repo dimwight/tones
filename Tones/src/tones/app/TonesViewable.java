@@ -49,14 +49,14 @@ public final class TonesViewable extends TreeTextViewable{
 				ValueNode selected=(ValueNode)framed;
 				List<String>barCodes=bars.selectedPart().barCodes;
 				barStart=page.barStart();
-				int codeStop=Math.min(page.barStop(),barCodes.size());
+				int codesCount=barCodes.size(),codeStop=Math.min(page.barStop(),codesCount);
 				trace(".selectionFrame: "+barStart+"-"+codeStop);
 				String NO_CODES="[No codes]",
 					top=mergeBarCodes(barCodes.subList(0,barStart)),
 					show=mergeBarCodes(barCodes.subList(barStart,codeStop)),
-					tail=mergeBarCodes(barCodes.subList(codeStop,barCodes.size()));
+					tail=mergeBarCodes(barCodes.subList(codeStop,codesCount));
 				STextual textual=new STextual("Codes",
-						barCodes.size()-1<barStart||codeStop<barStart?NO_CODES:show,
+						codesCount-1<barStart||codeStop<barStart?NO_CODES:show,
 								
 						new STextual.Coupler(){
 					@Override
