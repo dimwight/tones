@@ -56,8 +56,8 @@ public final class TonesViewable extends TreeTextViewable{
 					show=mergeBarCodes(barCodes.subList(barStart,codeStop)),
 					tail=mergeBarCodes(barCodes.subList(codeStop,barCodes.size()));
 				STextual textual=new STextual("Codes",
-						barCodes.size()-1<barStart||codeStop<barStart?NO_CODES
-								:show,
+						barCodes.size()-1<barStart||codeStop<barStart?NO_CODES:show,
+								
 						new STextual.Coupler(){
 					@Override
 					public void textSet(STextual t){
