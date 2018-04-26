@@ -51,10 +51,12 @@ public final class TonesViewable extends TreeTextViewable{
 				barStart=page.barStart();
 				int codeStop=Math.min(page.barStop(),barCodes.size());
 				trace(".selectionFrame: "+barStart+"-"+codeStop);
-				String NO_CODES="[No codes]";
+				String NO_CODES="[No codes]",
+					top="",
+					tail="";
 				STextual textual=new STextual("Codes",
 						barCodes.size()-1<barStart||codeStop<barStart?NO_CODES
-								:VoicePart.mergeBarCodes(barCodes.subList(barStart,codeStop)),
+								:mergeBarCodes(barCodes.subList(barStart,codeStop)),
 						new STextual.Coupler(){
 					@Override
 					public void textSet(STextual t){
