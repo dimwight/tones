@@ -58,7 +58,7 @@ public final class TonesViewable extends TreeTextViewable{
 						new STextual.Coupler(){
 					@Override
 					public void textSet(STextual t){
-						String src=t.text();
+						String src=top+","+t.text()+","+tail;
 						try {
 							VoicePart.checkSource(src);
 							TonesViewable.this.doUndoableEdit(selected,src);
