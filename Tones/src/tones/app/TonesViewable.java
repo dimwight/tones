@@ -47,7 +47,8 @@ public final class TonesViewable extends TreeTextViewable{
 		return new SFrameTarget(selection().single()){
 			protected STarget[]lazyElements(){
 				List<String>codes=bars.selectedPart().barCodes;
-				int barStart=page.barStart(),codesCount=codes.size(),
+				barStart=page.barStart();
+				int codesCount=codes.size(),
 					codeStop=Math.min(page.barStop(),codesCount);
 				trace(".selectionFrame: "+barStart+"-"+codeStop);
 				String NO_CODES="[No codes]",
