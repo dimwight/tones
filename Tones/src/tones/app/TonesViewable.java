@@ -74,8 +74,8 @@ public final class TonesViewable extends TreeTextViewable{
 						return false;
 					}
 				});
-				textual.setLive(!noSelection&&!textual.text().equals(NO_CODES));
-				return new STextual[]{textual};
+				textual.setLive(!textual.text().equals(NO_CODES));
+				return new STarget[]{textual};
 			}
 		};
 	}
