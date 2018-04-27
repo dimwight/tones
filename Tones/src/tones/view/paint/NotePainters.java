@@ -56,8 +56,7 @@ public final class NotePainters extends PagePainters{
 						:time<NOTE_DOUBLE?Whole:Double;
 		ItemList<Painter>painters=new ItemList(Painter.class);
 		Dot dot=note.dot;
-		Painter dotPainter=p.pointMark(dot.at(),shade,false);
-		painters.addItems(dotPainter,
+		painters.addItems(p.pointMark(dot.at(),shade,false),
 				p.mastered(bead.newOutlined(shade,null,true)));
 		p.applyTransforms(new PainterSource.Transform[]{
 				p.transformAt(x+width*0.1,y+pitchHeight),
