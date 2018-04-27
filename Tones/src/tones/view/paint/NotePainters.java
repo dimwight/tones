@@ -55,14 +55,14 @@ public final class NotePainters extends PagePainters{
 		double time=note.tone.eighths;
 		if(false&&time<NOTE_QUARTER)shade=Shades.gray;
 		SvgPath dot=dotAt==Dot.NONE?Empty
-					:dotAt==Dot.BELOW||dotAt==Dot.ABOVE?DotBelow:DotLevel,
+					:dotAt==Dot.BELOW?DotBelow:DotLevel,
 				bead=time<NOTE_HALF?Solid:time<NOTE_WHOLE?Half
 						:time<NOTE_DOUBLE?Whole:Double;
 		ItemList<Painter>painters=new ItemList(Painter.class);
 		Painter dotPainter=p.mastered(dot.newOutlined(shade,null,false));
 		if(dotAt==Dot.ABOVE)
 			p.applyTransforms(new PainterSource.Transform[]{
-					p.transformAt(0,-pitchHeight),
+					p.transformAt(0,-pitchHeight*1?),
 			},true,dotPainter);
 		painters.addItems(dotPainter,
 				p.mastered(bead.newOutlined(shade,null,true)));
