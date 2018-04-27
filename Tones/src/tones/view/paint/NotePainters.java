@@ -57,10 +57,6 @@ public final class NotePainters extends PagePainters{
 		ItemList<Painter>painters=new ItemList(Painter.class);
 		Dot dotAt=note.dotAt;
 		Painter dotPainter=p.mastered(dot.newOutlined(shade,null,false));
-		if(false&&dotAt==Dot.ABOVE)
-			p.applyTransforms(new PainterSource.Transform[]{
-					p.transformScale(1,-1),
-			},true,dotPainter);
 		painters.addItems(dotPainter,
 				p.mastered(bead.newOutlined(shade,null,true)));
 		p.applyTransforms(new PainterSource.Transform[]{
