@@ -55,8 +55,8 @@ public final class NotePainters extends PagePainters{
 		SvgPath bead=time<NOTE_HALF?Solid:time<NOTE_WHOLE?Half
 						:time<NOTE_DOUBLE?Whole:Double;
 		ItemList<Painter>painters=new ItemList(Painter.class);
-		Dot dotAt=note.dotAt;
-		Painter dotPainter=p.mastered(dot.newOutlined(shade,null,false));
+		Dot dot=note.dot;
+		Painter dotPainter=p.pointMark(dot.at(),shade,false);
 		painters.addItems(dotPainter,
 				p.mastered(bead.newOutlined(shade,null,true)));
 		p.applyTransforms(new PainterSource.Transform[]{
