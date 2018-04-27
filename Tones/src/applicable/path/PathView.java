@@ -169,7 +169,7 @@ final class PathView extends FacetAppSpecifier{
 		return paths.toArray(new SvgPath[]{});
 	}
 	public static void main(String[]args){
-		File workDir=Util.userDir(),svg=new File(workDir,"PathView.svg");				
+		File svg=new File(Util.userDir(),"PathView.svg");				
 		if(false){
 			trace=true;
 			for(SvgPath values:findPaths(
