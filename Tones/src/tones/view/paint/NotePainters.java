@@ -49,12 +49,13 @@ public final class NotePainters extends PagePainters{
 		return painters.items();
 	}
 	private Painter[]newBeadPainters(Shade shade){
-		Dot dotAt=note.dotAt;
+		
 		double time=note.tone.eighths;
 		if(false&&time<NOTE_QUARTER)shade=Shades.gray;
 		SvgPath bead=time<NOTE_HALF?Solid:time<NOTE_WHOLE?Half
 						:time<NOTE_DOUBLE?Whole:Double;
 		ItemList<Painter>painters=new ItemList(Painter.class);
+		Dot dotAt=note.dotAt;
 		Painter dotPainter=p.mastered(dot.newOutlined(shade,null,false));
 		if(false&&dotAt==Dot.ABOVE)
 			p.applyTransforms(new PainterSource.Transform[]{
