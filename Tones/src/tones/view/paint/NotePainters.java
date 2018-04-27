@@ -52,9 +52,7 @@ public final class NotePainters extends PagePainters{
 		Dot dotAt=note.dotAt;
 		double time=note.tone.eighths;
 		if(false&&time<NOTE_QUARTER)shade=Shades.gray;
-		SvgPath dot=dotAt==Dot.NONE?Empty
-					:dotAt==Dot.BELOW||dotAt==Dot.ABOVE?DotBelow:DotLevel,
-				bead=time<NOTE_HALF?Solid:time<NOTE_WHOLE?Half
+		SvgPath bead=time<NOTE_HALF?Solid:time<NOTE_WHOLE?Half
 						:time<NOTE_DOUBLE?Whole:Double;
 		ItemList<Painter>painters=new ItemList(Painter.class);
 		Painter dotPainter=p.mastered(dot.newOutlined(shade,null,false));
