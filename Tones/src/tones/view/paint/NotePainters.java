@@ -60,9 +60,9 @@ public final class NotePainters extends PagePainters{
 						:time<NOTE_DOUBLE?Whole:Double;
 		ItemList<Painter>painters=new ItemList(Painter.class);
 		Painter dotPainter=p.mastered(dot.newOutlined(shade,null,false));
-		if(false&&dotAt==Dot.ABOVE)
+		if(dotAt==Dot.ABOVE)
 			p.applyTransforms(new PainterSource.Transform[]{
-					p.transformScale(1,-1),
+					p.transformAt(0,-pitchHeight),
 			},true,dotPainter);
 		painters.addItems(dotPainter,
 				p.mastered(bead.newOutlined(shade,null,true)));
