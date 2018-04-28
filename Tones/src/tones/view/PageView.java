@@ -10,6 +10,7 @@ import facets.core.superficial.STarget;
 import facets.core.superficial.SToggling;
 import facets.util.Debug;
 import facets.util.NumberPolicy;
+import facets.util.Times;
 import facets.util.app.AppValues;
 import facets.util.geom.Vector;
 import facets.util.shade.Shades;
@@ -89,7 +90,9 @@ public abstract class PageView extends PlaneViewWorks{
 		final STarget barAt=new SNumeric("From:",barFrom,
 				new SNumeric.Coupler(){		
 			public void valueSet(SNumeric n){
-				view.barStart=(int)n.value()-1;				
+				int value=(int)n.value();
+				spec.args().put(TonesEdit.ARG_BAR_FROM,value);
+				view.barStart=value-1;				
 				if(false)view.frame.notifyParent(Impact.DEFAULT);
 			}
 			public NumberPolicy policy(SNumeric n){
@@ -116,8 +119,8 @@ public abstract class PageView extends PlaneViewWorks{
 		};
 	}
 	public void setBarStop(int barStop){
-		if(false)trace(".setBarStop: ",barStop);
 		if(this.barStop!=barStop){
+			if(false)Times.printElapsed("PageView.setBarStop: "+barStop);
 			this.barStop=barStop;
 			frame.notifyParent(Impact.DEFAULT);
 		}

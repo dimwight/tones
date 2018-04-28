@@ -35,6 +35,7 @@ public class PageBar extends PageItem{
 						voice==selectedVoice);
 				 items.add(note);
 			}
+		if(false)trace(".newItems: items=",items.size());
 		return items.items();
 	}
 	public String toString(){

@@ -37,7 +37,7 @@ public class PageNote extends PageItem{
 				:beyondStave/2*(aboveMidPitch?1:-1);
 		ledgerLineShift=aboveMidPitch?beyondStave%2+1:(beyondStave+1)%2;
 		boolean tailsUp=tone.voice.tailsUp;
-		dotAt=tone.eighths%3!=0?NONE:stavePitch%2==0?tailsUp?ABOVE:BELOW:LEVEL;
+		dotAt=tone.eighths%3!=0?NONE:stavePitch%2==0&&ledgerLines==0?ABOVE:LEVEL;
 		debugString=tone.pitchNote()+
 			" stavePitch="+stavePitch+" aboveMidPitch="+aboveMidPitch
 			+" beyondStave="+beyondStave;

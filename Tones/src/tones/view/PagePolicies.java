@@ -30,7 +30,7 @@ final class PagePolicies extends AvatarPolicies{
 	@Override
 	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){//?
 		Bars bars=(Bars)viewable.content();
-		boolean timing=true;
+		boolean timing=false;
 		if(timing)Times.printElapsed("PagePolicies.newAvatarSelection");
 		PageItem[]items=PageStaves.newPageItems(bars,(PageView)viewer.view());
 		if(timing)Times.printElapsed("PagePolicies.newAvatarSelection~");

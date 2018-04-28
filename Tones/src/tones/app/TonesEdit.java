@@ -16,6 +16,7 @@ import facets.facet.FacetFactory;
 import facets.facet.ViewerAreaMaster;
 import facets.facet.app.FacetAppSurface;
 import facets.util.ItemList;
+import facets.util.Util;
 import facets.util.tree.DataNode;
 import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
@@ -106,7 +107,7 @@ public final class TonesEdit extends TreeTextContenter{
 			}
 			@Override
 			protected Object getInternalContentSource(){
-				File file=new File(userDir(),"E major.tones.xml");
+				File file=new File(Util.runDir(),"E major.tones.xml");
 				return file.exists()?file 
 						:new ValueNode("xml","Tones"+contents++,new Object[]{
 								new ValueNode("Tones",VoicePart.TEST_CODES)}).copyState();
