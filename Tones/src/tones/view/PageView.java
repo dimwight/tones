@@ -91,10 +91,9 @@ public abstract class PageView extends PlaneViewWorks{
 			public void valueSet(SNumeric n){
 				view.barStart=(int)n.value()-1;				
 				if(false)view.frame.notifyParent(Impact.DEFAULT);
-			}		
+			}
 			public NumberPolicy policy(SNumeric n){
 				return new NumberPolicy.Ticked(1,barCount){
-					
 					final public int format(){
 						return FORMAT_DECIMALS_0;
 					}

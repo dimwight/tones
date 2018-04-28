@@ -59,9 +59,15 @@ final class PathView extends FacetAppSpecifier{
 	}
 	private final File svg;
 	static boolean trace=false;
-	PathView(File svg){
+	PathView(){
 		super(PathView.class);
-		this.svg=svg;
+		svg=new File(userDir(),"PathView.svg");				
+		if(false){
+			trace=true;
+			for(SvgPath values:findPaths(
+					newScaledFileRoot(svg,ReadValues.SF.defaultVal,
+							ReadValues.SHIFT.defaultVal),null));
+		}
 	}
 	protected void addNatureDefaults(ValueNode root){
 		super.addNatureDefaults(root);
@@ -169,13 +175,6 @@ final class PathView extends FacetAppSpecifier{
 		return paths.toArray(new SvgPath[]{});
 	}
 	public static void main(String[]args){
-		File svg=new File(Util.userDir(),"PathView.svg");				
-		if(false){
-			trace=true;
-			for(SvgPath values:findPaths(
-					newScaledFileRoot(svg,ReadValues.SF.defaultVal,
-							ReadValues.SHIFT.defaultVal),null));
-		}
-		else new PathView(svg).buildAndLaunchApp(args);
+		new PathView().buildAndLaunchApp(args);
 	}
 }

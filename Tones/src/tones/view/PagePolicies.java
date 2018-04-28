@@ -12,6 +12,7 @@ import facets.core.app.avatar.PainterSource;
 import facets.core.app.avatar.PlaneView;
 import facets.core.superficial.app.SSelection;
 import facets.util.Debug;
+import facets.util.Times;
 import facets.util.shade.Shades;
 import tones.bar.Bars;
 import tones.page.PageBar;
@@ -29,7 +30,10 @@ final class PagePolicies extends AvatarPolicies{
 	@Override
 	public SSelection newAvatarSelection(SViewer viewer,SSelection viewable){//?
 		Bars bars=(Bars)viewable.content();
+		boolean timing=true;
+		if(timing)Times.printElapsed("PagePolicies.newAvatarSelection");
 		PageItem[]items=PageStaves.newPageItems(bars,(PageView)viewer.view());
+		if(timing)Times.printElapsed("PagePolicies.newAvatarSelection~");
 		return PathSelection.newMinimal(items);
 	}
 	@Override

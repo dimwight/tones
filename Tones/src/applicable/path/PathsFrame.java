@@ -15,7 +15,7 @@ final class PathsFrame extends SFrameTarget{
 	protected STarget[]lazyElements(){
 		String key="";
 		PathContenter pc=(PathContenter)framed;
-		for(SvgShape path:pc.paths.paths)key+=path.id();
+		for(SvgShape path:pc.paths.paths)key+=path.title();
 		double[]values=pc.getPathValues(pc.valuesKey=key);
 		if(false)trace(".lazyElements: key="+key+" values=" +Debug.info(values)+
 				" "+pc.state.get(key));

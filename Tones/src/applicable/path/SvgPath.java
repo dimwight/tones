@@ -16,8 +16,8 @@ public final class SvgPath extends SvgShape{
 	public SvgPath(ValueNode values){
 		super(values);
 	}
-	public SvgPath(String id,String data,int shift){
-		this(new ValueNode(TYPE_PATH,id,new Object[]{
+	public SvgPath(String title,String data,int shift){
+		this(new ValueNode(TYPE_PATH,title,new Object[]{
 			KEY_DATA+"="+data,	
 			KEY_SHIFT+"="+shift,	
 		}));
@@ -78,7 +78,7 @@ public final class SvgPath extends SvgShape{
 		List<Segment>segments=new ArrayList();
 		final String _runData="[^MmCcLl]+",_anyRun="[MmCcLl]"+_runData,
 			_moveOrLineRun="[MmLl]";
-		trace(" id=" +id()+" shift="+shift+" data=" +data);
+		trace(" title=" +title()+" shift="+shift+" data=" +data);
 		boolean firstRun=true;
 		final double factor=Math.pow(10,shift);
 		double pathX=0,pathY=0;
@@ -145,6 +145,10 @@ public final class SvgPath extends SvgShape{
 			}
 			public Scaling scaling(){
 				return Scaling.OUTLINE;
+			}
+			@Override
+			public String toString(){
+				return title();
 			}
 		};
 	}
