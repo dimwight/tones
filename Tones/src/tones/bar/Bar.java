@@ -75,8 +75,8 @@ final public class Bar extends Tracer{
 		this.at=at;this.incipits=incipits;
 		this.rise=rise;this.staveGap=staveGap;this.fall=fall;this.width=width;
 	}
-	public Bar newAnnotationCopy(Incipit incipit){
-		return new Bar(at,Collections.singleton(incipit),rise,staveGap,fall,width);
+	public Bar newAnnotationCopy(Incipit incipit){?
+		return new Bar(at,Collections.singleton(ikncipit),rise,staveGap,fall,width);
 	}
 	public String toString(){
 		return Debug.info(this)+" at="+at+" incipits="
