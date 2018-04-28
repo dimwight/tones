@@ -12,7 +12,7 @@ public class PageNote extends PageItem{
 	public enum Dot{NONE,LEVEL,BELOW,ABOVE};
 	public final PageBar bar;
 	public final Tone tone;
-	public final Incipit incipit;
+	public final Incipit incipit;?
 	public final double pageX,pageY,ledgerLineShift;
 	public final int ledgerLines;
 	public boolean selected;
