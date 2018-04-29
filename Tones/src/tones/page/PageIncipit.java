@@ -20,8 +20,8 @@ final class PageIncipit extends PageItem{
 				"Invalid scaledStaveX in "+Debug.info(this));
 		double scaled=scaledStaveX;
 		for(Tone t:content.tones)
-			if(Math.abs(t.pitch-tone.pitch)==1
-					&&tone.eighths>t.eighths)scaled+=Bar.WIDTH_NOTE;
+			if(Math.abs(t.pitch-tone.pitch)<2
+					&&tone.eighths>=t.eighths)scaled+=Bar.WIDTH_NOTE;
 		return scaled;
 	}	
 }
