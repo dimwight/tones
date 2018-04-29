@@ -26,8 +26,8 @@ public final class TiePainters extends PagePainters{
 		super(page,p);
 		this.tie=tie;
 		if(false)trace(": tie=",tie);	
-		noteWidth=Bar.WIDTH_NOTE*unitWidth;
-		noteHeight=pitchHeight*2;
+		noteWidth=Bar.WIDTH_NOTE*unitX;
+		noteHeight=unitY*2;
 		tailsUp=tie.voice.tailsUp;
 		shade=selectionShade(tie.selected);
 	}
@@ -39,10 +39,10 @@ public final class TiePainters extends PagePainters{
 			};
 	}
 	private Painter beforeNull(PageTie tie){
-		double x=tie.bar.staveX,y=tie.afterAt.y;
+		double x=tie.bar.pageX,y=tie.afterAt.y;
 		Painter painter=p.mastered(BeforeNull_.newOutlined(shade,null,false));
 		p.applyTransforms(new Transform[]{
-			p.transformAt(x*unitWidth,y*pitchHeight-noteHeight),
+			p.transformAt(x*unitX,y*unitY-noteHeight),
 			p.transformScale(noteHeight,noteHeight),
 		},true,painter);
 		return painter;
@@ -56,15 +56,15 @@ public final class TiePainters extends PagePainters{
 		Outlined path=(isBoth?BeforeAfter_:true?AfterNullLong_:AfterNullShort_
 				).newOutlined(shade,null,false);
 		Vector bounds=path.bounds().scaled(noteHeight);
-		double toAfter=(isBoth?tie.afterAt.x-x+2:0)*unitWidth, 
-			toBarEnd=(tie.bar.staveX+tie.bar.staveWidth-x)*unitWidth,
+		double toAfter=(isBoth?tie.afterAt.x-x+2:0)*unitX, 
+			toBarEnd=(tie.bar.pageX+tie.bar.staveWidth-x)*unitX,
 			stretch=(isBoth?toAfter:toBarEnd)/bounds.x;
 		Painter painter=p.mastered(path);
 		p.applyTransforms(new Transform[]{
-			p.transformAt(x*unitWidth+(isBoth?
+			p.transformAt(x*unitX+(isBoth?
 					(tie.before.tone.eighths==NOTE_QUARTER?-2:-1):2)
 					+(tailsUp?2:-2),
-					y*pitchHeight-noteHeight*(tailsUp?1.5:-1.5)),
+					y*unitY-noteHeight*(tailsUp?1.5:-1.5)),
 			p.transformScale(noteHeight*stretch,noteHeight*(tailsUp?1:-1)),
 		},true,painter);
 		return painter;

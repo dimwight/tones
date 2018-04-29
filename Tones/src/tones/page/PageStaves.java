@@ -90,18 +90,18 @@ public final class PageStaves{
 		Iterator<Bar>bars=content.barsFrom(barStart).iterator();
 		final double pageWidth=page.showWidth()-2*INSET,
 			useHeight=page.showHeight()-2*INSET,
-			pitchHeight=page.pitchHeight(),
-			unitWidth=pitchHeight*page.widthForPitch();
+			unitY=page.unitY(),
+			unitX=unitY*page.widthForPitch();
 		double pageY=0,pageXScale=PAGE_X_SCALE;
 		ItemList<PageItem>items=new ItemList(PageItem.class);
 		Bar bar=null;
 		while(bars.hasNext()||bar!=null){
-			PageStaves block=new PageStaves(bars,bar,pageWidth/unitWidth,
+			PageStaves block=new PageStaves(bars,bar,pageWidth/unitX,
 					content.selectedPart().voice);
 			bar=block.endBar;
 			double blockStaveHeight=PageItem.STAVE_GRID*2+block.staveGap+block.fall;
-			if(((pageY+=block.rise)+blockStaveHeight)*pitchHeight>useHeight)break;
-			double scaleUpdate=pageWidth/(block.pageXUsed*unitWidth);
+			if(((pageY+=block.rise)+blockStaveHeight)*unitY>useHeight)break;
+			double scaleUpdate=pageWidth/(block.pageXUsed*unitX);
 			pageXScale=bars.hasNext()?scaleUpdate:Math.min(scaleUpdate,pageXScale);
 			List<Bar>blockBars=block.thisBars;
 			if(!blockBars.isEmpty())lastBarAt=blockBars.get(blockBars.size()-1).at;

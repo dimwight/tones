@@ -32,7 +32,7 @@ public abstract class PageView extends PlaneViewWorks{
 	public Object backgroundStyle(){
 		return Shades.lightGray;
 	}
-	public abstract double pitchHeight();
+	public abstract double unitY();
 	public final double widthForPitch(){
 		return 3d/Bar.WIDTH_NOTE;
 	}
@@ -68,7 +68,7 @@ public abstract class PageView extends PlaneViewWorks{
 			public boolean scaleToViewer(){
 				return showWidth()>0&&!resizeSetsPage.isSet();
 			}
-			public double pitchHeight(){
+			public double unitY(){
 				return notePoints/2;
 			}
 			public void setShowValues(double widthNow,double heightNow,

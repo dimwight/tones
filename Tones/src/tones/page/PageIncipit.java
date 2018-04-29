@@ -6,22 +6,18 @@ import tones.bar.Bar;
 import tones.bar.Incipit;
 final class PageIncipit extends PageItem{
 	public final Incipit content;
-	private final double barStaveX;
-	private double scaledStaveX=-1;
-	PageIncipit(Incipit content,double barStaveX){
+	private final double scaledPageX;
+	PageIncipit(Incipit content,double barPageX,double pageXScale){
 		this.content=content;
-		this.barStaveX=barStaveX;
+		scaledPageX=(int)(barPageX+content.barAt*pageXScale);
 	}
-	void scaleStaveX(double by){?
-		scaledStaveX=(int)(barStaveX+content.barAt*by);
-	};
-	double toneStaveX(Tone tone){
-		if(scaledStaveX<0)throw new IllegalStateException(
-				"Invalid scaledStaveX in "+Debug.info(this));
-		double scaled=scaledStaveX;
-		for(Tone t:content.tones)
-			if(Math.abs(t.pitch-tone.pitch)<2
-					&&tone.eighths>=t.eighths)scaled+=Bar.WIDTH_NOTE;
+	double tonePageX(Tone tone){
+		if(scaledPageX<0)throw new IllegalStateException(
+				"Invalid scaledPageX in "+Debug.info(this));
+		double scaled=scaledPageX;
+		for(Tone that:content.tones)
+			if(Math.abs(that.pitch-tone.pitch)<2
+					&&(tone.eighths>=that.eighths))scaled+=Bar.WIDTH_NOTE;
 		return scaled;
 	}	
 }

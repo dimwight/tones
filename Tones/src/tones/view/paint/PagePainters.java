@@ -19,9 +19,9 @@ public abstract class PagePainters extends Tracer{
 	PagePainters(PageView page,PainterSource p){
 		this.page=page;
 		this.p=p;
-		unitY=page.pitchHeight();
+		unitY=page.unitY();
 		unitX=unitY*page.widthForPitch();
-		scaleToPage=new Vector(unitWidth,pitchHeight);
+		scaleToPage=new Vector(unitX,unitY);
 	}
 	public abstract Painter[]newViewPainters(boolean selected);
 	final protected Painter unscaledText(String text,double x,double y,double dropFactor){
@@ -39,7 +39,7 @@ public abstract class PagePainters extends Tracer{
 			double width,int count){
 		Line[]lines=new Line[Math.abs(count)];
 		for(int i=0;i<lines.length;i++){
-			double lineY=fromY+pitchHeight*2*i*(count>0?1:-1);
+			double lineY=fromY+unitY*2*i*(count>0?1:-1);
 			lines[i]=new Line(new double[]{fromX,lineY,fromX+width,lineY});
 		}
 		ItemList<Painter>painters=new ItemList(Painter.class);

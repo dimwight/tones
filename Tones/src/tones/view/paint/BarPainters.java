@@ -14,31 +14,31 @@ public final class BarPainters extends PagePainters{
 	public BarPainters(PageView page,PageBar bar,PainterSource p){
 		super(page,p);
 		at=bar.content.at;
-		x=bar.staveX*unitWidth;
-		trebleY=bar.staveYs[Clef.TREBLE.staveAt]*pitchHeight;
-		bassY=bar.staveYs[Clef.BASS.staveAt]*pitchHeight;
-		width=bar.content.width*bar.staveXScale*unitWidth;
+		x=bar.pageX*unitX;
+		trebleY=bar.pageYs[Clef.TREBLE.staveAt]*unitY;
+		bassY=bar.pageYs[Clef.BASS.staveAt]*unitY;
+		width=bar.content.width*bar.pageXScale*unitX;
 		rise=bar.content.rise;
-		height=(rise+STAVE_GRID*2+bar.staveGap+bar.content.fall)*pitchHeight;
+		height=(rise+STAVE_GRID*2+bar.staveGap+bar.content.fall)*unitY;
 		NotePainters.firstInBar=true;
 	}
 	public Painter[]newViewPainters(boolean selected){
 		ItemList<Painter>painters=new ItemList(Painter.class);
-		if(true)painters.addItem(unscaledText(at+"",x+5,bassY-rise*pitchHeight-1,.7));
+		if(true)painters.addItem(unscaledText(at+"",x+5,bassY-rise*unitY-1,.7));
 		painters.addItems(staveLinePainters(x,trebleY,width,STAVE_GRID/2));
 		painters.addItems(staveLinePainters(x,bassY,width,STAVE_GRID/2));
 		painters.addItem(barLine());
-		if(false)painters.addItem(p.rectangle(x,trebleY-rise*pitchHeight,width,height,
+		if(false)painters.addItem(p.rectangle(x,trebleY-rise*unitY,width,height,
 				selected?Shades.blue:Shades.red));
 		return painters.items();
 }
 	private Painter barLine(){
-		Line line=new Line(new double[]{x+width,trebleY,x+width,bassY+8*pitchHeight});
+		Line line=new Line(new double[]{x+width,trebleY,x+width,bassY+8*unitY});
 		return false?p.backgroundLines(new Line[]{line},Shades.gray)
 				:p.line(line,Shades.lightGray,
-					false?PainterSource.HAIRLINE:(int)unitWidth,false);
+					false?PainterSource.HAIRLINE:(int)unitX,false);
 	}
 	public Painter[]newPickPainters(){
-		return new Painter[]{p.rectangle(x,trebleY-rise*pitchHeight,width,height,Shades.green)};
+		return new Painter[]{p.rectangle(x,trebleY-rise*unitY,width,height,Shades.green)};
 	}
 }

@@ -24,7 +24,7 @@ public class PageNote extends PageItem{
 		this.bar=bar;
 		this.tone=tone;
 		this.selected=selected;
-		pageX=i.scaledPageX(tone);
+		pageX=i.tonePageX(tone);
 		final int stavePitch=tone.pitch-clef.staveMidPitch,
 			staveToMidPitch=STAVE_GRID/2-1;
 		pageY=barPageY+staveToMidPitch-stavePitch;

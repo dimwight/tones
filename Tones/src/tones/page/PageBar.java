@@ -6,32 +6,30 @@ import tones.Voice;
 import tones.bar.Bar;
 import tones.bar.Incipit;
 public class PageBar extends PageItem{
-	public final double staveX,staveYs[],staveGap,staveXScale,staveWidth;
-	
+	public final double pageX,pageYs[],staveGap,pageXScale,staveWidth;
 	public final Bar content;
 	private final Voice selectedVoice;
-	public PageBar(Bar content,double staveX,double staveY,double staveGap,
-			double staveXScale,Voice selectedVoice){
+	public PageBar(Bar content,double pageX,double pageY,double staveGap,
+			double pageXScale,Voice selectedVoice){
 		this.content=content;
-		this.staveX=staveX;
+		this.pageX=pageX;
 		this.staveGap=staveGap;
-		this.staveXScale=staveXScale;
+		this.pageXScale=pageXScale;
 		this.selectedVoice=selectedVoice;
-		staveWidth=content.width*staveXScale;
-		staveYs=new double[]{staveY,staveY+STAVE_GRID+staveGap};
+		staveWidth=content.width*pageXScale;
+		pageYs=new double[]{pageY,pageY+STAVE_GRID+staveGap};
 	}
 	public PageItem[]newItems(){
 		ItemList<PageIncipit>incipits=new ItemList(PageIncipit.class);
 		for(Incipit bar:content.incipits)
-			incipits.addItem(new PageIncipit(bar,staveX));
-		for(PageIncipit incipit:incipits)incipit.scaleStaveX(staveXScale);
+			incipits.addItem(new PageIncipit(bar,pageX,pageXScale));
 		ItemList<PageItem>items=new ItemList(PageItem.class);
 		items.addItem(this);
 		for(PageIncipit incipit:incipits)
 			for(Tone tone:incipit.content.tones){
 				Voice voice=tone.voice;
 				Clef clef=Clef.forVoice(voice);
-				PageNote note=new PageNote(this,tone,incipit,staveYs[clef.staveAt],clef,
+				PageNote note=new PageNote(this,tone,incipit,pageYs[clef.staveAt],clef,
 						voice==selectedVoice);
 				 items.add(note);
 			}
@@ -39,6 +37,6 @@ public class PageBar extends PageItem{
 		return items.items();
 	}
 	public String toString(){
-		return super.toString()+", staveX="+staveX+", staveY="+staveYs;
+		return super.toString()+", pageX="+pageX+", pageY="+pageYs;
 	}
 }

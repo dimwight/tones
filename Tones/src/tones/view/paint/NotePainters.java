@@ -31,10 +31,10 @@ public final class NotePainters extends PagePainters{
 	public NotePainters(PageView page,PageNote note,PainterSource p){
 		super(page,p);
 		this.note=note;
-		width=Bar.WIDTH_NOTE*unitWidth;
-		x=note.pageX*unitWidth;
-		y=(note.pageY-1)*pitchHeight;
-		height=pitchHeight*2;
+		width=Bar.WIDTH_NOTE*unitX;
+		x=note.pageX*unitX;
+		y=(note.pageY-1)*unitY;
+		height=unitY*2;
 		tail=note.tail;
 		boolean selected=note.selected;
 		shade=selectionShade(selected);
@@ -45,7 +45,7 @@ public final class NotePainters extends PagePainters{
 		ItemList<Painter>painters=new ItemList(Painter.class);
 		if(note.tone.pitch!=ScaleNote.PITCH_REST){
 			if(note.ledgerLines!=0)painters.addItems(staveLinePainters(
-					x,y+note.ledgerLineShift*pitchHeight,width,note.ledgerLines));
+					x,y+note.ledgerLineShift*unitY,width,note.ledgerLines));
 			painters.addItems(newBeadPainters(shade));
 		}
 		return painters.items();
@@ -62,12 +62,12 @@ public final class NotePainters extends PagePainters{
 		Painter dotPainter=p.mastered(dot.newOutlined(shade,null,false));
 		if(dotAt==Dot.ABOVE)
 			p.applyTransforms(new PainterSource.Transform[]{
-					p.transformAt(0,-pitchHeight),
+					p.transformAt(0,-unitY),
 			},true,dotPainter);
 		painters.addItems(dotPainter,
 				p.mastered(bead.newOutlined(shade,null,true)));
 		p.applyTransforms(new PainterSource.Transform[]{
-				p.transformAt(x+width*0.1,y+pitchHeight),
+				p.transformAt(x+width*0.1,y+unitY),
 				p.transformScale(height*.9,height*.9),
 		},true,painters.items());
 		if(tail!=null){
