@@ -12,10 +12,10 @@ final class PageIncipit extends PageItem{
 		this.content=content;
 		this.barStaveX=barStaveX;
 	}
-	void scaleStaveX(double by){
+	void scaleStaveX(double by){?
 		scaledStaveX=(int)(barStaveX+content.barAt*by);
 	};
-	double scaledPageX(Tone tone){
+	double toneStaveX(Tone tone){
 		if(scaledStaveX<0)throw new IllegalStateException(
 				"Invalid scaledStaveX in "+Debug.info(this));
 		double scaled=scaledStaveX;
