@@ -14,7 +14,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 	public Incipit(int eighthAt){
 		this.eighthAt=eighthAt;
 	}
-	public Incipit newCopy(Tone tone){
+	public Incipit newCopy(Tone tone){?
 		Incipit copy=new Incipit(eighthAt);
 		copy.addTone(tone);
 		copy.close();
