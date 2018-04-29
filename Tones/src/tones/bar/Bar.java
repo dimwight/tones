@@ -24,7 +24,7 @@ final public class Bar extends Tracer{
 		Bar that=(Bar)obj;
 		return this==that||incipits.equals(that.incipits);
 	}
-	public Bar(int barAt,Collection<Incipit>incipits,int sizeInEighths){
+	public Bar(int barAt,Collection<Incipit>incipits,int barEighths){
 		at=barAt;
 		if(incipits==null)throw new IllegalStateException(
 				"Null incipits in "+Debug.info(this));
@@ -38,9 +38,9 @@ final public class Bar extends Tracer{
 				for(Voice voice:satb)ats.put(voice,START_AT);
 			}
 			int furthestAt(Iterable<Voice>voices,int incipitAt){
-				incipitAt%=sizeInEighths;
+				incipitAt%=barEighths;
 				int gap=incipitAt-thenAt;
-				if(gap<0)gap+=sizeInEighths;
+				if(gap<0)gap+=barEighths;
 				int spaces=gap<=1?0:gap-1;
 				for(Voice voice:satb)
 					ats.put(voice,ats.get(voice)-WIDTH_SPACE_SHRINK*spaces);
