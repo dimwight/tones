@@ -11,7 +11,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 	public final int eighthAt;
 	public int barAt=-1;
 	int rise,staveGap,fall;
-	public Incipit(int eighthAt){
+	Incipit(int eighthAt){
 		this.eighthAt=eighthAt;
 	}
 	public void addTone(Tone tone){

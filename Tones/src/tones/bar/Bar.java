@@ -21,7 +21,7 @@ final public class Bar extends Tracer{
 	public final Set<Incipit>incipits;
 	private final Map<Voice,Integer>ats=new HashMap();
 	private int thenAt=0;
-	public Bar(int barAt,Collection<Incipit>incipits,int barEighths){
+	Bar(int barAt,Collection<Incipit>incipits,int barEighths){
 		this.at=barAt;
 		if(incipits==null)throw new IllegalStateException(
 				"Null incipits in "+Debug.info(this));
