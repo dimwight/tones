@@ -29,7 +29,7 @@ final public class Bar extends Tracer{
 		if(incipits==null)throw new IllegalStateException(
 				"Null incipits in "+Debug.info(this));
 		else this.incipits=new HashSet(incipits);
-		final Voice[]satb=Voice.values();
+		final Voice[]satb=Voice.values();?voices
 		class VoiceAts{
 			private static final int START_AT=WIDTH_NOTE/2;
 			private final Map<Voice,Integer>ats=new HashMap();
@@ -37,17 +37,17 @@ final public class Bar extends Tracer{
 			VoiceAts(){
 				for(Voice voice:satb)ats.put(voice,START_AT);
 			}
-			int furthestAt(Iterable<Voice>voices,int eighthAt){
+			int furthest(Iterable<Voice>voices,int eighthAt){
 				eighthAt%=sizeInEighths;
 				int gap=eighthAt-eighthLastAt;
 				if(gap<0)gap+=sizeInEighths;
 				int spaces=gap<=1?0:gap-1;
 				for(Voice voice:satb)
 					ats.put(voice,ats.get(voice)-WIDTH_SPACE_SHRINK*spaces);
-				int furthestAt=0;
+				int furthest=0;
 				for(Voice voice:voices)furthestAt=max(furthestAt,ats.get(voice));
 				eighthLastAt=eighthAt;
-				return furthestAt;
+				return furthest;
 			}
 			void exchangeAts(Incipit incipit){
 				List<Voice>voices=new ArrayList();
@@ -57,19 +57,19 @@ final public class Bar extends Tracer{
 				for(Tone i:incipit.tones)ats.put(i.voice,barAt+i.eighths*WIDTH_NOTE);
 			}
 		}
-		VoiceAts starts=new VoiceAts();
+		VoiceAts ats=new VoiceAts();
 		int rise=-1,staveGap=-1,fall=-1;
 		for(Incipit i:incipits){
 			i.close();
 			rise=max(rise,i.rise);
 			staveGap=max(staveGap,i.staveGap);
 			fall=max(fall,i.fall);
-			starts.exchangeAts(i);
+			ats.exchangeAts(i);
 		}
 		this.rise=rise;
 		this.staveGap=staveGap;
 		this.fall=fall;
-		width=starts.furthestAt(Arrays.asList(satb),sizeInEighths);
+		width=ats.furthest(Arrays.asList(satb),sizeInEighths);
 	}
 	private Bar(int at,Set<Incipit>incipits,int rise,int staveGap,int fall,int width){
 		this.at=at;this.incipits=incipits;
