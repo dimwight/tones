@@ -24,7 +24,7 @@ public final class BarPainters extends PagePainters{
 	}
 	public Painter[]newViewPainters(boolean selected){
 		ItemList<Painter>painters=new ItemList(Painter.class);
-		if(false)painters.addItem(unscaledText(at+"",x,trebleY,.7));
+		if(true)painters.addItem(unscaledText(at+"",x+5,bassY-rise*pitchHeight-1,.7));
 		painters.addItems(staveLinePainters(x,trebleY,width,STAVE_GRID/2));
 		painters.addItems(staveLinePainters(x,bassY,width,STAVE_GRID/2));
 		painters.addItem(barLine());

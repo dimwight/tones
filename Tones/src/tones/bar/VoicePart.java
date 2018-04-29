@@ -171,7 +171,7 @@ public final class VoicePart extends Tracer{
 					else if(CODES_NOTE.contains(""+firstChar)){
 						ScaleNote toneNote=codeNote(firstChar);
 						int octaved=toneNote.octaved(octave),
-							tonePitch=toneNote==REST?PITCH_REST
+							tonePitch=toneNote==Rest?PITCH_REST
 								:octaved+(toneNote.pitch<scaleNote.pitch?Octave.pitches:0);
 						toneValues=new int[]{tonePitch,eighths};
 					}
@@ -230,7 +230,7 @@ public final class VoicePart extends Tracer{
 		return contexts;
 	}
 	private static ScaleNote codeNote(char noteChar){
-		return noteChar=='x'?ScaleNote.REST
+		return noteChar=='x'?ScaleNote.Rest
 				:ScaleNote.pitchNote((byte)((noteChar-0x61+5)%Octave.pitches));
 	}
 	@Override

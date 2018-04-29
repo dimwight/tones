@@ -44,7 +44,7 @@ public final class TonesEdit extends TreeTextContenter{
 	@Override
 	protected SFrameTarget[]newViewTargets(TreeView debugTree,boolean liveViews){
 		TonesViewable viewable=(TonesViewable)this.contentFrame();
-		int barFrom=app.spec.args().getOrPutInt(TonesEdit.ARG_BAR_FROM,1);
+		int barFrom=app.spec.state().getOrPutInt(TonesEdit.ARG_BAR_FROM,1);
 		if(viewable.bars.barCount()<barFrom)barFrom=1;
 		SFrameTarget page=PageView.newFramed(8,app.spec,
 				viewable.bars.barCount(),barFrom);
@@ -96,7 +96,7 @@ public final class TonesEdit extends TreeTextContenter{
 		SAreaTarget debug=(SAreaTarget)viewers[1];
 		SIndexing expand=(SIndexing)((Targeted)debug.activeFaceted().attachedFacet()
 				).targets()[0];
-		expand.setIndex(3);
+		expand.setIndex(2);
 	}
 	private static TreeTextSpecifier newSpecifier(){
 		return new TreeTextSpecifier(TonesEdit.class){

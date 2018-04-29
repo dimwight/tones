@@ -91,7 +91,7 @@ public abstract class PageView extends PlaneViewWorks{
 				new SNumeric.Coupler(){		
 			public void valueSet(SNumeric n){
 				int value=(int)n.value();
-				spec.args().put(TonesEdit.ARG_BAR_FROM,value);
+				state.put(TonesEdit.ARG_BAR_FROM,value);
 				view.barStart=value-1;				
 				if(false)view.frame.notifyParent(Impact.DEFAULT);
 			}

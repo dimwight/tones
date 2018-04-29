@@ -1,7 +1,10 @@
 package tones;
 import static tones.ScaleNote.*;
+import static tones.bar.Bars.*;
+import facets.util.Objects;
 import facets.util.Strings;
 import facets.util.Tracer;
+import facets.util.tree.DataNode;
 import java.util.Arrays;
 import java.util.HashSet;
 import tones.Mark.Tie;
@@ -22,6 +25,12 @@ public final class Tone extends Tracer{
 		this.pitch=pitch;
 		this.eighths=eighths;
 		intValues=new int[]{barAt,eighthAt,pitch,eighths};
+	}
+	public DataNode newDebugNode(){
+		int markCount=marks.size();
+		return newDebugRoot(Tone.class,toString(),markCount==0?"No marks"
+				:newDebugRoot(Mark.class,"marks="+markCount,
+						Objects.toLines(marks.toArray()).split("\n")));
 	}
 	public void checkTied(Tone before){
 		if(before==null||before.isRest()||isRest()

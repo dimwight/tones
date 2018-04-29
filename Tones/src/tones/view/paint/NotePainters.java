@@ -80,7 +80,7 @@ public final class NotePainters extends PagePainters{
 	}
 	public Painter[]newPickPainters(){
 		String text=note.toString();
-		return true?newBeadPainters(shade.darker())
+		return false?newBeadPainters(shade.darker())
 				:new Painter[]{true?unscaledText(text,x,y,-1):tooltipText(text,x,y,-1)};
 	}
 }

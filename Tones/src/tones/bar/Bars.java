@@ -6,6 +6,7 @@ import facets.util.Tracer;
 import facets.util.tree.DataNode;
 import facets.util.tree.NodeList;
 import facets.util.tree.TypedNode;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -115,16 +116,16 @@ public final class Bars extends Tracer implements Titled{
 	}
 	public DataNode newDebugRoot(int start,int stop){
 		if(false)trace(".newDebugRoot: start="+start+" stop="+stop);
-		NodeList barsList=new NodeList(new DataNode(Bars.class.getSimpleName(),title()),true);
+		NodeList barsList=new NodeList(newDebugRoot(Bars.class,title()),true);
 		for(Bar bar:barsFrom(start)){
 			if(bar.at==stop)break;
-			NodeList barList=new NodeList(new DataNode(Bar.class.getSimpleName(),""+bar.at),true);
+			NodeList barList=new NodeList(newDebugRoot(Bar.class,""+bar.at),true);
 			barsList.add(barList.parent);
 			List<Incipit>incipits=new ArrayList<Incipit>(bar.incipits);
 			Collections.sort(incipits);
 			for(Incipit incipit:incipits){
-				NodeList incipitList=new NodeList(new DataNode(Incipit.class.getSimpleName(),
-						"at="+incipit.eighthAt),true);
+				String title="at="+incipit.eighthAt;
+				NodeList incipitList=new NodeList(newDebugRoot(Incipit.class,title),true);
 				barList.add(incipitList.parent);
 				List<Tone>sortTones=new ArrayList(incipit.tones);
 				Collections.sort(sortTones,new Comparator<Tone>(){
@@ -134,12 +135,13 @@ public final class Bars extends Tracer implements Titled{
 					}
 				});
 				for(Tone tone:sortTones){
-					NodeList toneList=new NodeList(new DataNode(Tone.class.getSimpleName(),
-							tone.toString()),true);
-					incipitList.add(toneList.parent);
+					incipitList.add(tone.newDebugNode());
 				}
 			}
 		}
 		return barsList.parent;
+	}
+	static public DataNode newDebugRoot(Class type,String title,Object...values){
+		return new DataNode(type.getSimpleName(),title,values);
 	}
 }

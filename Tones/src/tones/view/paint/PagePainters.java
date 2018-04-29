@@ -28,7 +28,7 @@ public abstract class PagePainters extends Tracer{
 		double scaledPoints=TEXT_POINTS/page.scale(),
 			textDrop=scaledPoints*dropFactor;
 		return p.textCaption(text,x,y+textDrop,
-				"face=Tahoma","shade=red","points="+(int)scaledPoints);
+				"face=Tahoma","shade=magenta","points="+(int)scaledPoints);
 	}
 	final protected Painter tooltipText(String text,double x,double y,double dropFactor){
 		double scaledPoints=TEXT_POINTS/page.scale(),
