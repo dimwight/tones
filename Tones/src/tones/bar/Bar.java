@@ -1,12 +1,11 @@
 package tones.bar;
 import static java.lang.Math.*;
+import static tones.Voice.*;
 import facets.util.Debug;
 import facets.util.Objects;
 import facets.util.Tracer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -15,62 +14,52 @@ import java.util.Set;
 import tones.Tone;
 import tones.Voice;
 final public class Bar extends Tracer{
-	public static final int WIDTH_NOTE=8,
-		WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3);
+	public static final int WIDTH_NOTE=8;
+	private static final int WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3),
+		START_AT=WIDTH_NOTE/2;
 	public final int at,rise,staveGap,fall,width;
 	public final Set<Incipit>incipits;
+	private final Map<Voice,Integer>ats=new HashMap();
+	private int thenAt=0;
+	public Bar(int barAt,Collection<Incipit>incipits,int barEighths){
+		this.at=barAt;
+		if(incipits==null)throw new IllegalStateException(
+				"Null incipits in "+Debug.info(this));
+		else this.incipits=new HashSet(incipits);
+		for(Voice voice:voiceList)ats.put(voice,START_AT);
+		int rise=-1,staveGap=-1,fall=-1;
+		for(Incipit i:incipits){
+			readIncipit(i);
+			rise=max(rise,i.rise);
+			staveGap=max(staveGap,i.staveGap);
+			fall=max(fall,i.fall);
+		}
+		width=furthestAt(voiceList,barEighths);
+		this.rise=rise;
+		this.staveGap=staveGap;
+		this.fall=fall;
+	}
+	void readIncipit(Incipit incipit){
+		incipit.close();
+		List<Voice>voices=new ArrayList();
+		for(Tone i:incipit.tones)voices.add(i.voice);
+		int furthest=furthestAt(voices,incipit.eighthAt);
+		incipit.barAt=furthest;
+		for(Tone i:incipit.tones)ats.put(i.voice,furthest+i.eighths*WIDTH_NOTE);
+	}
+	int furthestAt(Iterable<Voice>voices,int eighthAt){
+		int gap=eighthAt-thenAt,spaces=gap<=1?0:gap-1;
+		for(Voice voice:voiceList)
+			ats.put(voice,ats.get(voice)-WIDTH_SPACE_SHRINK*spaces);
+		int furthest=0;
+		for(Voice voice:voices)furthest=max(furthest,ats.get(voice));
+		thenAt=furthest;
+		return furthest;
+	}
 	@Override
 	public boolean equals(Object obj){
 		Bar that=(Bar)obj;
 		return this==that||incipits.equals(that.incipits);
-	}
-	public Bar(int barAt,Collection<Incipit>incipits,int barEighths){
-		at=barAt;
-		if(incipits==null)throw new IllegalStateException(
-				"Null incipits in "+Debug.info(this));
-		else this.incipits=new HashSet(incipits);
-		final List<Voice>satb=Arrays.asList(Voice.values());
-		class VoiceAts{
-			private static final int START_AT=WIDTH_NOTE/2;
-			private final Map<Voice,Integer>ats=new HashMap();
-			private int thenAt=0;
-			VoiceAts(){
-				for(Voice voice:satb)ats.put(voice,START_AT);
-			}
-			int furthest(Iterable<Voice>voices,int eighthAt){
-				int gap=eighthAt-thenAt,spaces=gap<=1?0:gap-1;
-				for(Voice voice:satb)
-					ats.put(voice,ats.get(voice)-WIDTH_SPACE_SHRINK*spaces);
-				int furthest=0;
-				for(Voice voice:voices)furthest=max(furthest,ats.get(voice));
-				thenAt=furthest;
-				return furthest;
-			}
-			void exchangeAts(Incipit incipit){
-				List<Voice>voices=new ArrayList();
-				for(Tone i:incipit.tones)voices.add(i.voice);
-				int barAt=furthest(voices,incipit.eighthAt);
-				incipit.barAt=barAt;
-				for(Tone i:incipit.tones)ats.put(i.voice,barAt+i.eighths*WIDTH_NOTE);
-			}
-		}
-		VoiceAts ats=new VoiceAts();
-		int rise=-1,staveGap=-1,fall=-1;
-		for(Incipit i:incipits){
-			i.close();
-			rise=max(rise,i.rise);
-			staveGap=max(staveGap,i.staveGap);
-			fall=max(fall,i.fall);
-			ats.exchangeAts(i);
-		}
-		this.rise=rise;
-		this.staveGap=staveGap;
-		this.fall=fall;
-		width=ats.furthest(satb,barEighths);
-	}
-	private Bar(int at,Set<Incipit>incipits,int rise,int staveGap,int fall,int width){
-		this.at=at;this.incipits=incipits;
-		this.rise=rise;this.staveGap=staveGap;this.fall=fall;this.width=width;
 	}
 	public String toString(){
 		return Debug.info(this)+" at="+at+" incipits="

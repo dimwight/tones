@@ -1,6 +1,8 @@
 package tones;
 import static tones.Octave.*;
 import static tones.ScaleNote.*;
+import java.util.Arrays;
+import java.util.List;
 public enum Voice{
 	Empty(E,Above,"E",1),
 	Soprano(E,Above,"S",1),
@@ -11,6 +13,7 @@ public enum Voice{
 	public final Octave octave;
 	public final String code;
 	public final boolean tailsUp;
+	public final static List<Voice>voiceList=Arrays.asList(values());
 	private Voice(ScaleNote midPitch,Octave octave,String code,int tailsUp){
 		this.octave=octave;
 		this.midNote=midPitch;
