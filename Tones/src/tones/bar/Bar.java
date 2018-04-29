@@ -33,20 +33,20 @@ final public class Bar extends Tracer{
 		class VoiceAts{
 			private static final int START_AT=WIDTH_NOTE/2;
 			private final Map<Voice,Integer>ats=new HashMap();
-			private int eighthLastAt=0;
+			private int thenAt=0;
 			VoiceAts(){
 				for(Voice voice:satb)ats.put(voice,START_AT);
 			}
 			int furthestAt(Iterable<Voice>voices,int incipitAt){
 				incipitAt%=sizeInEighths;
-				int gap=incipitAt-eighthLastAt;
+				int gap=incipitAt-thenAt;
 				if(gap<0)gap+=sizeInEighths;
 				int spaces=gap<=1?0:gap-1;
 				for(Voice voice:satb)
 					ats.put(voice,ats.get(voice)-WIDTH_SPACE_SHRINK*spaces);
 				int furthest=0;
 				for(Voice voice:voices)furthest=max(furthest,ats.get(voice));
-				eighthLastAt=incipitAt;
+				thenAt=incipitAt;
 				return furthest;
 			}
 			void exchangeAts(Incipit incipit){
