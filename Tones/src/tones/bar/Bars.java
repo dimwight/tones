@@ -98,7 +98,7 @@ public final class Bars extends Tracer implements Titled{
 	public void selectPart(Voice voice){
 		selectedPart=parts.get(voice);
 		for(TypedNode child:viewable.contentTree().children())
-			if(child.values()[0].equals(selectedPart.src))
+			if(new VoicePart((String)child.values()[0]).voice.equals(selectedPart.voice))
 					viewable.defineSelection(child);
 	}
 	public VoicePart selectedPart(){

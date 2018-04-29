@@ -10,22 +10,20 @@ import tones.Tone;
 import tones.bar.Incipit;
 public class PageNote extends PageItem{
 	public enum Dot{NONE,LEVEL,BELOW,ABOVE};
-	public final PageBar bar;
 	public final Tone tone;
-	public final Incipit incipit;?
 	public final double pageX,pageY,ledgerLineShift;
 	public final int ledgerLines;
 	public boolean selected;
-	private final String debugString;
 	public final Line tail,tailSwag;
 	public final Vector at;
 	public final Dot dotAt;
+	final PageBar bar;
+	private final String debugString;
 	PageNote(PageBar bar,Tone tone,PageIncipit i,double barPageY,Clef clef, 
 			boolean selected){
 		this.bar=bar;
 		this.tone=tone;
 		this.selected=selected;
-		incipit=i.content;
 		pageX=i.scaledPageX(tone);
 		final int stavePitch=tone.pitch-clef.staveMidPitch,
 			staveToMidPitch=STAVE_GRID/2-1;
