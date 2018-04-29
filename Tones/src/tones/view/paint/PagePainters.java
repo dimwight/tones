@@ -14,13 +14,13 @@ public abstract class PagePainters extends Tracer{
 	static final int TEXT_POINTS=13;
 	final PageView page;
 	final PainterSource p;
-	final double pitchHeight,unitWidth;
+	final double unitY,unitX;
 	final Vector scaleToPage;
 	PagePainters(PageView page,PainterSource p){
 		this.page=page;
 		this.p=p;
-		pitchHeight=page.pitchHeight();
-		unitWidth=pitchHeight*page.widthForPitch();
+		unitY=page.pitchHeight();
+		unitX=unitY*page.widthForPitch();
 		scaleToPage=new Vector(unitWidth,pitchHeight);
 	}
 	public abstract Painter[]newViewPainters(boolean selected);
