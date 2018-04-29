@@ -29,7 +29,7 @@ final public class Bar extends Tracer{
 		if(incipits==null)throw new IllegalStateException(
 				"Null incipits in "+Debug.info(this));
 		else this.incipits=new HashSet(incipits);
-		final Voice[]satb=Voice.values();?voices
+		final Voice[]satb=Voice.values();
 		class VoiceAts{
 			private static final int START_AT=WIDTH_NOTE/2;
 			private final Map<Voice,Integer>ats=new HashMap();
@@ -37,16 +37,16 @@ final public class Bar extends Tracer{
 			VoiceAts(){
 				for(Voice voice:satb)ats.put(voice,START_AT);
 			}
-			int furthest(Iterable<Voice>voices,int eighthAt){
-				eighthAt%=sizeInEighths;
-				int gap=eighthAt-eighthLastAt;
+			int furthestAt(Iterable<Voice>voices,int incipitAt){
+				incipitAt%=sizeInEighths;
+				int gap=incipitAt-eighthLastAt;
 				if(gap<0)gap+=sizeInEighths;
 				int spaces=gap<=1?0:gap-1;
 				for(Voice voice:satb)
 					ats.put(voice,ats.get(voice)-WIDTH_SPACE_SHRINK*spaces);
 				int furthest=0;
-				for(Voice voice:voices)furthestAt=max(furthestAt,ats.get(voice));
-				eighthLastAt=eighthAt;
+				for(Voice voice:voices)furthest=max(furthest,ats.get(voice));
+				eighthLastAt=incipitAt;
 				return furthest;
 			}
 			void exchangeAts(Incipit incipit){
