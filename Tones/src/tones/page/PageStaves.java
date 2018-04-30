@@ -106,7 +106,7 @@ public final class PageStaves{
 			List<Bar>blockBars=block.thisBars;
 			if(!blockBars.isEmpty())lastBarAt=blockBars.get(blockBars.size()-1).at;
 			items.addItems(block.newItems(pageY,pageXScale));
-			pageY+=blockStaveHeight;
+			pageY+=blockHeight;
 		}
 		page.setBarStop(lastBarAt+1);
 		return items.items();
