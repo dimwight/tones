@@ -46,7 +46,7 @@ public final class Bars extends Tracer implements Titled{
     Map<Integer,Incipit>incipits=new HashMap();
     for(VoicePart part:parts.values()){
       List<Tone>partTones=part.getBarTones(barAt);
-      if(false&&part.voice==Bass)trace(".newVoiceLinesBar: partTones="+partTones.size()+" barAt="+barAt);
+      if(false&&part.voice==Bass)trace(".newPartsBar: partTones="+partTones.size()+" barAt="+barAt);
       int barEighthsNow=partTones.isEmpty()?barEighths
           :(eighthsCheck?partTones.remove(0):partTones.get(0)).eighths;
       if(partTones.isEmpty())continue;
