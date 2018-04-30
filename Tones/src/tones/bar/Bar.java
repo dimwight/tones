@@ -39,13 +39,13 @@ final public class Bar extends Tracer{
     this.staveGap=staveGap;
     this.fall=fall;
   }
-  void readIncipit(Incipit incipit){
-    incipit.close();
+  void readIncipit(Incipit i){
+    i.close();
     List<Voice>voices=new ArrayList();
-    for(Tone t:incipit.tones)voices.add(t.voice);
-    int furthest=furthestAt(voices,incipit.partAt);
-    incipit.barAt=furthest;
-    for(Tone t:incipit.tones)partAts.put(t.voice,furthest+t.eighths*WIDTH_NOTE);
+    for(Tone t:i.tones)voices.add(t.voice);
+    int furthest=furthestAt(voices,i.partAt);
+    i.barAt=furthest;
+    for(Tone t:i.tones)partAts.put(t.voice,furthest+t.eighths*WIDTH_NOTE);
   }
   int furthestAt(Iterable<Voice>voices,int eighthAt){
     int gap=eighthAt-thenAt,spaces=gap<=1?0:gap-1;
