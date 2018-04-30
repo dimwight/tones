@@ -48,9 +48,9 @@ final public class Bar extends Tracer{
     for(Tone t:incipit.tones)partAts.put(t.voice,furthest+t.eighths*WIDTH_NOTE);
   }
   int furthestAt(Iterable<Voice>voices,int eighthAt){
-    int gap=eighthAt-thenAt,spaces=gap<=1?0:gap-1;
+    int jump=eighthAt-thenAt,gap=jump<=1?0:jump-1;
     for(Voice voice:voiceList)
-      partAts.put(voice,partAts.get(voice)-WIDTH_SPACE_SHRINK*spaces);
+      partAts.put(voice,partAts.get(voice)-WIDTH_SPACE_SHRINK*gap);
     int furthest=0;
     for(Voice voice:voices)furthest=max(furthest,partAts.get(voice));
     thenAt=furthest;
