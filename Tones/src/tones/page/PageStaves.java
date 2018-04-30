@@ -29,7 +29,7 @@ public final class PageStaves{
 			if(bar==null)bar=bars.next();
 			if(bar==null)throw new IllegalStateException(
 					"Null bar in "+this);
-			double barWidth=bar.width;?
+			double barWidth=bar.width;//?
 			if(pageXUsed+barWidth>useWidth)break;
 			pageXUsed+=barWidth;
 			rise=Math.max(rise,bar.rise);

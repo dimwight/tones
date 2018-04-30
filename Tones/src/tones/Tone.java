@@ -8,6 +8,7 @@ import facets.util.tree.DataNode;
 import java.util.Arrays;
 import java.util.HashSet;
 import tones.Mark.Tie;
+import tones.bar.Incipit;
 public final class Tone extends Tracer{
   public static final short NOTE_WHOLE=8,NOTE_HALF=NOTE_WHOLE/2,
     NOTE_QUARTER=NOTE_WHOLE/4,NOTE_EIGHTH=NOTE_WHOLE/8,
@@ -35,7 +36,7 @@ public final class Tone extends Tracer{
   }
   public void checkTied(Tone before){
     if(before==null||before.isRest()||isRest()
-        ||before.pitch!=pitch||!isOnBeat(Tone.NOTE_HALF))return;
+        ||before.pitch!=pitch||!isOnBeat(NOTE_HALF))return;
       Tie tie=new Tie(before,this);
       marks.add(tie);
       before.marks.add(tie);
@@ -48,7 +49,7 @@ public final class Tone extends Tracer{
   }
   public String toString(){
     ScaleNote note=pitchNote();
-    return voice+" "+pitchNote()+": "+Strings.intsString(intValues);
+    return voice+" "+pitchNote()+": "+Strings.intsString(intValues)+" isOffset="+isOffset;
   }
   public ScaleNote pitchNote(){
     return ScaleNote.pitchNote(pitch);
@@ -62,10 +63,10 @@ public final class Tone extends Tracer{
   }
   public void checkOffset(Incipit i){
     for(Tone that:i.tones)
-      if(Math.abs(that.pitch-pitch)<2)
-        isOffset=that.eighths>eighths
-          ||(that.eighths=eighths&&!that.marks.isEmpty())
-          ||!that.isOffset();
+      if(that!=this&&Math.abs(that.pitch-pitch)<2)
+        isOffset=that.eighths>eighths?true
+          :that.eighths==eighths?that.pitch==pitch&&eighths<NOTE_WHOLE?false
+      		:!that.marks.isEmpty():false;
   }
   public boolean isOffset(){
     return isOffset;

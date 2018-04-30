@@ -18,7 +18,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
     ((Set)tones).add(tone);
   }
   void close(){
-    for(Tone t:tones)tone.checkOffset(tones);
+    for(Tone t:tones)t.checkOffset(this);
     rise=6;
     staveGap=10;
     fall=6;

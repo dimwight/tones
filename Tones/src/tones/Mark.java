@@ -1,5 +1,6 @@
 package tones;
 import facets.util.Debug;
+import facets.util.Objects;
 import facets.util.Tracer;
 import facets.util.Util;
 import java.util.ArrayList;
@@ -35,6 +36,10 @@ public abstract class Mark extends Tracer{
 		@Override
 		protected void traceOutput(String msg){
 			Util.printOut(Debug.info(this)+" "+msg);
+		}
+		@Override
+		public String toString(){
+			return Objects.toString(tones.toArray());
 		}
 	}
 }
