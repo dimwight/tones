@@ -19,14 +19,14 @@ final public class Bar extends Tracer{
     START_AT=WIDTH_NOTE/2;
   public final int at,rise,staveGap,fall,width;
   public final Set<Incipit>incipits;
-  private final Map<Voice,Integer>voiceAts=new HashMap();
+  private final Map<Voice,Integer>partAts=new HashMap();
   private int thenAt=0;
   Bar(int barAt,Collection<Incipit>incipits,int barEighths){
     this.at=barAt;
     if(incipits==null)throw new IllegalStateException(
         "Null incipits in "+Debug.info(this));
     else this.incipits=new HashSet(incipits);
-    for(Voice voice:voiceList)voiceAts.put(voice,START_AT);
+    for(Voice voice:voiceList)partAts.put(voice,START_AT);
     int rise=-1,staveGap=-1,fall=-1;
     for(Incipit i:incipits){
       readIncipit(i);
@@ -45,14 +45,14 @@ final public class Bar extends Tracer{
     for(Tone t:incipit.tones)voices.add(t.voice);
     int furthest=furthestAt(voices,incipit.eighthAt);
     incipit.barAt=furthest;
-    for(Tone t:incipit.tones)voiceAts.put(t.voice,furthest+t.eighths*WIDTH_NOTE);
+    for(Tone t:incipit.tones)partAts.put(t.voice,furthest+t.eighths*WIDTH_NOTE);
   }
   int furthestAt(Iterable<Voice>voices,int eighthAt){
     int gap=eighthAt-thenAt,spaces=gap<=1?0:gap-1;
     for(Voice voice:voiceList)
-      voiceAts.put(voice,voiceAts.get(voice)-WIDTH_SPACE_SHRINK*spaces);
+      partAts.put(voice,partAts.get(voice)-WIDTH_SPACE_SHRINK*spaces);
     int furthest=0;
-    for(Voice voice:voices)furthest=max(furthest,voiceAts.get(voice));
+    for(Voice voice:voices)furthest=max(furthest,partAts.get(voice));
     thenAt=furthest;
     return furthest;
   }
