@@ -99,8 +99,8 @@ public final class PageStaves{
 			PageStaves block=new PageStaves(bars,bar,pageWidth/unitX,
 					content.selectedPart().voice);
 			bar=block.endBar;
-			double blockStaveHeight=PageItem.STAVE_GRID*2+block.staveGap+block.fall;
-			if(((pageY+=block.rise)+blockStaveHeight)*unitY>useHeight)break;
+			double blockHeight=PageItem.STAVE_GRID*2+block.staveGap+block.fall;
+			if(((pageY+=block.rise)+blockHeight)*unitY>useHeight)break;
 			double scaleUpdate=pageWidth/(block.pageXUsed*unitX);
 			pageXScale=bars.hasNext()?scaleUpdate:Math.min(scaleUpdate,pageXScale);
 			List<Bar>blockBars=block.thisBars;
