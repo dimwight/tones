@@ -7,6 +7,7 @@ import facets.core.superficial.SIndexing;
 import facets.core.superficial.SIndexing.Coupler;
 import facets.core.superficial.SNumeric;
 import facets.core.superficial.STarget;
+import facets.core.superficial.STextual;
 import facets.core.superficial.SToggling;
 import facets.util.Debug;
 import facets.util.NumberPolicy;
@@ -22,8 +23,8 @@ public abstract class PageView extends PlaneViewWorks{
   public static final double INSET=0.5*INCH_PTS,DEFAULT_HEIGHT=7;
   public static final String KEY_HEIGHT="pageHeight",
     KEY_HEIGHT_SETS="pageHeightSets";
-  public static final int TARGET_BAR=0,TARGET_HEIGHT_SETS_PAGE=1,
-    TARGET_TIME=2,TARGET_BAR_SIZE=3;
+  public static final int TARGET_BAR=0,TARGET_LAST=1,TARGET_HEIGHT_SETS_PAGE=2,
+    TARGET_TIME=3,TARGET_BAR_SIZE=4;
   STarget frame;
   private int barStart,barStop; 
   PageView(String title,double width,double height,PagePolicies policies){
@@ -87,8 +88,8 @@ public abstract class PageView extends PlaneViewWorks{
         state.put(KEY_HEIGHT,heightNow/INCH_PTS);
       }
     };
-    final STarget barAt=new SNumeric("From:",barFrom,
-        new SNumeric.Coupler(){   
+    final STarget lastBar=new STextual("LastBar"," / "+barCount,new STextual.Coupler()),
+    		barAt=new SNumeric("From:",barFrom,new SNumeric.Coupler(){   
       public void valueSet(SNumeric n){
         int value=(int)n.value();
         state.put(TonesEdit.ARG_BAR_FROM,value);
@@ -105,7 +106,7 @@ public abstract class PageView extends PlaneViewWorks{
           }
           @Override
           public String[]incrementTitles(){
-            return new String[]{"Back","Forward"};
+            return new String[]{"Bac&k","F&orward"};
           }
         };
       }
@@ -114,7 +115,7 @@ public abstract class PageView extends PlaneViewWorks{
     return new SFrameTarget(view){
       protected STarget[]lazyElements(){
         view.frame=this;
-        return new STarget[]{barAt,resizeSetsPage,time,barSize};
+        return new STarget[]{barAt,lastBar,resizeSetsPage,time,barSize};
       }
     };
   }

@@ -13,6 +13,7 @@ import facets.core.superficial.STarget.Targeted;
 import facets.core.superficial.STargeter;
 import facets.facet.AreaFacets;
 import facets.facet.FacetFactory;
+import facets.facet.SwingPanelFacet;
 import facets.facet.ViewerAreaMaster;
 import facets.facet.app.FacetAppSurface;
 import facets.util.ItemList;
@@ -23,6 +24,8 @@ import facets.util.tree.ValueNode;
 import facets.util.tree.XmlPolicy;
 import facets.util.tree.XmlSpecifier;
 import java.io.File;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import applicable.treetext.TreeTextContenter;
 import applicable.treetext.TreeTextFeatures;
 import applicable.treetext.TreeTextSpecifier;
@@ -60,13 +63,19 @@ public final class TonesEdit extends TreeTextContenter{
         return !(((SViewer)child.activeFaceted()).view()instanceof PageView)?null
             :new ViewerAreaMaster(){
           protected SFacet newViewTools(STargeter viewTargeter){
-            STargeter barStart=viewTargeter.elements()[PageView.TARGET_BAR];
+            STargeter elements[]=viewTargeter.elements(),
+            		barStart=elements[PageView.TARGET_BAR];
+            SwingPanelFacet lastBar=(SwingPanelFacet)ff.textualLabel(
+            		elements[PageView.TARGET_LAST],HINT_PANEL_CENTER);
+            ((JLabel)lastBar.components().values().toArray()[0]
+            		).setBorder(BorderFactory.createEmptyBorder(0,2,2,0));
             return ff.toolGroups(viewTargeter,HINT_PANEL_CENTER,ff.spacerWide(8),
                 false?null:ff.spacerTall(45),
                 ff.numericSliders(barStart,200,
                     HINT_SLIDER_TICKS+HINT_SLIDER_LABELS+HINT_SLIDER_LOCAL),
                 ff.numericNudgeButtons(barStart,
-                    HINT_NUMERIC_FIELDS+HINT_NUMERIC_NUDGERS_FIRST));
+                    HINT_NUMERIC_FIELDS+HINT_NUMERIC_NUDGERS_FIRST),
+                lastBar);
           }
           protected String hintString(){
             return HINT_NO_FLASH+HINT_PANEL_BORDER+HINT_BARE;
