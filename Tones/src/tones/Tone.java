@@ -64,9 +64,10 @@ public final class Tone extends Tracer{
   public void checkOffset(Incipit i){
     for(Tone that:i.tones)
       if(that!=this&&Math.abs(that.pitch-pitch)<2){
-        isOffset=that.eighths>eighths?true
+        boolean isOffset=that.eighths>eighths?true
           :that.eighths==eighths?that.pitch==pitch&&eighths<NOTE_WHOLE?false
       		:!that.marks.isEmpty():false;
+        if(isOffset)offset=WIDTH_NOTE*6/5
       }
   }
   public int getOffset(){
