@@ -14,6 +14,6 @@ final class PageIncipit extends PageItem{
   double tonePageX(Tone tone){
     if(scaledPageX<0)throw new IllegalStateException(
         "Invalid scaledPageX in "+Debug.info(this));
-    else return scaledPageX+(tone.isOffset()?Bar.WIDTH_NOTE*6/5:0);
+    else return scaledPageX+tone.getOffset();
   } 
 }
