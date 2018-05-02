@@ -19,7 +19,7 @@ public final class Tone extends Tracer{
   public final short eighths;
   public final HashSet<Mark>marks=new HashSet();
   private final int[]intValues;
-  private boolean isOffset;
+  private int offset;
   public Tone(Voice voice,int barAt,int eighthAt,byte pitch,short eighths){
     this.voice=voice;
     this.barAt=barAt;
