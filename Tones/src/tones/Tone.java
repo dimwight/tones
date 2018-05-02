@@ -69,8 +69,8 @@ public final class Tone extends Tracer{
       		:!that.marks.isEmpty():false;
       }
   }
-  public boolean isOffset(){
-    return isOffset;
+  public int getOffset(){
+    return offset;
   }
   
 }
