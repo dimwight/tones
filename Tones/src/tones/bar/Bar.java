@@ -14,9 +14,8 @@ import java.util.Set;
 import tones.Tone;
 import tones.Voice;
 final public class Bar extends Tracer{
-  public static final int WIDTH_NOTE=8;
-  private static final int WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3),
-    START_AT=WIDTH_NOTE/2;
+  private static final int WIDTH_SPACE_SHRINK=(false?0:Tone.WIDTH_NOTE*2/3),
+    START_AT=Tone.WIDTH_NOTE/2;
   public final int at,rise,staveGap,fall,width;
   public final Set<Incipit>incipits;
   private final Map<Voice,Integer>partAts=new HashMap();
@@ -45,7 +44,7 @@ final public class Bar extends Tracer{
     for(Tone t:incipit.tones)toneVoices.add(t.voice);
     int furthest=furthestAt(toneVoices,incipit.partAt);
     incipit.barAt=furthest;
-    for(Tone t:incipit.tones)partAts.put(t.voice,furthest+t.eighths*WIDTH_NOTE);
+    for(Tone t:incipit.tones)partAts.put(t.voice,furthest+t.eighths*Tone.WIDTH_NOTE);
   }
   int furthestAt(Iterable<Voice>voices,int eighthAt){
     int jump=eighthAt-thenAt,gap=jump<=1?0:jump-1;

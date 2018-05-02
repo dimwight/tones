@@ -20,6 +20,7 @@ public final class Tone extends Tracer{
   public final HashSet<Mark>marks=new HashSet();
   private final int[]intValues;
   private int offset;
+	public static final int WIDTH_NOTE=8;
   public Tone(Voice voice,int barAt,int eighthAt,byte pitch,short eighths){
     this.voice=voice;
     this.barAt=barAt;
@@ -49,7 +50,7 @@ public final class Tone extends Tracer{
   }
   public String toString(){
     ScaleNote note=pitchNote();
-    return voice+" "+pitchNote()+": "+Strings.intsString(intValues)+" isOffset="+isOffset;
+    return voice+" "+pitchNote()+": "+Strings.intsString(intValues);
   }
   public ScaleNote pitchNote(){
     return ScaleNote.pitchNote(pitch);
@@ -67,7 +68,8 @@ public final class Tone extends Tracer{
         boolean isOffset=that.eighths>eighths?true
           :that.eighths==eighths?that.pitch==pitch&&eighths<NOTE_WHOLE?false
       		:!that.marks.isEmpty():false;
-        if(isOffset)offset=WIDTH_NOTE*(that.eighths%3==0?9:6)/5;
+        if(isOffset)offset=Tone.WIDTH_NOTE
+        		*(that.eighths==NOTE_WHOLE?7:that.eighths%3==0?9:5)/5;
       }
   }
   public int getOffset(){

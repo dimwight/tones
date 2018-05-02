@@ -11,7 +11,7 @@ import facets.util.shade.Shade;
 import facets.util.shade.Shades;
 import applicable.path.SvgPath;
 import tones.ScaleNote;
-import tones.bar.Bar;
+import tones.Tone;
 import tones.page.PageNote;
 import tones.page.PageNote.Dot;
 import tones.view.PageView;
@@ -31,7 +31,7 @@ public final class NotePainters extends PagePainters{
 	public NotePainters(PageView page,PageNote note,PainterSource p){
 		super(page,p);
 		this.note=note;
-		width=Bar.WIDTH_NOTE*unitX;
+		width=Tone.WIDTH_NOTE*unitX;
 		x=note.pageX*unitX;
 		y=(note.pageY-1)*unitY;
 		height=unitY*2;
