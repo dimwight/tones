@@ -1,4 +1,4 @@
-package applicable.path;
+package applicable;
 import facets.core.app.avatar.PainterMaster.Outlined;
 import facets.util.FileSpecifier;
 import facets.util.Titled;

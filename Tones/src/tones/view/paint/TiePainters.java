@@ -7,7 +7,7 @@ import facets.core.app.avatar.PainterSource;
 import facets.core.app.avatar.PainterSource.Transform;
 import facets.util.geom.Vector;
 import facets.util.shade.Shade;
-import applicable.path.SvgPath;
+import applicable.SvgPath;
 import tones.Tone;
 import tones.page.PageItem.PageTie;
 import tones.page.PageItem.PageTie.TieType;

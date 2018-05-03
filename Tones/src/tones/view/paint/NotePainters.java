@@ -9,7 +9,7 @@ import facets.util.geom.Line;
 import facets.util.geom.Point;
 import facets.util.shade.Shade;
 import facets.util.shade.Shades;
-import applicable.path.SvgPath;
+import applicable.SvgPath;
 import tones.ScaleNote;
 import tones.Tone;
 import tones.page.PageNote;
