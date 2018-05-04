@@ -64,11 +64,11 @@ public final class TonesEdit extends TreeTextContenter{
             :new ViewerAreaMaster(){
           protected SFacet newViewTools(STargeter viewTargeter){
             STargeter elements[]=viewTargeter.elements(),
-            		barStart=elements[PageView.TARGET_BAR];
+                barStart=elements[PageView.TARGET_BAR];
             SwingPanelFacet lastBar=(SwingPanelFacet)ff.textualLabel(
-            		elements[PageView.TARGET_LAST],HINT_PANEL_CENTER);
+                elements[PageView.TARGET_LAST],HINT_PANEL_CENTER);
             ((JLabel)lastBar.components().values().toArray()[0]
-            		).setBorder(BorderFactory.createEmptyBorder(0,2,2,0));
+                ).setBorder(BorderFactory.createEmptyBorder(0,2,2,0));
             return ff.toolGroups(viewTargeter,HINT_PANEL_CENTER,ff.spacerWide(8),
                 false?null:ff.spacerTall(45),
                 ff.numericSliders(barStart,200,
@@ -109,17 +109,15 @@ public final class TonesEdit extends TreeTextContenter{
   }
   private static TreeTextSpecifier newSpecifier(){
     return new TreeTextSpecifier(TonesEdit.class){
-      protected XmlSpecifier[]fileSpecifiers(XmlPolicy policy){
-        return new XmlSpecifier[]{
-          new XmlSpecifier("tones.xml","Tones",policy),
+      protected FileSpecifier[]fileSpecifiers(){
+        return new FileSpecifier[]{
+          new FileSpecifier("tone.txt","Tones"),
         };
       }
       @Override
       protected Object getInternalContentSource(){
-        File file=new File(Util.runDir(),"E major.tones.xml");
-        return file.exists()?file 
-            :new ValueNode("xml","Tones"+contents++,new Object[]{
-                new ValueNode("Tones",VoicePart.TEST_CODES)}).copyState();
+        File file=new File(Util.runDir(),"E major.tones.txt");
+        return file.exists()?file:VoicePart.TEST_CODES;
       }
       @Override
       protected TreeTextContenter newContenter(Object source,FacetAppSurface app){
