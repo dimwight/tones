@@ -65,11 +65,11 @@ public final class TonesViewable extends TreeTextViewable{
           @Override
           public void textSet(STextual t){
             String src=(before+","+t.text()+","+after).trim();
-            if(false)trace(".textSet: src=",src);
-            try {
+            try{
               TonesViewable.this.doUndoableEdit((ValueNode)framed,src);
-            } catch (Exception e) {
-              TonesViewable.this.trace(".textSet: "+e.getMessage());
+            }catch(Exception e){
+            	if(false)throw e;
+            	else TonesViewable.this.trace(".textSet: "+e.getMessage());
             }
           }
           public boolean updateInterim(STextual t){
@@ -82,7 +82,8 @@ public final class TonesViewable extends TreeTextViewable{
     };
   }
   private void doUndoableEdit(ValueNode selected,String src){
-    selected.putAt(0,src);
+    selected.setValues(new String[]{src});
+  	textViewerEdit=src;
     maybeModify();
     updateAfterEditAction();
     bars.updatePart(src);
@@ -96,7 +97,7 @@ public final class TonesViewable extends TreeTextViewable{
       };
   }
   @Override
-  protected void editUndone(){
+  protected void editUndoneOrRedone(){
     bars.updatePart(((ValueNode)selection().single()).getString(0));
   }
   @Override

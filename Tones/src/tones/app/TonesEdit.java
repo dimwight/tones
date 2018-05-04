@@ -16,13 +16,10 @@ import facets.facet.FacetFactory;
 import facets.facet.SwingPanelFacet;
 import facets.facet.ViewerAreaMaster;
 import facets.facet.app.FacetAppSurface;
+import facets.util.FileSpecifier;
 import facets.util.ItemList;
 import facets.util.Util;
 import facets.util.tree.DataNode;
-import facets.util.tree.TypedNode;
-import facets.util.tree.ValueNode;
-import facets.util.tree.XmlPolicy;
-import facets.util.tree.XmlSpecifier;
 import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -111,7 +108,7 @@ public final class TonesEdit extends TreeTextContenter{
     return new TreeTextSpecifier(TonesEdit.class){
       protected FileSpecifier[]fileSpecifiers(){
         return new FileSpecifier[]{
-          new FileSpecifier("tone.txt","Tones"),
+          new FileSpecifier("tones.txt","Tones"),
         };
       }
       @Override

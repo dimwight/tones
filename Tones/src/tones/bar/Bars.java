@@ -125,7 +125,7 @@ public final class Bars extends Tracer implements Titled{
       List<Incipit>incipits=new ArrayList<Incipit>(bar.incipits);
       Collections.sort(incipits);
       for(Incipit incipit:incipits){
-        String title="part="+incipit.partAt+" bar="+incipit.barAt;
+        String title="part="+incipit.eighthAt+" bar="+incipit.barAt;
         NodeList incipitList=new NodeList(newDebugRoot(Incipit.class,title),true);
         barList.add(incipitList.parent);
         List<Tone>sortTones=new ArrayList(incipit.tones);

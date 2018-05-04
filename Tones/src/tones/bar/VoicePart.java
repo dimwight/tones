@@ -52,7 +52,7 @@ public final class VoicePart extends Tracer{
           +"2,f,b,4,e,2,e,c,4,f,"
           +"2,se,+,f,1,e,f,2,g,a,1,b,f,4,b,2,a,"
           +"4,b"
-       ),
+       ,
           "a:" 
           +"16,x,x,x,"
           +"8,sb,-,e,4,f,a,g,f,e,2,x,b,"
