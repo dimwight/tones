@@ -23,115 +23,115 @@ import tones.bar.VoicePart;
 import tones.page.PageNote;
 import tones.view.PageView;
 public final class TonesViewable extends TreeTextViewable{
-	private int barStart;
-	public final Bars bars;
-	SFrameTarget barsView=new SFrameTarget(new TreeView("Bar Contents"){
-		@Override
-		public boolean hideRoot(){
-			return true;
-		}
-		@Override
-		public boolean canChangeSelection(){
-			return false;
-		}
-		@Override
-		public String nodeRenderText(TypedNode node){
-			return node.title();
-		}
-	}){};
-	private PageView page;
-	TonesViewable(TypedNode tree,ClipperSource clipperSource,
-			FacetAppSurface app){
-		super(tree,clipperSource,app);
-		bars=new Bars(this);
-	}
-	public SFrameTarget selectionFrame(){
-		return new SFrameTarget(selection().single()){
-			protected STarget[]lazyElements(){
-				List<String>codes=bars.selectedPart().barCodes;
-				barStart=page.barStart();
-				int codesCount=codes.size(),
-					codeStop=min(page.barStop(),codesCount);
-				if(false)trace(".selectionFrame: codesCount="+codesCount+" "+
-					+barStart+","+codeStop);
-				String NO_CODES="[No codes]",
-					before=mergeBarCodes(codes.subList(0,min(barStart,codesCount))),
-					show=barStart>=codeStop?""
-							:mergeBarCodes(codes.subList(barStart,codeStop)),
-					after=codeStop>=codesCount?""
-							:mergeBarCodes(codes.subList(codeStop,codesCount));
-				STextual textual=new STextual("Codes",show.isEmpty()?NO_CODES:show,
-						new STextual.Coupler(){
-					@Override
-					public void textSet(STextual t){
-						String src=(before+","+t.text()+","+after).trim();
-						if(false)trace(".textSet: src=",src);
-						try {
-							bars.updatePart(src);
-							TonesViewable.this.doUndoableEdit((ValueNode)framed,src);
-						} catch (Exception e) {
-							TonesViewable.this.trace(".textSet: "+e.getMessage());
-						}
-					}
-					public boolean updateInterim(STextual t){
-						return false;
-					}
-				});
-				textual.setLive(!textual.text().equals(NO_CODES));
-				return new STarget[]{textual};
-			}
-		};
-	}
-	@Override
-	public ViewableAction[]viewerActions(SView view){
-		return new ViewableAction[]{
-				UNDO,REDO,
-				DELETE,
-				MODIFY
-			};
-	}
-	protected void doUndoableEdit(ValueNode selected,String src){
-		selected.putAt(0,src);
-		maybeModify();
-		updateAfterEditAction();
-	}
-	@Override
-	public boolean editSelection(){
-		return true?true:super.editSelection();
-	}
-	@Override
-	protected SSelection newNonTreeViewerSelection(SViewer viewer){
-		SView view=viewer.view();
-		SSelection selection=selection();
-		if(view instanceof AvatarView){
-			page=(PageView)view;
-			return page.avatars().newAvatarSelection(viewer,new SSelection(){//?
-				@Override
-				public Object content(){
-					return bars;
-				}
-				@Override
-				public Object single(){
-					throw new RuntimeException("Not implemented in "+this);
-				}
-				@Override
-				public Object[] multiple(){
-					throw new RuntimeException("Not implemented in "+this);
-				}
-			});
-		}
-		return((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(//?
-				bars.newDebugRoot(barStart,page==null?0:page.barStop())));
-	
-	}
-	@Override
-	protected void nonTreeViewerSelectionChanged(SViewer viewer,SSelection selection){
-		Object single=selection.single();
-		if(false)traceDebug(".nonTreeViewerSelectionChanged: selection=",single);
-		if(single instanceof PageView)bars.selectPart(Voice.Empty);
-		else if(single instanceof PageNote)bars.selectPart(((PageNote)single).tone.voice);
-	}
-	public TypedNode contentTree(){
-		return ((TypedNode)framed).children()[0];
-	}
+  private int barStart;
+  public final Bars bars;
+  SFrameTarget barsView=new SFrameTarget(new TreeView("Bar Contents"){
+    @Override
+    public boolean hideRoot(){
+      return true;
+    }
+    @Override
+    public boolean canChangeSelection(){
+      return false;
+    }
+    @Override
+    public String nodeRenderText(TypedNode node){
+      return node.title();
+    }
+  }){};
+  private PageView page;
+  TonesViewable(TypedNode tree,ClipperSource clipperSource,
+      FacetAppSurface app){
+    super(tree,clipperSource,app);
+    bars=new Bars(this);
+  }
+  public SFrameTarget selectionFrame(){
+    return new SFrameTarget(selection().single()){
+      protected STarget[]lazyElements(){
+        List<String>codes=bars.selectedPart().barCodes;
+        barStart=page.barStart();
+        int codesCount=codes.size(),
+          codeStop=min(page.barStop(),codesCount);
+        if(false)trace(".selectionFrame: codesCount="+codesCount+" "+
+          +barStart+","+codeStop);
+        String NO_CODES="[No codes]",
+          before=mergeBarCodes(codes.subList(0,min(barStart,codesCount))),
+          show=barStart>=codeStop?""
+              :mergeBarCodes(codes.subList(barStart,codeStop)),
+          after=codeStop>=codesCount?""
+              :mergeBarCodes(codes.subList(codeStop,codesCount));
+        STextual textual=new STextual("Codes",show.isEmpty()?NO_CODES:show,
+            new STextual.Coupler(){
+          @Override
+          public void textSet(STextual t){
+            String src=(before+","+t.text()+","+after).trim();
+            if(false)trace(".textSet: src=",src);
+            try {
+              TonesViewable.this.doUndoableEdit((ValueNode)framed,src);
+            } catch (Exception e) {
+              TonesViewable.this.trace(".textSet: "+e.getMessage());
+            }
+          }
+          public boolean updateInterim(STextual t){
+            return false;
+          }
+        });
+        textual.setLive(!textual.text().equals(NO_CODES));
+        return new STarget[]{textual};
+      }
+    };
+  }
+  @Override
+  public ViewableAction[]viewerActions(SView view){
+    return new ViewableAction[]{
+        UNDO,REDO,
+        DELETE,
+        MODIFY
+      };
+  }
+  private void doUndoableEdit(ValueNode selected,String src){
+    selected.putAt(0,src);
+    maybeModify();
+    updateAfterEditAction();
+    bars.updatePart(src);
+  }
+  @Override
+  protected void editUndone(){
+    bars.updatePart(((ValueNode)selection().single()).getString(0));
+  }
+  @Override
+  protected SSelection newNonTreeViewerSelection(SViewer viewer){
+    SView view=viewer.view();
+    SSelection selection=selection();
+    if(view instanceof AvatarView){
+      page=(PageView)view;
+      return page.avatars().newAvatarSelection(viewer,new SSelection(){//?
+        @Override
+        public Object content(){
+          return bars;
+        }
+        @Override
+        public Object single(){
+          throw new RuntimeException("Not implemented in "+this);
+        }
+        @Override
+        public Object[] multiple(){
+          throw new RuntimeException("Not implemented in "+this);
+        }
+      });
+    }
+    return((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(//?
+        bars.newDebugRoot(barStart,page==null?0:page.barStop())));
+  
+  }
+  @Override
+  protected void nonTreeViewerSelectionChanged(SViewer viewer,SSelection selection){
+    Object single=selection.single();
+    if(false)traceDebug(".nonTreeViewerSelectionChanged: selection=",single);
+    if(single instanceof PageView)bars.selectPart(Voice.Empty);
+    else if(single instanceof PageNote)bars.selectPart(((PageNote)single).tone.voice);
+  }
+  public TypedNode contentTree(){
+    return ((TypedNode)framed).children()[0];
+  }
 }
