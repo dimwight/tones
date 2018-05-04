@@ -8,11 +8,11 @@ import java.util.Set;
 import tones.Tone;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
   public final Collection<Tone>tones=new HashSet();
-  public final int partAt;
+  public final int eighthAt;
   public int barAt=-1;
   int rise,staveGap,fall;
-  Incipit(int partAt){
-    this.partAt=partAt;
+  Incipit(int eighthAt){
+    this.eighthAt=eighthAt;
   }
   public void addTone(Tone tone){
     ((Set)tones).add(tone);
@@ -24,7 +24,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
     fall=6;
   }
   public String toString(){
-    return Debug.info(this)+" m"+partAt+" b"+barAt+" "+tones;
+    return Debug.info(this)+" m"+eighthAt+" b"+barAt+" "+tones;
   }
   public int hashCode(){
     return Arrays.hashCode(intValues());
@@ -35,9 +35,9 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
   }
   @Override
   public int compareTo(Incipit i){
-    return new Integer(partAt).compareTo(new Integer(i.partAt));
+    return new Integer(eighthAt).compareTo(new Integer(i.eighthAt));
   }
   private int[]intValues(){
-    return new int[]{partAt,fall,staveGap,rise,barAt};
+    return new int[]{eighthAt,fall,staveGap,rise,barAt};
   }
 }
