@@ -81,6 +81,12 @@ public final class TonesViewable extends TreeTextViewable{
       }
     };
   }
+  private void doUndoableEdit(ValueNode selected,String src){
+    selected.putAt(0,src);
+    maybeModify();
+    updateAfterEditAction();
+    bars.updatePart(src);
+  }
   @Override
   public ViewableAction[]viewerActions(SView view){
     return new ViewableAction[]{
@@ -88,12 +94,6 @@ public final class TonesViewable extends TreeTextViewable{
         DELETE,
         MODIFY
       };
-  }
-  private void doUndoableEdit(ValueNode selected,String src){
-    selected.putAt(0,src);
-    maybeModify();
-    updateAfterEditAction();
-    bars.updatePart(src);
   }
   @Override
   protected void editUndone(){
@@ -121,8 +121,7 @@ public final class TonesViewable extends TreeTextViewable{
       });
     }
     return((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(//?
-        bars.newDebugRoot(barStart,page==null?0:page.barStop())));
-  
+        bars.newDebugRoot(barStart,page==null?0:page.barStop())));  
   }
   @Override
   protected void nonTreeViewerSelectionChanged(SViewer viewer,SSelection selection){
