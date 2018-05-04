@@ -68,7 +68,7 @@ public final class VoicePart extends Tracer{
           +"sc,a,g,f,e,d"
     };
   private static final boolean padBar=false;
-  final static class Context{
+  private final static class Context{
     final ScaleNote scaleNote;
     final Octave octave;
     final int barEighths=BAR_EIGHTHS_DEFAULT,eighths;
