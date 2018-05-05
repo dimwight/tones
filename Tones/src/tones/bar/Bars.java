@@ -23,7 +23,7 @@ public final class Bars extends Tracer implements Titled{
   private final TonesViewable viewable;
   private VoicePart selectedPart;
   private int barEighths;
-  private Soundings s=new Soundings();
+  private Soundings s=Soundings.newEmpty();
     
   public Bars(TonesViewable viewable){
     this.viewable=viewable;
