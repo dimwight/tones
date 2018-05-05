@@ -22,7 +22,8 @@ public final class Bars extends Tracer implements Titled{
   private final Map<Voice,VoicePart>parts=new HashMap();
   private final TonesViewable viewable;
   private VoicePart selectedPart;
-  private int barEighths;
+  private int barEighths;private Soundings s=new Soundings();
+    
   public Bars(TonesViewable viewable){
     this.viewable=viewable;
     TypedNode[]children=viewable.contentTree().children();
@@ -61,7 +62,8 @@ public final class Bars extends Tracer implements Titled{
           incipits.put(partAt,i=new Incipit(eighthAt));
         i.addTone(tone);
         eighthAt+=tone.eighths;
-      }Soundings s=new Soundings();
+      }
+      
       for(Incipit i:incipits)s=i.readSoundings(s);
         
     }
