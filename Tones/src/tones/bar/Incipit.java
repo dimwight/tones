@@ -9,7 +9,7 @@ import tones.Tone;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
   static class Soundings{
     Soundings newUpdated(Incipit i){
-      
+      return new Soundings();
     }
   }
   public final Collection<Tone>tones=new HashSet();
