@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.Set;
 import tones.Tone;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
+  class Soundings{
+    
+  }
   public final Collection<Tone>tones=new HashSet();
   public final int eighthAt;
   public int barAt=-1;
