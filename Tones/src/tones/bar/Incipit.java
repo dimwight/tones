@@ -14,7 +14,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
       for(Voice v:Voice.values()){
         got=incipitEighths.get(v);
         nowEighths.put(v,got!=null?got
-          :voiceEighths.get(v)-(i.eighthAt-eighthAt));
+          :voiceEighths.get(v)-((i.eighthAt>0?i.eighthAt:barEighths)-eighthAt));
             
       }
       return new Soundings(i.eighthAt,immutableMap(nowEighths));
