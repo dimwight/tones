@@ -61,7 +61,8 @@ public final class Bars extends Tracer implements Titled{
           incipits.put(partAt,i=new Incipit(eighthAt));
         i.addTone(tone);
         eighthAt+=tone.eighths;
-      }for(Incipit i:incipits)
+      }
+      for(Incipit i:incipits)
         
     }
     return incipits.isEmpty()?null:new Bar(barAt++,incipits.values(),barEighths);
