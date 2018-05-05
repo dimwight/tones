@@ -13,7 +13,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
         got=voiceTones.get(v);
           if(got!=null)
             voiceTones.put(v,got-(i.eighthAt-eighthAt)
-          }
+      }
       return new Soundings(voiceTones);
     }
   }
