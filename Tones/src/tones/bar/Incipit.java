@@ -10,9 +10,9 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
   static class Soundings{
     Soundings newUpdated(Incipit i){
       for(Voice v:Voice.values(){
-        got=voiceTones.get(v);
-          if(got!=null)
-            voiceTones.put(v,got-(i.eighthAt-eighthAt)
+        put=voiceTones.get(v)-(i.eighthAt-eighthAt;
+          if(put>0)
+            voiceTones.put(v,put)
       }
       return new Soundings(voiceTones);
     }
