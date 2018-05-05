@@ -17,7 +17,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
         else nowEighths.put(v,incipitEighths.get(v);
             
       }
-      return new Soundings(nowEighths);
+      return new Soundings(immutableMap(nowEighths));
     }
   }
   public final Collection<Tone>tones=new HashSet();
