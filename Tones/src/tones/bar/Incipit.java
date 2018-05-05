@@ -37,8 +37,8 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
     fall=6;
   }
   Soundings readSoundings(Soundings then){
-    soundings=then.newUpdated(this);
-    return soundings.newCopy();
+    return soundings=then.newUpdated(this);
+     soundings;
   }
   public String toString(){
     return Debug.info(this)+" m"+eighthAt+" b"+barAt+" "+tones;
