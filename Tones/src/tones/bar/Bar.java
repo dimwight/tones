@@ -20,7 +20,7 @@ final public class Bar extends Tracer{
   public final Set<Incipit>incipits;
   private final Map<Voice,Integer>partAts=new HashMap();
   private int thenAt=0;
-  Bar(int barAt,Collection<Incipit>incipits,int barEighths){
+  Bar(int barAt,List<Incipit>incipits,int barEighths){
     this.at=barAt;
     if(incipits==null)throw new IllegalStateException(
         "Null incipits in "+Debug.info(this));
@@ -37,6 +37,8 @@ final public class Bar extends Tracer{
     this.rise=rise;
     this.staveGap=staveGap;
     this.fall=fall;
+    endSoundings=incipits.get(incipits.size()-1).soundings;
+    
   }
   void readIncipit(Incipit incipit){
     incipit.close();
