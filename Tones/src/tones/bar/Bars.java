@@ -22,7 +22,8 @@ public final class Bars extends Tracer implements Titled{
   private final Map<Voice,VoicePart>parts=new HashMap();
   private final TonesViewable viewable;
   private VoicePart selectedPart;
-  private int barEighths;private Soundings s=new Soundings();
+  private int barEighths;
+  private Soundings s=new Soundings();
     
   public Bars(TonesViewable viewable){
     this.viewable=viewable;
