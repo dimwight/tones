@@ -54,13 +54,13 @@ public final class Bars extends Tracer implements Titled{
           "New barEighths="+barEighths+", barEighthsNow="+barEighthsNow+
           " in "+Debug.info(part));
       else barEighths=barEighthsNow;
-      int partAt=0;
+      int eighthAt=0;
       for(Tone tone:partTones){
         Incipit i;
-        if((i=incipits.get(partAt))==null)
-          incipits.put(partAt,i=new Incipit(partAt));
+        if((i=incipits.get(eighthAt))==null)
+          incipits.put(partAt,i=new Incipit(eighthAt));
         i.addTone(tone);
-        partAt+=tone.eighths;
+        eighthAt+=tone.eighths;
       }
     }
     return incipits.isEmpty()?null:new Bar(barAt++,incipits.values(),barEighths);
