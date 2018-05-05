@@ -37,7 +37,7 @@ final public class Bar extends Tracer{
     this.rise=rise;
     this.staveGap=staveGap;
     this.fall=fall;
-    endSoundings=incipits.get(incipits.size()-1).soundings;
+    endSoundings=incipits.get(incipits.size()-1).soundings();
     
   }
   void readIncipit(Incipit incipit){
