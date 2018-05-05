@@ -11,12 +11,12 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
     Soundings newUpdated(Incipit i){
       for(Voice v:Voice.values()){
         got=voiceEighths.get(v);
-        -(;
-        if(got!=null)voiceTones.put(v,i.eighthAt-eighthAt);
-        else voiceTones.put(v,i.voiceTones.get(v);
+        
+        if(got!=null)nowEighths.put(v,got-(i.eighthAt-eighthAt));
+        else nowEighths.put(v,i.voiceTones().get(v);
             
       }
-      return new Soundings(voiceTones);
+      return new Soundings(nowEighths);
     }
   }
   public final Collection<Tone>tones=new HashSet();
