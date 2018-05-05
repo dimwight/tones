@@ -9,6 +9,8 @@ import tones.Tone;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
   static class Soundings{
     Soundings newUpdated(Incipit i){
+      for(Tone t:i.tones)
+        incipitEighths.put(t.voice,t.eighths);
       for(Voice v:Voice.values()){
         got=voiceEighths.get(v);
         if(got!=null)nowEighths.put(v,got-(i.eighthAt-eighthAt));
