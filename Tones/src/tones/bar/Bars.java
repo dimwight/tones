@@ -75,6 +75,7 @@ public final class Bars extends Tracer implements Titled{
       thenPart=parts.replace(nowPart.voice,nowPart);
     selectPart(nowPart.voice);
     int count=bars.size();
+    if(count>0)s=bars.get(start-1).endSoundings;
     for(int start=true?0:count-5,stop=false?2:count,
         barAt=start;true;barAt++){
       List<Tone>thenTones=thenPart.getBarTones(barAt),
