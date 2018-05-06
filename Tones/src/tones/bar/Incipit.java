@@ -21,19 +21,20 @@ import tones.Voice;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
 	static class Soundings{
 		private final Map<Voice,Tone> voiceTones;
-		private final short eighthAt;
-		private Soundings(short eighthAt,Map<Voice,Short> voiceTones){
+		private final short eighthAt,barEighths;
+		private Soundings(short barEighths,short eighthAt,Map<Voice,Short> voiceTones){
 			this.eighthAt=eighthAt;
+			this.barEighths=barEighths;
 			this.voiceTones=voiceTones;
 		}
 		Map<Voice, Againsts[]>newVoiceAgainsts(Collection<Tone>){
 			for(Tone t:i.tones)
 			
 		}
-		static Soundings newStarting(){
-			return new Soundings((short)0,new HashMap());
+		static Soundings newStarting(short barEighths){
+			return new Soundings(barEighths,(short)0,new HashMap());
 		}
-		Soundings newUpdated(Incipit i,short barEighths){
+		Soundings newUpdated(Incipit i){
 			Map<Voice,Tone> incipitTones=new HashMap(),nowTones=new HashMap();
 			for(Tone t:i.tones)
 				if(t.pitch!=ScaleNote.Rest.pitch) incipitTones.put(t.voice,t);
