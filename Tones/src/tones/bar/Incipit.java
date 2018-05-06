@@ -33,6 +33,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
     	Map<Voice,Short>incipitEighths=new HashMap(),
     			nowEighths=new HashMap();
       for(Tone t:i.tones)
+	
         incipitEighths.put(t.voice,t.eighths);
       for(Voice v:Voice.values()){
         Short now=incipitEighths.get(v),
