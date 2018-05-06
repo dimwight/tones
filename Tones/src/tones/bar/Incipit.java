@@ -38,7 +38,8 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
       for(Voice v:Voice.values()){
         Short now=incipitEighths.get(v),
 	  then=voiceEighths.get(v);
-        nowEighths.put(v,now!=null?now
+	if(now!=null)
+          nowEighths.put(v,.now
           :(short)(then
           		-((i.eighthAt>0?i.eighthAt:barEighths)
       				-eighthAt)
