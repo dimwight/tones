@@ -41,8 +41,8 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			for(Voice v:Voice.values()){
 				Short now=incipitTones.get(v),then=voiceTones.get(v);
 				if(now!=null) nowTones.put(v,now);
-				else if(then!=null) nowTones.put(v,
-						(short)(then-((i.eighthAt>0?i.eighthAt:barEighths)-eighthAt)));
+				else if(then!=null) nowTones.put(v,then.newSounding(i.eighthAt>0?i.eighthAt:barEighths)-eighthAt)
+						(short)(then-(()));
 			}
 			return new Soundings(i.eighthAt,Collections.unmodifiableMap(nowTones));
 		}
