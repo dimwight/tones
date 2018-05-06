@@ -89,7 +89,7 @@ public final class PageStaves{
 		int barStart=page.barStart(),lastBarAt=barStart+1;
 		Iterator<Bar>bars=content.barsFrom(barStart).iterator();
 		final double pageWidth=page.showWidth()-2*INSET,
-			useHeight=page.showHeight()-2*INSET,
+			useHeight=page.showHeight()-1.5*INSET,
 			unitY=page.unitY(),
 			unitX=unitY*page.widthForPitch();
 		double pageY=0,pageXScale=PAGE_X_SCALE;
