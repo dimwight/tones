@@ -20,11 +20,11 @@ import tones.Tone;
 import tones.Voice;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
 	static class Soundings{
-		private final Map<Voice,Short> voiceEighths;
+		private final Map<Voice,Tone> voiceTones;
 		private final short eighthAt;
-		private Soundings(short eighthAt,Map<Voice,Short> voiceEighths){
+		private Soundings(short eighthAt,Map<Voice,Short> voiceTones){
 			this.eighthAt=eighthAt;
-			this.voiceEighths=voiceEighths;
+			this.voiceTones=voiceTones;
 		}
 		Map<Voice, Againsts[]>newVoiceAgainsts(Collection<Tone>){
 			for(Tone t:i.tones)
@@ -47,9 +47,9 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		}
 		DataNode newDebugRoot(){
 			NodeList nodes=new NodeList(Bars.newDebugRoot(getClass(),
-					""+voiceEighths.size()+(true?"":eighthAt)),true);
+					""+voiceTones.size()+(true?"":eighthAt)),true);
 			nodes.parent.setValues(
-					Objects.toLines(voiceEighths.entrySet().toArray()).split("\n"));
+					Objects.toLines(voiceTones.entrySet().toArray()).split("\n"));
 			return nodes.parent;
 		}
 	}
