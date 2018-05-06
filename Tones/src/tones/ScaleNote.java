@@ -9,6 +9,9 @@ public enum ScaleNote{C(0),D(1),E(2),F(3),G(4),A(5),B(6),Rest(ScaleNote.PITCH_RE
 	public String toString(){
 		return this==Rest?"*":super.toString();
 	}
+	public static ScaleNote toneNote(Tone tone){
+		return pitchNote(tone.pitch);
+	}
 	public static ScaleNote pitchNote(byte pitch){
 		if(pitch==PITCH_REST)return Rest;
 		while(pitch<0)pitch+=Octave.pitches;

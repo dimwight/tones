@@ -32,9 +32,9 @@ public final class Tone extends Tracer{
   }
   public DataNode newDebugNode(){
     int markCount=marks.size();
-    return newDebugRoot(getClass(),toString(),markCount==0?"No marks"
+    return true||markCount==0?newDebugRoot(getClass(),voice+" "+pitchNote())
         :newDebugRoot(Mark.class,"marks="+markCount,
-            Objects.toLines(marks.toArray()).split("\n")));
+            Objects.toLines(marks.toArray()).split("\n"));
   }
   public void checkTied(Tone before){
     if(before==null||before.isRest()||isRest()

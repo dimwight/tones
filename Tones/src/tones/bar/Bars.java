@@ -121,12 +121,11 @@ public final class Bars extends Tracer implements Titled{
     return viewable.title();
   }
   public DataNode newDebugRoot(int start,int stop){
-    if(false)trace(".newDebugRoot: start="+start+" stop="+stop);
     NodeList barsList=new NodeList(newDebugRoot(getClass(),title()),true);
     for(Bar bar:barsFrom(start)){
       if(bar.at==stop)break;
       NodeList barList=new NodeList(newDebugRoot(Bar.class,
-          "at="+bar.at+" width="+bar.width),true);
+          "at="+bar.at+(true?"":" width="+bar.width)),true);
       barsList.add(barList.parent);
       List<Incipit>incipits=new ArrayList<Incipit>(bar.incipits);
       Collections.sort(incipits);
