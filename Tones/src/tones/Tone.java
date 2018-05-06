@@ -32,7 +32,7 @@ public final class Tone extends Tracer{
   }
   public DataNode newDebugNode(){
     int markCount=marks.size();
-    return newDebugRoot(Tone.class,toString(),markCount==0?"No marks"
+    return newDebugRoot(getClass(),toString(),markCount==0?"No marks"
         :newDebugRoot(Mark.class,"marks="+markCount,
             Objects.toLines(marks.toArray()).split("\n")));
   }

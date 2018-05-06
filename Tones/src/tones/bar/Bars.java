@@ -122,7 +122,7 @@ public final class Bars extends Tracer implements Titled{
   }
   public DataNode newDebugRoot(int start,int stop){
     if(false)trace(".newDebugRoot: start="+start+" stop="+stop);
-    NodeList barsList=new NodeList(newDebugRoot(Bars.class,title()),true);
+    NodeList barsList=new NodeList(newDebugRoot(getClass(),title()),true);
     for(Bar bar:barsFrom(start)){
       if(bar.at==stop)break;
       NodeList barList=new NodeList(newDebugRoot(Bar.class,

@@ -1,5 +1,6 @@
 package tones.bar;
 import facets.util.Debug;
+import facets.util.Objects;
 import facets.util.Tracer;
 import facets.util.tree.DataNode;
 import facets.util.tree.NodeList;
@@ -44,6 +45,12 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
       }
       return new Soundings(i.eighthAt,Collections.unmodifiableMap(nowEighths));
     }
+		DataNode newDebugRoot(){
+			NodeList nodes=new NodeList(Bars.newDebugRoot(getClass(),
+					"Soundings: "+eighthAt),true);
+			nodes.parent.setValues(Objects.toLines(voiceEighths.entrySet().toArray()).split("\n"));
+			return nodes.parent;
+		}
   }
   public final Collection<Tone>tones=new HashSet();
   public final short eighthAt;
@@ -56,7 +63,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		return soundings;
 	}
 	DataNode newDebugRoot(){
-		NodeList nodes=new NodeList(Bars.newDebugRoot(Incipit.class,
+		NodeList nodes=new NodeList(Bars.newDebugRoot(getClass(),
 				"eighth="+eighthAt+" bar="+barAt),true);
 		List<Tone>sortTones=new ArrayList(tones);
 		Collections.sort(sortTones,new Comparator<Tone>(){
@@ -66,6 +73,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		  }
 		});
 		for(Tone tone:sortTones)nodes.add(tone.newDebugNode());
+		nodes.add(soundings.newDebugRoot());
 		return nodes.parent;
 	}
 	Incipit(short eighthAt){
