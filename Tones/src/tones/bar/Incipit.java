@@ -19,6 +19,9 @@ import tones.ScaleNote;
 import tones.Tone;
 import tones.Voice;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
+	static class Againsts{
+		
+	}
 	static class Soundings{
 		private final Map<Voice,Tone> voiceTones;
 		private final short eighthAt,barEighths;
