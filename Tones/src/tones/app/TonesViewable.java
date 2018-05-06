@@ -98,10 +98,14 @@ public final class TonesViewable extends TreeTextViewable{
   }
   @Override
   protected void editUndoneOrRedone(){
-    bars.updatePart(((ValueNode)selection().single()).getString(0));
+    bars.updatePart(selectedNode().getString(0));
   }
+	private ValueNode selectedNode(){
+		return (ValueNode)selection().single();
+	}
   @Override
   protected SSelection newNonTreeViewerSelection(SViewer viewer){
+  	bars.selectPart(new VoicePart(selectedNode().getString(0)).voice);
     SView view=viewer.view();
     SSelection selection=selection();
     if(view instanceof AvatarView){

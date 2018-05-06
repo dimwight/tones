@@ -13,12 +13,12 @@ public final class Tone extends Tracer{
   public static final short NOTE_WHOLE=8,NOTE_HALF=NOTE_WHOLE/2,
     NOTE_QUARTER=NOTE_WHOLE/4,NOTE_EIGHTH=NOTE_WHOLE/8,
     NOTE_DOUBLE=NOTE_WHOLE*2,NOTE_NONE=0;
-  public final int barAt,eighthAt;
+  public final HashSet<Mark>marks=new HashSet();
+  public final int barAt;
   public final Voice voice;
   public final byte pitch;
   public final short eighths;
-  public final HashSet<Mark>marks=new HashSet();
-  private final int[]intValues;
+  private final int eighthAt,intValues[];
   private int offset;
 	public static final int WIDTH_NOTE=8;
   public Tone(Voice voice,int barAt,int eighthAt,byte pitch,short eighths){
@@ -27,7 +27,8 @@ public final class Tone extends Tracer{
     this.eighthAt=eighthAt;
     this.pitch=pitch;
     this.eighths=eighths;
-    intValues=new int[]{barAt,eighthAt,pitch,eighths};
+    intValues=pitch==ScaleNote.PITCH_REST?new int[]{barAt,eighthAt,eighths}
+    	:new int[]{barAt,eighthAt,eighths,pitch};
   }
   public DataNode newDebugNode(){
     int markCount=marks.size();

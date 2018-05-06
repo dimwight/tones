@@ -6,16 +6,15 @@ import facets.util.Tracer;
 import facets.util.tree.DataNode;
 import facets.util.tree.NodeList;
 import facets.util.tree.TypedNode;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import tones.Tone;
 import tones.Voice;
 import tones.app.TonesViewable;
+import tones.bar.Incipit.Soundings;
 public final class Bars extends Tracer implements Titled{
   public static final boolean eighthsCheck=false;
   private final List<Bar>bars=new ArrayList();
@@ -23,7 +22,7 @@ public final class Bars extends Tracer implements Titled{
   private final TonesViewable viewable;
   private VoicePart selectedPart;
   private int barEighths;
-  private Soundings s=Soundings.newEmpty();
+  private Soundings s=Soundings.newStarting();
     
   public Bars(TonesViewable viewable){
     this.viewable=viewable;
@@ -60,15 +59,15 @@ public final class Bars extends Tracer implements Titled{
       for(Tone tone:partTones){
         Incipit i;
         if((i=incipits.get(eighthAt))==null)
-          incipits.put(partAt,i=new Incipit(eighthAt));
+          incipits.put(eighthAt,i=new Incipit((short)eighthAt));
         i.addTone(tone);
         eighthAt+=tone.eighths;
       }
-      
-      for(Incipit i:incipits)s=i.readSoundings(s);
+      for(Incipit i:incipits.values())s=i.readSoundings(s);
         
     }
-    return incipits.isEmpty()?null:new Bar(barAt++,incipits.values(),barEighths);
+    return incipits.isEmpty()?null:new Bar(barAt++,
+    		Collections.unmodifiableList(new ArrayList(incipits.values())),barEighths);
   }
   public void updatePart(String src){
     VoicePart nowPart=new VoicePart(src),
@@ -131,25 +130,11 @@ public final class Bars extends Tracer implements Titled{
       barsList.add(barList.parent);
       List<Incipit>incipits=new ArrayList<Incipit>(bar.incipits);
       Collections.sort(incipits);
-      for(Incipit incipit:incipits){
-        String title="part="+incipit.eighthAt+" bar="+incipit.barAt;
-        NodeList incipitList=new NodeList(newDebugRoot(Incipit.class,title),true);
-        barList.add(incipitList.parent);
-        List<Tone>sortTones=new ArrayList(incipit.tones);
-        Collections.sort(sortTones,new Comparator<Tone>(){
-          @Override
-          public int compare(Tone t1,Tone t2){
-            return t1.voice.compareTo(t2.voice);
-          }
-        });
-        for(Tone tone:sortTones){
-          incipitList.add(tone.newDebugNode());
-        }
-      }
+      for(Incipit incipit:incipits)barList.add(incipit.newDebugRoot());
     }
     return barsList.parent;
   }
-  static public DataNode newDebugRoot(Class type,String title,Object...values){
+	static public DataNode newDebugRoot(Class type,String title,Object...values){
     return new DataNode(type.getSimpleName(),title,values);
   }
 }
