@@ -27,7 +27,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			this.barEighths=barEighths;
 			this.voiceTones=voiceTones;
 		}
-		Map<Voice, Againsts[]>newVoiceAgainsts(Collection<Tone>){
+		Map<Voice,Collection<Againsts>>newVoiceAgainsts(Collection<Tone>){
 			for(Tone t:i.tones)
 			
 		}
