@@ -45,8 +45,8 @@ public final class Tone extends Tracer{
   }public boolean isOnBeat(short note){
     return eighthAt%note==0;
   }
-  public boolean isOnBeat(short note){
-    return eighthAt%note==0;
+  public Tone newSounding(short note){
+    return new Tone();
   }
 	
   private boolean isRest(){
