@@ -42,10 +42,13 @@ public final class Tone extends Tracer{
       Tie tie=new Tie(before,this);
       marks.add(tie);
       before.marks.add(tie);
+  }public boolean isOnBeat(short note){
+    return eighthAt%note==0;
   }
   public boolean isOnBeat(short note){
     return eighthAt%note==0;
   }
+	
   private boolean isRest(){
     return this.pitch==PITCH_REST;
   }
