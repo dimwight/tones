@@ -35,9 +35,10 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
       for(Tone t:i.tones)
         incipitEighths.put(t.voice,t.eighths);
       for(Voice v:Voice.values()){
-        Short got=incipitEighths.get(v);
-        nowEighths.put(v,got!=null?got
-          :(short)(voiceEighths.get(v)
+        Short now=incipitEighths.get(v),
+	  then=voiceEighths.get(v);
+        nowEighths.put(v,now!=null?now
+          :(short)(then
           		-((i.eighthAt>0?i.eighthAt:barEighths)
       				-eighthAt)
         		));
