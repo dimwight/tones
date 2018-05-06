@@ -27,9 +27,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
       this.voiceEighths=voiceEighths;
     }
     static Soundings newStarting(){
-    	Map<Voice,Short>voiceEighths=new HashMap();
-    	if(false)for(Voice v:Voice.values())voiceEighths.put(v,(short)0);
-      return new Soundings((short)0,voiceEighths);
+    	return new Soundings((short)0,new HashMap());
     }
     Soundings newUpdated(Incipit i,short barEighths){
     	Map<Voice,Short>incipitEighths=new HashMap(),
