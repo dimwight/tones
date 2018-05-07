@@ -46,7 +46,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			this.barEighths=barEighths;
 			this.voiceSoundings=voiceSoundings;
 		}
-		Map<Tone,Collection<Againsts>>newVoiceAgainsts(Collection<Tone>tones){
+		Map<Tone,Collection<Againsts>>newToneAgainsts(Collection<Tone>tones){
 			Map<Tone,Collection<Againsts>>ta=new HashMap();
 			for(Tone t:tones)
 				ta.put(t,Againsts.newVoiceSet(t,voiceSoundings));
@@ -111,7 +111,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 	}
 	Soundings readSoundings(Soundings then){
 		soundings=then.newUpdated(this,eighthAt); 
-		againsts=soundings.newVoiceAgainsts(tones);
+		againsts=soundings.newToneAgainsts(tones);
 		return soundings;
 	}
 	void close(){
