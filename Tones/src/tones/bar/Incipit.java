@@ -46,11 +46,11 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			this.barEighths=barEighths;
 			this.voiceTones=voiceTones;
 		}
-		Map<Voice,Collection<Againsts>>newVoiceAgainsts(Collection<Tone>tones){
-			Map<Voice,Collection<Againsts>>va=new HashMap();
+		Map<Tone,Collection<Againsts>>newVoiceAgainsts(Collection<Tone>tones){
+			Map<Tone,Collection<Againsts>>ta=new HashMap();
 			for(Tone t:tones)
-				va.put(t.voice,Againsts.newVoiceSet(t,voiceTones));
-			return va;
+				a.put(t,Againsts.newVoiceSet(t,voiceTones));
+			return ta;
 		}
 		static Soundings newStarting(short barEighths){
 			return new Soundings(barEighths,(short)0,new HashMap());
@@ -78,7 +78,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		}
 	}
 	public final Collection<Tone>tones=new HashSet();
-	public final Map<Voice,Collection<Againsts>>againsts;
+	public final Map<Tone,Collection<Againsts>>againsts;
 	public final short eighthAt;
 	public int barAt=-1;
 	int rise,staveGap,fall;
