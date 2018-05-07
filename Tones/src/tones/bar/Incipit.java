@@ -20,19 +20,19 @@ import tones.Tone;
 import tones.Voice;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
 	static class Againsts{
-		Againsts(Tone t,Map<Voice,Tone>voiceTones){
+		Againsts(Tone t,Map<Voice,Tone>voiceSoundings){
 			for(Voice v:Voice.values()){
-				got=voiceTones.get(v);
+				got=voiceSoundings.get(v);
 				if(v!=t.voice&&got!=null)
 					intervals.add(new Interval(t,got));
 			}
 		}
-		static Collection<Againsts>newVoiceSet(Tone t,Map<Voice,Tone>voiceTones){
+		static Collection<Againsts>newVoiceSet(Tone t,Map<Voice,Tone>voiceSoundings){
 			Set<Againsts>set=new HashSet();
 			for(Voice v:Voice.values()){
-				got=voiceTones.get(v);
+				got=voiceSoundings.get(v);
 				if(v!=t.voice&&got!=null)
-					set.add(new Againsts(got,voiceTones));
+					set.add(new Againsts(t,voiceSoundings));
 			}
 			return set; 
 		}
