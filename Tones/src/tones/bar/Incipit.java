@@ -29,8 +29,13 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		}
 		static Collection<Againsts>newVoiceSet(Tone t,Map<Voice,Tone>voiceTones){
 			Set<Againsts>set=new HashSet();
+			for(Voice v:Voice.values()){
+				got=voiceTones.get(v);
+				if(v!=t.voice&&got!=null)
+					set.add(new Againsts(got,voiceTones));
+			}
 			
-			return set;
+			return set; 
 		}
 	}
 	static class Soundings{
