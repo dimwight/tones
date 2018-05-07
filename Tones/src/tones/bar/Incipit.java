@@ -5,6 +5,8 @@ import facets.util.Objects;
 import facets.util.Tracer;
 import facets.util.tree.DataNode;
 import facets.util.tree.NodeList;
+import facets.util.tree.Nodes;
+import facets.util.tree.TypedNode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,34 +22,42 @@ import tones.Tone;
 import tones.Voice;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
 	static class Against{
-		final short interval;
+		final int interval;
 		Against(Tone t,Tone sounding){
 			interval=t.pitch-sounding.pitch;
-			
 		}
-		static Collection<Against>newToneSet(Tone t,Map<Voice,Tone>voiceSoundings){
-			Set<Againsts>set=new HashSet();
+		static Collection<Against>newToneSet(Tone t,Map<Voice,Tone>soundings){
+			Set<Against>set=new HashSet();
 			for(Voice v:Voice.values()){
-				got=voiceSoundings.get(v);
+				Tone got=soundings.get(v);
 				if(v!=t.voice&&got!=null)
 					set.add(new Against(t,got));
 			}
 			return set; 
 		}
+		static TypedNode newDebugNode(Tone tone,Map<Tone,Collection<Against>>againsts){
+			int count=againsts.size();
+			String[]values=Objects.toLines(againsts.get(tone).toArray()).split("\n");
+			return Bars.newDebugRoot(Against.class,""+count,values);
+		}
+		@Override
+		public String toString(){
+			return ""+interval;
+		}
 	}
 	static class Soundings{
-		private final Map<Voice,Tone>voiceSoundings;
+		private final Map<Voice,Tone>soundings;
 		private final short eighthAt,barEighths;
 		private Soundings(short barEighths,short eighthAt,
-				Map<Voice,Tone>voiceSoundings){
+				Map<Voice,Tone>soundings){
 			this.eighthAt=eighthAt;
 			this.barEighths=barEighths;
-			this.voiceSoundings=voiceSoundings;
+			this.soundings=soundings;
 		}
 		Map<Tone,Collection<Against>>newToneAgainsts(Collection<Tone>tones){
 			Map<Tone,Collection<Against>>ta=new HashMap();
 			for(Tone t:tones)
-				ta.put(t,Against.newToneSet(t,voiceSoundings));
+				ta.put(t,Against.newToneSet(t,soundings));
 			return ta;
 		}
 		static Soundings newStarting(short barEighths){
@@ -58,7 +68,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			for(Tone t:i.tones)
 				if(t.pitch!=ScaleNote.Rest.pitch) incipitTones.put(t.voice,t);
 			for(Voice v:Voice.values()){
-				Tone now=incipitTones.get(v),then=voiceSoundings.get(v);
+				Tone now=incipitTones.get(v),then=soundings.get(v);
 				if(now!=null) nowSoundings.put(v,now);
 				else if(then!=null) nowSoundings.put(v,then.newSounding(
 						(short)((i.eighthAt>0?i.eighthAt:barEighths)-eighthAt)));
@@ -68,15 +78,15 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		}
 		DataNode newDebugRoot(){
 			NodeList nodes=new NodeList(
-					Bars.newDebugRoot(getClass(),""+voiceTones.size()+(true?"":eighthAt)),
+					Bars.newDebugRoot(getClass(),""+soundings.size()+(true?"":eighthAt)),
 					true);
 			nodes.parent.setValues(
-					Objects.toLines(voiceTones.entrySet().toArray()).split("\n"));
+					Objects.toLines(soundings.entrySet().toArray()).split("\n"));
 			return nodes.parent;
 		}
 	}
 	public final Collection<Tone>tones=new HashSet();
-	public final Map<Tone,Collection<Againsts>>againsts;
+	public Map<Tone,Collection<Against>>againsts;
 	public final short eighthAt;
 	public int barAt=-1;
 	int rise,staveGap,fall;
@@ -97,7 +107,12 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			}
 		});
 		for(Tone tone:sortTones)
-			if(toneNote(tone)!=Rest) nodes.add(tone.newDebugNode());
+			if(toneNote(tone)!=Rest){
+				DataNode add=tone.newDebugNode();
+				nodes.add(add);
+				TypedNode againsts_=Against.newDebugNode(tone,againsts);
+				if(againsts_.values().length>0)Nodes.appendChild(add,againsts_);
+			}
 		nodes.add(soundings.newDebugRoot());
 		return nodes.parent;
 	}
