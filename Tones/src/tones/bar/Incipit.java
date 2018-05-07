@@ -56,17 +56,17 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			return new Soundings(barEighths,(short)0,new HashMap());
 		}
 		Soundings newUpdated(Incipit i,short eighthAt){
-			Map<Voice,Tone>incipitTones=new HashMap(),nowTones=new HashMap();
+			Map<Voice,Tone>incipitTones=new HashMap(),nowSoundings=new HashMap();
 			for(Tone t:i.tones)
 				if(t.pitch!=ScaleNote.Rest.pitch) incipitTones.put(t.voice,t);
 			for(Voice v:Voice.values()){
-				Tone now=incipitTones.get(v),then=voiceTones.get(v);
-				if(now!=null) nowTones.put(v,now);
-				else if(then!=null) nowTones.put(v,then.newSounding(
+				Tone now=incipitTones.get(v),then=voiceSoundings.get(v);
+				if(now!=null) nowSoundings.put(v,now);
+				else if(then!=null) nowSoundings.put(v,then.newSounding(
 						(short)((i.eighthAt>0?i.eighthAt:barEighths)-eighthAt)));
 			}
 			return new Soundings(barEighths,i.eighthAt,
-					Collections.unmodifiableMap(nowTones));
+					Collections.unmodifiableMap(nowSoundings));
 		}
 		DataNode newDebugRoot(){
 			NodeList nodes=new NodeList(
