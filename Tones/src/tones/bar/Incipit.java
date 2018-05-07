@@ -34,7 +34,6 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 				if(v!=t.voice&&got!=null)
 					set.add(new Againsts(got,voiceTones));
 			}
-			
 			return set; 
 		}
 	}
