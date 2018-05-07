@@ -19,20 +19,20 @@ import tones.ScaleNote;
 import tones.Tone;
 import tones.Voice;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
-	static class Againsts{
-		Againsts(Tone t,Map<Voice,Tone>voiceSoundings){
+	static class Against{
+		Against(Tone t,Tone sounding){
 			for(Voice v:Voice.values()){
 				got=voiceSoundings.get(v);
 				if(v!=t.voice&&got!=null)
 					intervals.add(new Interval(t,got));
 			}
 		}
-		static Collection<Againsts>newToneSet(Tone t,Map<Voice,Tone>voiceSoundings){
+		static Collection<Against>newToneSet(Tone t,Map<Voice,Tone>voiceSoundings){
 			Set<Againsts>set=new HashSet();
 			for(Voice v:Voice.values()){
 				got=voiceSoundings.get(v);
 				if(v!=t.voice&&got!=null)
-					set.add(new Againsts(t,voiceSoundings));
+					set.add(new Against(t,got));
 			}
 			return set; 
 		}
@@ -46,10 +46,10 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			this.barEighths=barEighths;
 			this.voiceSoundings=voiceSoundings;
 		}
-		Map<Tone,Collection<Againsts>>newToneAgainsts(Collection<Tone>tones){
-			Map<Tone,Collection<Againsts>>ta=new HashMap();
+		Map<Tone,Collection<Against>>newToneAgainsts(Collection<Tone>tones){
+			Map<Tone,Collection<Against>>ta=new HashMap();
 			for(Tone t:tones)
-				ta.put(t,Againsts.newToneSet(t,voiceSoundings));
+				ta.put(t,Against.newToneSet(t,voiceSoundings));
 			return ta;
 		}
 		static Soundings newStarting(short barEighths){
