@@ -110,7 +110,8 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		((Set)tones).add(tone);
 	}
 	Soundings readSoundings(Soundings then){
-		soundings=then.newUpdated(this,eighthAt);
+		soundings=then.newUpdated(this,eighthAt); 
+		againsts=soundings.newVoiceAgainsts(tones);
 		return soundings;
 	}
 	void close(){
