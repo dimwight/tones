@@ -21,11 +21,8 @@ import tones.Voice;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
 	static class Against{
 		Against(Tone t,Tone sounding){
-			for(Voice v:Voice.values()){
-				got=voiceSoundings.get(v);
-				if(v!=t.voice&&got!=null)
-					intervals.add(new Interval(t,got));
-			}
+			interval=t.pitch-sounding.pitch;
+			
 		}
 		static Collection<Against>newToneSet(Tone t,Map<Voice,Tone>voiceSoundings){
 			Set<Againsts>set=new HashSet();
