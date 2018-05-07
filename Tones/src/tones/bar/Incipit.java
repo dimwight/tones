@@ -27,7 +27,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 					intervals.add(new Interval(t,got));
 			}
 		}
-		static Collection<Againsts>newVoiceSet(Tone t,Map<Voice,Tone>voiceSoundings){
+		static Collection<Againsts>newToneSet(Tone t,Map<Voice,Tone>voiceSoundings){
 			Set<Againsts>set=new HashSet();
 			for(Voice v:Voice.values()){
 				got=voiceSoundings.get(v);
@@ -49,7 +49,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		Map<Tone,Collection<Againsts>>newToneAgainsts(Collection<Tone>tones){
 			Map<Tone,Collection<Againsts>>ta=new HashMap();
 			for(Tone t:tones)
-				ta.put(t,Againsts.newVoiceSet(t,voiceSoundings));
+				ta.put(t,Againsts.newToneSet(t,voiceSoundings));
 			return ta;
 		}
 		static Soundings newStarting(short barEighths){
