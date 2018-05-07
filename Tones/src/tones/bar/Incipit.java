@@ -25,7 +25,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 				got=voiceTones.get(v);
 			
 				if(v!=t.voice&&got!=null)
-					intervals.add(new Interval(t,got);
+					intervals.add(new Interval(t,got));
 												}
 		}
 		static Collection<Againsts>newVoiceSet(Tone t,Map<Voice,Tone>voiceTones){
