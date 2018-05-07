@@ -38,18 +38,18 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		}
 	}
 	static class Soundings{
-		private final Map<Voice,Tone>voiceTones;
+		private final Map<Voice,Tone>voiceSoundings;
 		private final short eighthAt,barEighths;
 		private Soundings(short barEighths,short eighthAt,
-				Map<Voice,Tone>voiceTones){
+				Map<Voice,Tone>voiceSoundings){
 			this.eighthAt=eighthAt;
 			this.barEighths=barEighths;
-			this.voiceTones=voiceTones;
+			this.voiceSoundings=voiceSoundings;
 		}
 		Map<Tone,Collection<Againsts>>newVoiceAgainsts(Collection<Tone>tones){
 			Map<Tone,Collection<Againsts>>ta=new HashMap();
 			for(Tone t:tones)
-				a.put(t,Againsts.newVoiceSet(t,voiceTones));
+				ta.put(t,Againsts.newVoiceSet(t,voiceSoundings));
 			return ta;
 		}
 		static Soundings newStarting(short barEighths){
