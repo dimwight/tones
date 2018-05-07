@@ -20,6 +20,7 @@ import tones.Tone;
 import tones.Voice;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
 	static class Against{
+		final short interval;
 		Against(Tone t,Tone sounding){
 			interval=t.pitch-sounding.pitch;
 			
