@@ -39,6 +39,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 	}
 	static class Soundings{
 		private final Map<Voice,Tone>voiceTones;
+		private Collection<Againsts>againsts;
 		private final short eighthAt,barEighths;
 		private Soundings(short barEighths,short eighthAt,
 				Map<Voice,Tone>voiceTones){
