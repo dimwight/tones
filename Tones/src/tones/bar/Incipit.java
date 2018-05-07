@@ -39,7 +39,6 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 	}
 	static class Soundings{
 		private final Map<Voice,Tone>voiceTones;
-		private Collection<Againsts>againsts;
 		private final short eighthAt,barEighths;
 		private Soundings(short barEighths,short eighthAt,
 				Map<Voice,Tone>voiceTones){
@@ -79,6 +78,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		}
 	}
 	public final Collection<Tone>tones=new HashSet();
+	public final Map<Voice,Collection<Againsts>>againsts;
 	public final short eighthAt;
 	public int barAt=-1;
 	int rise,staveGap,fall;
