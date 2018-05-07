@@ -46,37 +46,33 @@ public final class TonesViewable extends TreeTextViewable{
     bars=new Bars(this);
   }
   public SFrameTarget selectionFrame(){
+  	List<String>codes=bars.selectedPart().barCodes;
+  	barStart=page.barStart();
+  	int codesCount=codes.size(),codeStop=min(page.barStop(),codesCount);
+  	if(false)trace(".selectionFrame: codesCount="+codesCount+" "+
+  			+barStart+","+codeStop);
+  	String NO_CODES="[No codes]",
+			before=mergeBarCodes(codes.subList(0,min(barStart,codesCount))),
+			show=barStart>=codeStop?""
+					:mergeBarCodes(codes.subList(barStart,codeStop)),
+			after=codeStop>=codesCount?""
+					:mergeBarCodes(codes.subList(codeStop,codesCount));
+		STextual textual=new STextual("Codes",show.isEmpty()?NO_CODES:show,
+				new STextual.Coupler(){
+			@Override
+			public void textSet(STextual t){
+				String src=(before+","+t.text()+","+after).trim().replaceAll("^,","");
+				try{
+					TonesViewable.this.doUndoableEdit((ValueNode)framed,src);
+				}catch(Exception e){
+					if(false)throw e;
+					else TonesViewable.this.trace(".textSet: "+e.getMessage());
+				}
+			}
+		});
+		textual.setLive(!textual.text().equals(NO_CODES));
     return new SFrameTarget(selection().single()){
       protected STarget[]lazyElements(){
-        List<String>codes=bars.selectedPart().barCodes;
-        barStart=page.barStart();
-        int codesCount=codes.size(),
-          codeStop=min(page.barStop(),codesCount);
-        if(false)trace(".selectionFrame: codesCount="+codesCount+" "+
-          +barStart+","+codeStop);
-        String NO_CODES="[No codes]",
-          before=mergeBarCodes(codes.subList(0,min(barStart,codesCount))),
-          show=barStart>=codeStop?""
-              :mergeBarCodes(codes.subList(barStart,codeStop)),
-          after=codeStop>=codesCount?""
-              :mergeBarCodes(codes.subList(codeStop,codesCount));
-        STextual textual=new STextual("Codes",show.isEmpty()?NO_CODES:show,
-            new STextual.Coupler(){
-          @Override
-          public void textSet(STextual t){
-            String src=(before+","+t.text()+","+after).trim();
-            try{
-              TonesViewable.this.doUndoableEdit((ValueNode)framed,src);
-            }catch(Exception e){
-            	if(false)throw e;
-            	else TonesViewable.this.trace(".textSet: "+e.getMessage());
-            }
-          }
-          public boolean updateInterim(STextual t){
-            return false;
-          }
-        });
-        textual.setLive(!textual.text().equals(NO_CODES));
         return new STarget[]{textual};
       }
     };
