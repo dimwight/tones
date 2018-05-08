@@ -11,6 +11,7 @@ import tones.bar.Incipit;
 public class PageNote extends PageItem{
   public enum Dot{NONE,LEVEL,BELOW,ABOVE};
   public final Tone tone;
+  public final PageIncipit incipit;
   public final double pageX,pageY,ledgerLineShift;
   public final int ledgerLines;
   public boolean selected;
@@ -20,13 +21,14 @@ public class PageNote extends PageItem{
   final PageBar bar;
   private final String debugString;
   private final int[]intValues;
-  PageNote(PageBar bar,Tone tone,PageIncipit i,double barPageY,Clef clef, 
+  PageNote(PageBar bar,Tone tone,PageIncipit incipit,double barPageY,Clef clef, 
       boolean selected){
     this.bar=bar;
     this.tone=tone;
+		this.incipit=incipit;
     intValues=new int[]{tone.pitch,tone.eighths};
     this.selected=selected;
-    pageX=i.tonePageX(tone);
+    pageX=incipit.tonePageX(tone);
     final int stavePitch=tone.pitch-clef.staveMidPitch,
       staveToMidPitch=STAVE_GRID/2-1;
     pageY=barPageY+staveToMidPitch-stavePitch;

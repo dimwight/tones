@@ -62,8 +62,8 @@ public final class Bars extends Tracer implements Titled{
 				i.addTone(tone);
 				eighthAt+=tone.eighths;
 			}
-			for(Incipit i:incipits.values())s=i.readSoundings(s);
 		}
+		for(Incipit i:incipits.values())s=i.readSoundings(s);
 		return incipits.isEmpty()?null
 				:new Bar(barAt++,
 						Collections.unmodifiableList(new ArrayList(incipits.values())),

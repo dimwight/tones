@@ -79,7 +79,9 @@ public final class NotePainters extends PagePainters{
 		return painters.items();
 	}
 	public Painter[]newPickPainters(){
-		String text=note.toString();
+		String text=(false?note:note.incipit.content.againsts.get(note.tone)
+				).toString().replaceAll(" ,","");
+		if(text.matches("(,| |\\[|\\])+"))text="[-]";
 		return false?newBeadPainters(shade.darker())
 				:new Painter[]{true?unscaledText(text,x,y,-1):tooltipText(text,x,y,-1)};
 	}

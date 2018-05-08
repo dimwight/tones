@@ -4,7 +4,7 @@ import facets.util.Debug;
 import tones.Tone;
 import tones.bar.Bar;
 import tones.bar.Incipit;
-final class PageIncipit extends PageItem{
+public final class PageIncipit extends PageItem{
   public final Incipit content;
   private final double scaledPageX;
   PageIncipit(Incipit content,double barPageX,double pageXScale){

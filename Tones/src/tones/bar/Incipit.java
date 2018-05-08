@@ -1,6 +1,5 @@
 package tones.bar;
 import static tones.ScaleNote.*;
-import facets.util.Debug;
 import facets.util.Objects;
 import facets.util.Tracer;
 import facets.util.tree.DataNode;
@@ -17,14 +16,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import tones.ScaleNote;
+import tones.Interval;
 import tones.Tone;
 import tones.Voice;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
-	static class Against{
-		final int interval;
+	public static class Against{
+		public final Interval interval;
+		public final Tone sounding;
 		Against(Tone t,Tone sounding){
-			interval=t.pitch-sounding.pitch;
+			this.sounding=sounding;
+			interval=Interval.between(t,sounding);
 		}
 		static Collection<Against>newToneSet(Tone t,Map<Voice,Tone>soundings){
 			Set<Against>set=new HashSet();
@@ -36,13 +37,14 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			return set; 
 		}
 		static TypedNode newDebugNode(Tone tone,Map<Tone,Collection<Against>>againsts){
-			int count=againsts.size();
-			String[]values=Objects.toLines(againsts.get(tone).toArray()).split("\n");
+			Collection<Against>got=againsts.get(tone);
+			int count=got.size();
+			String[]values=Objects.toLines(got.toArray()).split("\n");
 			return Bars.newDebugRoot(Against.class,""+count,values);
 		}
 		@Override
 		public String toString(){
-			return ""+interval;
+			return !interval.isDissonant(sounding)?"":(sounding.voice.code+":"+interval);
 		}
 	}
 	static class Soundings{
@@ -66,7 +68,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		Soundings newUpdated(Incipit i,short eighthAt){
 			Map<Voice,Tone>incipitTones=new HashMap(),nowSoundings=new HashMap();
 			for(Tone t:i.tones)
-				if(t.pitch!=ScaleNote.Rest.pitch) incipitTones.put(t.voice,t);
+				if(t.pitch!=Rest.pitch) incipitTones.put(t.voice,t);
 			for(Voice v:Voice.values()){
 				Tone now=incipitTones.get(v),then=soundings.get(v);
 				if(now!=null) nowSoundings.put(v,now);
@@ -78,10 +80,17 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		}
 		DataNode newDebugRoot(){
 			NodeList nodes=new NodeList(
-					Bars.newDebugRoot(getClass(),""+soundings.size()+(true?"":eighthAt)),
-					true);
-			nodes.parent.setValues(
-					Objects.toLines(soundings.entrySet().toArray()).split("\n"));
+					Bars.newDebugRoot(getClass(),""//+soundings.size()+" "
+			+(false?"":eighthAt)
+			),true);
+			List<Tone>values=new ArrayList(soundings.values());
+			Collections.sort(values,new Comparator<Tone>(){
+				@Override
+				public int compare(Tone t1,Tone t2){
+					return t1.voice.compareTo(t2.voice);
+				}
+			});
+			nodes.parent.setValues(Objects.toLines(values.toArray()).split("\n"));
 			return nodes.parent;
 		}
 	}
@@ -97,8 +106,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		return soundings;
 	}
 	DataNode newDebugRoot(){
-		NodeList nodes=new NodeList(Bars.newDebugRoot(getClass(),
-				"eighth="+eighthAt+(true?"":(" bar="+barAt))),true);
+		NodeList nodes=new NodeList(Bars.newDebugRoot(getClass(),toString()),true);
 		List<Tone>sortTones=new ArrayList(tones);
 		Collections.sort(sortTones,new Comparator<Tone>(){
 			@Override
@@ -106,14 +114,14 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 				return t1.voice.compareTo(t2.voice);
 			}
 		});
-		for(Tone tone:sortTones)
+		if(true)for(Tone tone:sortTones)
 			if(toneNote(tone)!=Rest){
 				DataNode add=tone.newDebugNode();
 				nodes.add(add);
 				TypedNode againsts_=Against.newDebugNode(tone,againsts);
-				if(againsts_.values().length>0)Nodes.appendChild(add,againsts_);
+				if(true&&againsts_.values().length>0)Nodes.appendChild(add,againsts_);
 			}
-		nodes.add(soundings.newDebugRoot());
+		if(false)nodes.add(soundings.newDebugRoot());
 		return nodes.parent;
 	}
 	Incipit(short eighthAt){
@@ -135,7 +143,11 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		fall=6;
 	}
 	public String toString(){
-		return Debug.info(this)+" m"+eighthAt+" b"+barAt+" "+tones;
+		return //Debug.info(this)+
+				""+eighthAt
+//				+" b:"+barAt
+//				+" tones:"+tones.size()
+				;
 	}
 	public int hashCode(){
 		return Arrays.hashCode(intValues());
