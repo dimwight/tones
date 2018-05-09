@@ -29,7 +29,7 @@ public final class TiePainters extends PagePainters{
 		noteWidth=Tone.WIDTH_NOTE*unitX;
 		noteHeight=unitY*2;
 		tailsUp=tie.voice.tailsUp;
-		shade=selectionShade(tie.selected);
+		shade=selectionShade(tie.selected,false);
 	}
 	@Override
 	public

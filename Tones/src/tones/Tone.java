@@ -13,6 +13,18 @@ public final class Tone extends Tracer{
 	public static final short NOTE_WHOLE=8,NOTE_HALF=NOTE_WHOLE/2,
 			NOTE_QUARTER=NOTE_WHOLE/4,NOTE_EIGHTH=NOTE_WHOLE/8,
 			NOTE_DOUBLE=NOTE_WHOLE*2,NOTE_NONE=0;
+	public static class Dissonance{
+		public final Interval interval;
+		public final Tone sounding;
+		public Dissonance(Interval interval,Tone sounding){
+			this.interval=interval;
+			this.sounding=sounding;
+		}
+		@Override
+		public String toString(){
+			return sounding.voice.code+":"+interval;
+		}
+	}
 	public final HashSet<Mark> marks=new HashSet();
 	public final int barAt;
 	public final Voice voice;
@@ -32,7 +44,8 @@ public final class Tone extends Tracer{
 	}
 	public DataNode newDebugNode(){
 		int markCount=marks.size();
-		return true||markCount==0?newDebugRoot(getClass(),voice+" "+pitchNote())
+		return true||markCount==0?newDebugRoot(getClass(),
+				voice+" "+pitchNote()+" "+eighths)
 				:newDebugRoot(Mark.class,"marks="+markCount,
 						Objects.toLines(marks.toArray()).split("\n"));
 	}
@@ -46,15 +59,15 @@ public final class Tone extends Tracer{
 	public boolean isOnBeat(short note){
 		return eighthAt%note==0;
 	}
-	public Tone newSounding(short eighths){
-		return new Tone(voice,barAt,eighthAt,pitch,eighths);
+	public Tone newSounding(int eighths){
+		return new Tone(voice,barAt,eighthAt,pitch,(short)(this.eighths-eighths));
 	}
 	private boolean isRest(){
 		return this.pitch==PITCH_REST;
 	}
 	public String toString(){
 		ScaleNote note=pitchNote();
-		return voice+" "+pitchNote()+(true?"":(": "+Strings.intsString(intValues)));
+		return voice+" "+pitchNote()+(true?(" "+eighths):(": "+Strings.intsString(intValues)));
 	}
 	public ScaleNote pitchNote(){
 		return ScaleNote.pitchNote(pitch);

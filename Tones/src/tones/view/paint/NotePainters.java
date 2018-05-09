@@ -4,14 +4,17 @@ import static tones.Tone.*;
 import facets.core.app.avatar.Painter;
 import facets.core.app.avatar.PainterSource;
 import facets.util.ItemList;
+import facets.util.Objects;
 import facets.util.Util;
 import facets.util.geom.Line;
 import facets.util.geom.Point;
 import facets.util.shade.Shade;
 import facets.util.shade.Shades;
+import java.util.Collection;
 import applicable.SvgPath;
 import tones.ScaleNote;
 import tones.Tone;
+import tones.Tone.Dissonance;
 import tones.page.PageNote;
 import tones.page.PageNote.Dot;
 import tones.view.PageView;
@@ -28,6 +31,7 @@ public final class NotePainters extends PagePainters{
 	private final PageNote note;
 	private final Line tail;
 	private final Shade shade;
+	private final Collection<Dissonance>dissonances;
 	public NotePainters(PageView page,PageNote note,PainterSource p){
 		super(page,p);
 		this.note=note;
@@ -36,8 +40,9 @@ public final class NotePainters extends PagePainters{
 		y=(note.pageY-1)*unitY;
 		height=unitY*2;
 		tail=note.tail;
+		dissonances=note.incipit.content.getDissonances(note.tone);
 		boolean selected=note.selected;
-		shade=selectionShade(selected);
+		shade=selectionShade(selected,!dissonances.isEmpty());
 		if(false&&firstInBar)Util.printOut("NotePainters: ",note+", x="+fx(x)+", y="+fx(y));
 		firstInBar=false;
 	}
@@ -79,10 +84,10 @@ public final class NotePainters extends PagePainters{
 		return painters.items();
 	}
 	public Painter[]newPickPainters(){
-		String text=(false?note:note.incipit.content.againsts.get(note.tone)
-				).toString().replaceAll(" ,","");
-		if(text.matches("(,| |\\[|\\])+"))text="[-]";
-		return false?newBeadPainters(shade.darker())
-				:new Painter[]{true?unscaledText(text,x,y,-1):tooltipText(text,x,y,-1)};
+		String text=dissonances.isEmpty()?null:dissonances.toString().replaceAll(" ,","");
+		Painter[]beadPainters=newBeadPainters(shade.darker());
+		return Objects.join(Painter.class,beadPainters,
+				text==null?new Painter[]{}
+				:new Painter[]{true?unscaledText(text,x,y,-1):tooltipText(text,x,y,-1)});
 	}
 }

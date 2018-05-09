@@ -29,7 +29,7 @@ public final class TailPainters extends PagePainters{
 		boolean debug=false;
 		for(int i=0;i<(debug||single?1:8);i++){
 			from.shift(shift);to.shift(shift);
-			painters.addItem(p.line(new Line(from,to),selectionShade(paintSelected),
+			painters.addItem(p.line(new Line(from,to),selectionShade(paintSelected,false),
 					debug?-1:1,false));
 		}
 		return painters.items();
