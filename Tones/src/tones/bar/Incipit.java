@@ -36,7 +36,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
     Soundings newUpdated(Incipit i){
       Map<Voice,Tone>nowTones=new HashMap(),nowSoundings=new HashMap();
       for(Tone t:i.tones)
-        if(toneNote(t)!=Rest)nowTones.put(t.voice,t);
+        if(!t.isRest())nowTones.put(t.voice,t);
       int incipitAt=i.eighthAt;
       for(Voice v:Voice.values()){
         Tone now=nowTones.get(v),then=soundings.get(v);
@@ -133,7 +133,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
     });
     NodeList nodes=new NodeList(Bars.newDebugRoot(getClass(),toString()),true);
     if(false)for(Tone tone:sortTones){
-      if(toneNote(tone)==Rest)continue;
+      if(tone.isRest())continue;
       DataNode add=tone.newDebugNode();
       nodes.add(add);
       Collection<Dissonance>got=againsts.get(tone);
