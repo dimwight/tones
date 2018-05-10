@@ -90,7 +90,7 @@ public final class TonesEdit extends TreeTextContenter{
       @Override
       protected SFacet[]adjustToolbarItems(ItemList<SFacet>facets){
         if(false)facets.clear();
-        facets.add(0,rowPanel(selection,textualField(code,50,HINT_NONE)));
+        facets.add(0,rowPanel(selection,textualField(code,45,HINT_NONE)));
         return facets.items();
       }
     };

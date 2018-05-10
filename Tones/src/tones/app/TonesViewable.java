@@ -88,8 +88,8 @@ public final class TonesViewable extends TreeTextViewable{
   public ViewableAction[]viewerActions(SView view){
     return new ViewableAction[]{
         UNDO,REDO,
-        DELETE,
-        MODIFY
+//        DELETE,
+//        MODIFY
       };
   }
   @Override

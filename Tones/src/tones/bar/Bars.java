@@ -22,7 +22,7 @@ public final class Bars extends Tracer implements Titled{
 	private final TonesViewable viewable;
 	private VoicePart selectedPart;
 	private short barEighths;
-	private Soundings s=Soundings.newStarting(barEighths);
+	private Soundings soundings;
 	public Bars(TonesViewable viewable){
 		this.viewable=viewable;
 		TypedNode[] children=viewable.contentTree().children();
@@ -54,6 +54,7 @@ public final class Bars extends Tracer implements Titled{
 				throw new IllegalStateException("New barEighths="+barEighths
 						+", barEighthsNow="+barEighthsNow+" in "+Debug.info(part));
 			else barEighths=(short)barEighthsNow;
+			if(soundings==null)soundings=Soundings.newEmpty(barEighths);
 			int eighthAt=0;
 			for(Tone tone:partTones){
 				Incipit i;
@@ -63,7 +64,7 @@ public final class Bars extends Tracer implements Titled{
 				eighthAt+=tone.eighths;
 			}
 		}
-		for(Incipit i:incipits.values())s=i.readSoundings(s);
+		for(Incipit i:incipits.values())soundings=i.readSoundings(soundings);
 		return incipits.isEmpty()?null
 				:new Bar(barAt++,
 						Collections.unmodifiableList(new ArrayList(incipits.values())),
@@ -88,8 +89,8 @@ public final class Bars extends Tracer implements Titled{
 							nowTones);
 					trace(" then=",thenTones);
 				}
-				if(barAt<bars.size()) bars.remove(barAt);
-				if(barAt>0) s=bars.get(barAt-1).endSoundings;
+				if(barAt<bars.size())bars.remove(barAt);
+				if(barAt>0)soundings=bars.get(barAt-1).endSoundings;
 				bars.add(barAt,newPartsBar(barAt));
 			}
 		}

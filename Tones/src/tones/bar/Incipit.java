@@ -30,7 +30,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
       this.barEighths=barEighths;
       this.soundings=soundings;
     }
-    static Soundings newStarting(short barEighths){
+    static Soundings newEmpty(short barEighths){
       return new Soundings(barEighths,(short)0,new HashMap());
     }
     Soundings newUpdated(Incipit i){
@@ -39,13 +39,15 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
         if(!t.isRest())nowTones.put(t.voice,t);
       int incipitAt=i.eighthAt;
       for(Voice v:Voice.values()){
-        Tone now=nowTones.get(v),then=soundings.get(v);
+        Tone now=nowTones.get(v),s=soundings.get(v);
         if(now!=null)nowSoundings.put(v,now);
-        else if(then!=null&&((then=then.newSounding(
-            (incipitAt>0?incipitAt:barEighths)-eighthAt)).eighths>0||false))
-          nowSoundings.put(v,then);
+        else if(s!=null){
+        	int trim=(incipitAt>0?incipitAt:barEighths)-eighthAt;
+					s=s.newSounding(trim);
+					if(s.eighths%barEighths>0)nowSoundings.put(v,s);
+				}
       }
-      return new Soundings(barEighths,incipitAt,nowSoundings);
+      return new Soundings(barEighths,(short)incipitAt,nowSoundings);
     }
     DataNode newDebugRoot(){
       NodeList nodes=new NodeList(Bars.newDebugRoot(getClass(),

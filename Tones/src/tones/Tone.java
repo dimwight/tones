@@ -52,11 +52,11 @@ public final class Tone extends Tracer{
   public boolean isOnBeat(short note){
     return eighthAt%note==0;
   }
-  private boolean isRest(){
+  public boolean isRest(){
     return this.pitch==PITCH_REST;
   }
-  public Tone newSounding(int used){
-    return new Tone(voice,barAt,eighthAt,pitch,(short)(this.eighths-used));
+  public Tone newSounding(int trim){
+    return new Tone(voice,barAt,eighthAt,pitch,(short)(this.eighths-trim));
   }
   public ScaleNote pitchNote(){
     return ScaleNote.pitchNote(pitch);
