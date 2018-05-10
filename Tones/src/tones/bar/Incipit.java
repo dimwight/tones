@@ -89,9 +89,9 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
     for(Voice v:Voice.values()){
       Tone sounding=soundings.soundings.get(v);
       if(v!=t.voice&&sounding!=null) {
-        Interval interval=Interval.between(t,sounding);
-        if(interval.isDissonant(sounding))
-        set.add(new Dissonance(interval,sounding));
+        Interval i=Interval.between(t,sounding);
+        if(i.isDissonant(sounding))
+        set.add(new Dissonance(i,sounding));
       }
     }
     return set; 
