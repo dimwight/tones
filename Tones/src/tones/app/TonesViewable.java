@@ -11,6 +11,7 @@ import facets.core.app.avatar.AvatarView;
 import facets.core.superficial.SFrameTarget;
 import facets.core.superficial.STarget;
 import facets.core.superficial.STextual;
+import facets.core.superficial.STextual.Coupler;
 import facets.core.superficial.app.SSelection;
 import facets.facet.app.FacetAppSurface;
 import facets.util.tree.TypedNode;
@@ -45,31 +46,44 @@ public final class TonesViewable extends TreeTextViewable{
     super(tree,clipperSource,app);
     bars=new Bars(this);
   }
+  String NO_CODES="[No codes]",then,before,after,show;
+  STextual textual;
+	final private Coupler editCoupler=new STextual.Coupler(){
+		@Override
+		public void textSet(STextual t){
+				String edit=t.text();
+				if(edit.equals(then)){
+					t.notifyParent(Impact.DEFAULT);
+					return;
+				}
+				then=edit.replaceAll("([^,]$)",",$1");
+				trace(".textSet: then=",then);
+				String src=(before+","+then+","+after).trim().replaceAll("^,","");
+				try{
+					VoicePart.checkSource(src);
+				}catch(Exception e){
+					return;
+				}
+				TonesViewable.this.doUndoableEdit((ValueNode)framed,src);
+		}
+		@Override
+		public boolean updateInterim(STextual t){
+				return true;
+		}
+	};
   public SFrameTarget selectionFrame(){
   	List<String>codes=bars.selectedPart().barCodes;
   	barStart=page.barStart();
   	int codesCount=codes.size(),codeStop=min(page.barStop(),codesCount);
   	if(false)trace(".selectionFrame: codesCount="+codesCount+" "+
   			+barStart+","+codeStop);
-  	String NO_CODES="[No codes]",
-			before=mergeBarCodes(codes.subList(0,min(barStart,codesCount))),
-			show=barStart>=codeStop?""
-					:mergeBarCodes(codes.subList(barStart,codeStop)),
-			after=codeStop>=codesCount?""
-					:mergeBarCodes(codes.subList(codeStop,codesCount));
-		STextual textual=new STextual("Codes",show.isEmpty()?NO_CODES:show,
-				new STextual.Coupler(){
-			@Override
-			public void textSet(STextual t){
-				String src=(before+","+t.text()+","+after).trim().replaceAll("^,","");
-				try{
-					TonesViewable.this.doUndoableEdit((ValueNode)framed,src);
-				}catch(Exception e){
-					if(false)throw e;
-					else TonesViewable.this.trace(".textSet: "+e.getMessage());
-				}
-			}
-		});
+		before=mergeBarCodes(codes.subList(0,min(barStart,codesCount)));
+		show=barStart>=codeStop?""
+				:mergeBarCodes(codes.subList(barStart,codeStop));
+		after=codeStop>=codesCount?""
+				:mergeBarCodes(codes.subList(codeStop,codesCount));
+		trace(".selectionFrame: show=",show);
+		textual=new STextual("Codes",show.isEmpty()?NO_CODES:show,editCoupler);
 		textual.setLive(!textual.text().equals(NO_CODES));
     return new SFrameTarget(selection().single()){
       protected STarget[]lazyElements(){
@@ -83,8 +97,15 @@ public final class TonesViewable extends TreeTextViewable{
     maybeModify();
     updateAfterEditAction();
     bars.updatePart(src);
+		textual.setText(src);
   }
   @Override
+	protected void editUndoneOrRedone(){
+	  String src=selectedNode().getString(0);
+		bars.updatePart(src);
+		textual.setText(src);
+	}
+	@Override
   public ViewableAction[]viewerActions(SView view){
     return new ViewableAction[]{
         UNDO,REDO,
@@ -92,11 +113,7 @@ public final class TonesViewable extends TreeTextViewable{
 //        MODIFY
       };
   }
-  @Override
-  protected void editUndoneOrRedone(){
-    bars.updatePart(selectedNode().getString(0));
-  }
-	private ValueNode selectedNode(){
+  private ValueNode selectedNode(){
 		return (ValueNode)selection().single();
 	}
   @Override
