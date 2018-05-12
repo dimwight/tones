@@ -121,7 +121,7 @@ public abstract class PageView extends PlaneViewWorks{
   }
   public void setBarStop(int barStop){
     if(this.barStop!=barStop){
-      if(false)Times.printElapsed("PageView.setBarStop: "+barStop);
+      if(false)trace(".setBarStop: barStop=",barStop);
       this.barStop=barStop;
       frame.notifyParent(Impact.DEFAULT);
     }

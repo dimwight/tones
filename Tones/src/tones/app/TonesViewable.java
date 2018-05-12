@@ -14,6 +14,8 @@ import facets.core.superficial.STextual;
 import facets.core.superficial.STextual.Coupler;
 import facets.core.superficial.app.SSelection;
 import facets.facet.app.FacetAppSurface;
+import facets.util.Debug;
+import facets.util.Regex;
 import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
 import java.util.List;
@@ -49,9 +51,13 @@ public final class TonesViewable extends TreeTextViewable{
 	private PageView page;
 	final private static String NO_CODES="[No codes]";
 	private String before,after,show;
+	private Voice voiceThen;
 	private STextual textual;
 	public SFrameTarget selectionFrame(){
-		List<String>codes=bars.selectedPart().barCodes;
+		VoicePart selected=bars.selectedPart();
+		Voice voice=selected.voice;
+		if(voice!=voiceThen)show=null;
+		List<String>codes=selected.barCodes;
 		barStart=page.barStart();
 		int codesCount=codes.size(),codeStop=min(page.barStop(),codesCount);
 		if(false) trace(".selectionFrame: codesCount="+codesCount+" "
@@ -60,9 +66,10 @@ public final class TonesViewable extends TreeTextViewable{
 		if(!Objects.deepEquals(checkShow,checkShowThen)||show==null){
 			checkShowThen=checkShow;
 			before=mergeBarCodes(codes.subList(0,min(barStart,codesCount)));
-			show=barStart>=codeStop?"":mergeBarCodes(codes.subList(barStart,codeStop));
+			if(show==null)show=barStart>=codeStop?"":mergeBarCodes(codes.subList(barStart,codeStop));
 			after=codeStop>=codesCount?"":mergeBarCodes(codes.subList(codeStop,codesCount));
-			trace(".selectionFrame: show=",show);
+			if(false)trace(".selectionFrame: show=",show);
+			if(false)Debug.printStackTrace(50);
 		}
 		textual=new STextual("Codes",show.isEmpty()?NO_CODES:show,
 				new STextual.Coupler(){
@@ -72,13 +79,19 @@ public final class TonesViewable extends TreeTextViewable{
 			}
 			@Override
 			public void textSet(STextual t){
-				String text=t.text(),edit=text.replaceAll("([^,])$",",$1");
-				trace(".textSet: text="+text+" edit="+edit);
+				String text=t.text(),edit=Regex.replaceAll(text,
+						"([^,])$",",$1",
+						",,",",",
+						"","");
+				if(false)trace(".textSet: text="+text+" edit="+edit);
 				String src=(before+","+edit+","+after).trim().replaceAll("^,","");
 				try{
 					VoicePart.checkSource(src);
 					show=edit;
+					if(false)trace(".textSet: show=",show);
 				}catch(Exception e){
+					trace(".textSet: bad edit=",edit);
+					show=text;
 					return;
 				}
 				TonesViewable.this.doUndoableEdit((ValueNode)framed,src);

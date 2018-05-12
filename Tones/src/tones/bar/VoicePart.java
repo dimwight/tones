@@ -23,10 +23,11 @@ import tones.ScaleNote;
 import tones.Tone;
 import tones.Voice;
 public final class VoicePart extends Tracer{
-  private static final char CODE_SCALE='s',CODE_OCTAVE_UP='+',CODE_OCTAVE_DOWN='-',
+	private static final char CODE_SCALE='s',CODE_OCTAVE_UP='+',CODE_OCTAVE_DOWN='-',
       CODE_TIE='T',CODE_BEAM='B',CODE_BAR_SIZE='Z';
   public static final int BAR_EIGHTHS_DEFAULT=16;
   public static final String CODES_NOTE="abcdefgx";
+  private static final String code_="([a-gx123468-]|\\+)|(s[a-g])|(\\d\\d?)";
   public static final String[]TEST_CODES={
           "e:16," 
           +"x,x,x,x,"
@@ -147,7 +148,7 @@ public final class VoicePart extends Tracer{
           code=nextCodes.next();
           codes+=code+",";
           int charCount=code.length();
-          if(!code.matches("([abcdefgxs123468-]|\\+)|([s1].)")) 
+          if(!code.matches(code_)) 
             throw new IllegalStateException(
               "Bad code '"+code+ "' at="+codeAt+" in voice="+voice);
           else codeAt++;
@@ -236,8 +237,8 @@ public final class VoicePart extends Tracer{
         barTones.get(barAt):Collections.EMPTY_LIST;
     return tones;
   }
-  public static void checkSource(String src){
-    parseSource(src.replaceAll(",$",""),new ArrayList(),new ArrayList());
+  public static Voice checkSource(String src){
+    return parseSource(src.replaceAll(",$",""),new ArrayList(),new ArrayList());
   }
   private static ValueNode newPartNode(String src){
     return new ValueNode("VoicePart",new Object[]{src});
