@@ -15,7 +15,7 @@ import java.util.Set;
 import tones.Tone;
 import tones.Voice;
 import tones.bar.Incipit.Soundings;
-final public class Bar extends Tracer{
+final public class Bar_ extends Tracer{
   private static final int WIDTH_SPACE_SHRINK=(false?0:Tone.WIDTH_NOTE*2/3),
     START_AT=Tone.WIDTH_NOTE/2;
   public final int at,rise,staveGap,fall,width;
@@ -23,7 +23,7 @@ final public class Bar extends Tracer{
   public final Soundings endSoundings;
   private final Map<Voice,Integer>partAts=new HashMap();
   private int gridAt=0;
-  Bar(int barAt,List<Incipit>incipits,int barEighths){
+  Bar_(int barAt,List<Incipit>incipits,int barEighths){
     this.at=barAt;
     if(incipits==null)throw new IllegalStateException(
         "Null incipits in "+Debug.info(this));
@@ -64,7 +64,7 @@ final public class Bar extends Tracer{
   }
   @Override
   public boolean equals(Object obj){
-    Bar that=(Bar)obj;
+    Bar_ that=(Bar_)obj;
     return this==that||incipits.equals(that.incipits);
   }
   public String toString(){
