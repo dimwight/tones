@@ -9,6 +9,7 @@ import facets.util.geom.Point;
 import facets.util.geom.Vector;
 import tones.Tone;
 import tones.Voice;
+import tones.bar.Bar;
 public abstract class PageItem extends Tracer implements AvatarContent{
 	public static final class PageTie extends PageItem{
 		public enum TieType{BeforeAfter,BeforeNull,AfterNull}
@@ -67,6 +68,6 @@ public abstract class PageItem extends Tracer implements AvatarContent{
 		}
 	}
 	public static final int STAVE_GRID=11;
-	final static Vector scaleToNoteWidth=new Vector(Tone.WIDTH_NOTE,1);
+	final static Vector scaleToNoteWidth=new Vector(Bar.WIDTH_NOTE,1);
 	
 }

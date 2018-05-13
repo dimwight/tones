@@ -13,8 +13,8 @@ import facets.util.shade.Shades;
 import java.util.Collection;
 import applicable.SvgPath;
 import tones.ScaleNote;
-import tones.Tone;
 import tones.Tone.Dissonance;
+import tones.bar.Bar;
 import tones.page.PageNote;
 import tones.page.PageNote.Dot;
 import tones.view.PageView;
@@ -35,7 +35,7 @@ public final class NotePainters extends PagePainters{
 	public NotePainters(PageView page,PageNote note,PainterSource p){
 		super(page,p);
 		this.note=note;
-		width=Tone.WIDTH_NOTE*unitX;
+		width=Bar.WIDTH_NOTE*unitX;
 		x=note.pageX*unitX;
 		y=(note.pageY-1)*unitY;
 		height=unitY*2;

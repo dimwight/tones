@@ -8,6 +8,7 @@ import facets.util.tree.DataNode;
 import java.util.Arrays;
 import java.util.HashSet;
 import tones.Mark.Tie;
+import tones.bar.Bar;
 import tones.bar.Incipit;
 public final class Tone extends Tracer{
   public static final short NOTE_WHOLE=8,NOTE_HALF=NOTE_WHOLE/2,
@@ -32,7 +33,6 @@ public final class Tone extends Tracer{
   public final short eighths;
   private final int eighthAt,intValues[];
   private int offset;
-  public static final int WIDTH_NOTE=8;
   public Tone(Voice voice,int barAt,int eighthAt,byte pitch,short eighths){
     this.voice=voice;
     this.barAt=barAt;
@@ -61,13 +61,13 @@ public final class Tone extends Tracer{
   public ScaleNote pitchNote(){
     return ScaleNote.pitchNote(pitch);
   }
-  public void checkOffset(Incipit i){
+  public void checkBarOffset(Incipit i,int barNoteWidth){
     for(Tone that:i.tones)
       if(that!=this&&Math.abs(that.pitch-pitch)<2){
         boolean isOffset=that.eighths>eighths&&that.eighths>NOTE_QUARTER?true
             :that.eighths==eighths?that.pitch==pitch&&eighths<NOTE_WHOLE?false
                 :!that.marks.isEmpty():false;
-        if(isOffset)offset=WIDTH_NOTE
+        if(isOffset)offset=barNoteWidth
             *(that.eighths==NOTE_WHOLE?7:that.eighths%3==0?9:5)/5;
       }
   }

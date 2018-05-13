@@ -8,7 +8,7 @@ import facets.core.app.avatar.PainterSource.Transform;
 import facets.util.geom.Vector;
 import facets.util.shade.Shade;
 import applicable.SvgPath;
-import tones.Tone;
+import tones.bar.Bar;
 import tones.page.PageItem.PageTie;
 import tones.page.PageItem.PageTie.TieType;
 import tones.view.PageView;
@@ -26,7 +26,7 @@ public final class TiePainters extends PagePainters{
 		super(page,p);
 		this.tie=tie;
 		if(false)trace(": tie=",tie);	
-		noteWidth=Tone.WIDTH_NOTE*unitX;
+		noteWidth=Bar.WIDTH_NOTE*unitX;
 		noteHeight=unitY*2;
 		tailsUp=tie.voice.tailsUp;
 		shade=selectionShade(tie.selected,false);

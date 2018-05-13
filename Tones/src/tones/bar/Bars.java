@@ -17,7 +17,7 @@ import tones.app.TonesViewable;
 import tones.bar.Incipit.Soundings;
 public final class Bars extends Tracer implements Titled{
 	public static final boolean eighthsCheck=false;
-	private final List<Bar> bars=new ArrayList();
+	private final List<Bar>bars=new ArrayList();
 	private final Map<Voice,VoicePart> parts=new HashMap();
 	private final TonesViewable viewable;
 	private VoicePart selectedPart;

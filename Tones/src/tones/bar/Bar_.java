@@ -2,6 +2,7 @@ package tones.bar;
 import static java.lang.Math.*;
 import static tones.Tone.*;
 import static tones.Voice.*;
+import static tones.bar.Bar.*;
 import facets.util.Debug;
 import facets.util.Objects;
 import facets.util.Tracer;
@@ -16,8 +17,8 @@ import tones.Tone;
 import tones.Voice;
 import tones.bar.Incipit.Soundings;
 final public class Bar_ extends Tracer{
-  private static final int WIDTH_SPACE_SHRINK=(false?0:Tone.WIDTH_NOTE*2/3),
-    START_AT=Tone.WIDTH_NOTE/2;
+  private static final int WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3),
+    START_AT=WIDTH_NOTE/2;
   public final int at,rise,staveGap,fall,width;
   public final Set<Incipit>incipits;
   public final Soundings endSoundings;

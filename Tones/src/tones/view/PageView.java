@@ -16,8 +16,8 @@ import facets.util.app.AppValues;
 import facets.util.geom.Vector;
 import facets.util.shade.Shades;
 import facets.util.tree.ValueNode;
-import tones.Tone;
 import tones.app.TonesEdit;
+import tones.bar.Bar;
 public abstract class PageView extends PlaneViewWorks{
   private static final boolean enlarge=System.getProperty("enlarge")!=null;
   public static final double INSET=0.5*INCH_PTS,DEFAULT_HEIGHT=7;
@@ -35,7 +35,7 @@ public abstract class PageView extends PlaneViewWorks{
   }
   public abstract double unitY();
   public final double widthForPitch(){
-    return 3d/Tone.WIDTH_NOTE;
+    return 3d/Bar.WIDTH_NOTE;
   }
   public final int barStart(){
     return barStart;

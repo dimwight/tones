@@ -16,8 +16,9 @@ import tones.Tone;
 import tones.Voice;
 import tones.bar.Incipit.Soundings;
 final public class Bar extends Tracer{
-  private static final int WIDTH_SPACE_SHRINK=(false?0:Tone.WIDTH_NOTE*2/3),
-    START_AT=Tone.WIDTH_NOTE/2;
+	public static final int WIDTH_NOTE=8;
+  private static final int WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3),
+    START_AT=WIDTH_NOTE/2;
   public final int at,rise,staveGap,fall,width;
   public final Set<Incipit>incipits;
   public final Soundings endSoundings;

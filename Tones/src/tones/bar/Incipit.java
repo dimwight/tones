@@ -97,8 +97,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		return set;
 	}
 	void close(){
-		for(Tone t:tones)
-			t.checkOffset(this);
+		for(Tone t:tones)t.checkBarOffset(this,Bar.WIDTH_NOTE);
 		rise=6;
 		staveGap=10;
 		fall=6;
