@@ -1,6 +1,5 @@
 package tones.bar;
 import static java.lang.Math.*;
-import static tones.Tone.*;
 import static tones.Voice.*;
 import facets.util.Debug;
 import facets.util.Objects;
@@ -32,35 +31,33 @@ final public class Bar extends Tracer{
     for(Voice voice:voiceList)partAts.put(voice,START_AT);
     int rise=-1,staveGap=-1,fall=-1;
     for(Incipit i:incipits){
-      gridAt=gridAtFromIncipit(i);
+      readIncipit(i);
       rise=max(rise,i.rise);
       staveGap=max(staveGap,i.staveGap);
       fall=max(fall,i.fall);
     }
-    width=gridAt=furthestAt(voiceList,barEighths);
+    width=furthestAt(voiceList,barEighths);
     this.rise=rise;
     this.staveGap=staveGap;
     this.fall=fall;
     endSoundings=incipits.get(incipits.size()-1).soundings();
     
   }
-  int gridAtFromIncipit(Incipit i){
+  void readIncipit(Incipit i){
     i.close();
     List<Voice>toneVoices=new ArrayList();
     for(Tone t:i.tones)toneVoices.add(t.voice);
-    int gridAt=i.barAt=furthestAt(toneVoices,i.eighthAt);
-    for(Tone t:i.tones)partAts.put(t.voice,gridAt+t.eighths*WIDTH_NOTE);
-		return gridAt;
+    int furthest=furthestAt(toneVoices,i.eighthAt);
+    i.barAt=furthest;
+    for(Tone t:i.tones)partAts.put(t.voice,furthest+t.eighths*WIDTH_NOTE);
   }
   int furthestAt(Iterable<Voice>voices,int eighthAt){
-    int atUnit=true?1:WIDTH_NOTE,jump=eighthAt*atUnit-gridAt,
-    		gap=jump<=atUnit?0:jump-atUnit;
-    if(false&&jump<0)throw new IllegalStateException("Bad jump in "+this);
+    int jump=eighthAt-gridAt,gap=jump<=1?0:jump-1;
     for(Voice voice:voiceList)
-      partAts.put(voice,partAts.get(voice)-gap*WIDTH_SPACE_SHRINK);
+      partAts.put(voice,partAts.get(voice)-WIDTH_SPACE_SHRINK*gap);
     int furthestNow=0;
-    for(Voice voice:voices)
-      furthestNow=max(furthestNow,partAts.get(voice));
+    for(Voice voice:voices)furthestNow=max(furthestNow,partAts.get(voice));
+    gridAt=furthestNow;
     return furthestNow;
   }
   @Override

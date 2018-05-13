@@ -17,8 +17,8 @@ import tones.Tone;
 import tones.Voice;
 import tones.bar.Incipit.Soundings;
 final public class Bar_ extends Tracer{
-  private static final int WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3),
-    START_AT=WIDTH_NOTE/2;
+  private static final int WIDTH_SPACE_SHRINK=(false?0:Bar.WIDTH_NOTE*2/3),
+    START_AT=Bar.WIDTH_NOTE/2;
   public final int at,rise,staveGap,fall,width;
   public final Set<Incipit>incipits;
   public final Soundings endSoundings;
@@ -49,11 +49,11 @@ final public class Bar_ extends Tracer{
     List<Voice>toneVoices=new ArrayList();
     for(Tone t:i.tones)toneVoices.add(t.voice);
     int gridAt=i.barAt=furthestAt(toneVoices,i.eighthAt);
-    for(Tone t:i.tones)partAts.put(t.voice,gridAt+t.eighths*WIDTH_NOTE);
+    for(Tone t:i.tones)partAts.put(t.voice,gridAt+t.eighths*Bar.WIDTH_NOTE);
 		return gridAt;
   }
   int furthestAt(Iterable<Voice>voices,int eighthAt){
-    int atUnit=true?1:WIDTH_NOTE,jump=eighthAt*atUnit-gridAt,
+    int atUnit=true?1:Bar.WIDTH_NOTE,jump=eighthAt*atUnit-gridAt,
     		gap=jump<=atUnit?0:jump-atUnit;
     if(false&&jump<0)throw new IllegalStateException("Bad jump in "+this);
     for(Voice voice:voiceList)
