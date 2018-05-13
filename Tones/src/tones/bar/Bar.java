@@ -51,12 +51,13 @@ final public class Bar extends Tracer{
     return incipit.barAt=furthest;
   }
   int furthestAt(Iterable<Voice>voices,int eighthAt){
-    int jump=eighthAt-thenAt,gap=jump<=1?0:jump-1;
+    int jump=eighthAt-furthest,gap=jump<=1?0:jump-1;
     for(Voice voice:voiceList)
       partAts.put(voice,partAts.get(voice)-WIDTH_SPACE_SHRINK*gap);
-    int furthest=0;
-    for(Voice voice:voices)furthest=max(furthest,partAts.get(voice));
-    return furthest;
+    int furthestNow=0;
+    for(Voice voice:voices)
+      furthestNow=max(furthestNow,partAts.get(voice));
+    return furthestNow;
   }
   @Override
   public boolean equals(Object obj){
