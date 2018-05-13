@@ -1,6 +1,8 @@
 package tones.bar;
 import static java.lang.Math.*;
+import static tones.Tone.*;
 import static tones.Voice.*;
+import static tones.bar.Bar.*;
 import facets.util.Debug;
 import facets.util.Objects;
 import facets.util.Tracer;
@@ -16,8 +18,8 @@ import tones.Voice;
 import tones.bar.Incipit.Soundings;
 final public class Bar extends Tracer{
 	public static final int WIDTH_NOTE=8;
-  private static final int WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3),
-    START_AT=WIDTH_NOTE/2;
+  private static final int WIDTH_SPACE_SHRINK=(false?0:Bar.WIDTH_NOTE*2/3),
+    START_AT=Bar.WIDTH_NOTE/2;
   public final int at,rise,staveGap,fall,width;
   public final Set<Incipit>incipits;
   public final Soundings endSoundings;
@@ -31,33 +33,35 @@ final public class Bar extends Tracer{
     for(Voice voice:voiceList)partAts.put(voice,START_AT);
     int rise=-1,staveGap=-1,fall=-1;
     for(Incipit i:incipits){
-      readIncipit(i);
+      gridAt=gridAtFromIncipit(i);
       rise=max(rise,i.rise);
       staveGap=max(staveGap,i.staveGap);
       fall=max(fall,i.fall);
     }
-    width=furthestAt(voiceList,barEighths);
+    width=gridAt=furthestAt(voiceList,barEighths);
     this.rise=rise;
     this.staveGap=staveGap;
     this.fall=fall;
     endSoundings=incipits.get(incipits.size()-1).soundings();
     
   }
-  void readIncipit(Incipit i){
+  int gridAtFromIncipit(Incipit i){
     i.close();
     List<Voice>toneVoices=new ArrayList();
     for(Tone t:i.tones)toneVoices.add(t.voice);
-    int furthest=furthestAt(toneVoices,i.eighthAt);
-    i.barAt=furthest;
-    for(Tone t:i.tones)partAts.put(t.voice,furthest+t.eighths*WIDTH_NOTE);
+    int gridAt=i.barAt=furthestAt(toneVoices,i.eighthAt);
+    for(Tone t:i.tones)partAts.put(t.voice,gridAt+t.eighths*Bar.WIDTH_NOTE);
+		return gridAt;
   }
   int furthestAt(Iterable<Voice>voices,int eighthAt){
-    int jump=eighthAt-gridAt,gap=jump<=1?0:jump-1;
+    int atUnit=true?1:Bar.WIDTH_NOTE,jump=eighthAt*atUnit-gridAt,
+    		gap=jump<=atUnit?0:jump-atUnit;
+    if(false&&jump<0)throw new IllegalStateException("Bad jump in "+this);
     for(Voice voice:voiceList)
-      partAts.put(voice,partAts.get(voice)-WIDTH_SPACE_SHRINK*gap);
+      partAts.put(voice,partAts.get(voice)-gap*WIDTH_SPACE_SHRINK);
     int furthestNow=0;
-    for(Voice voice:voices)furthestNow=max(furthestNow,partAts.get(voice));
-    gridAt=furthestNow;
+    for(Voice voice:voices)
+      furthestNow=max(furthestNow,partAts.get(voice));
     return furthestNow;
   }
   @Override
