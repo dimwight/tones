@@ -31,6 +31,7 @@ final public class Bar extends Tracer{
     int rise=-1,staveGap=-1,fall=-1;
     for(Incipit i:incipits){
       gridAt=readIncipit(i);
+      for(Tone t:i.tones)partAts.put(t.voice,gridAt+t.eighths*Tone.WIDTH_NOTE);
       rise=max(rise,i.rise);
       staveGap=max(staveGap,i.staveGap);
       fall=max(fall,i.fall);
@@ -47,7 +48,6 @@ final public class Bar extends Tracer{
     List<Voice>toneVoices=new ArrayList();
     for(Tone t:i.tones)toneVoices.add(t.voice);
     int gridAt=incipit.barAt=furthestAt(toneVoices,i.eighthAt);
-    for(Tone t:i.tones)partAts.put(t.voice,gridAt+t.eighths*Tone.WIDTH_NOTE);
     return gridAt;
   }
   int furthestAt(Iterable<Voice>voices,int eighthAt){
