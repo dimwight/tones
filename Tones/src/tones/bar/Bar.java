@@ -41,6 +41,7 @@ final public class Bar extends Tracer{
       rise=max(rise,i.rise);
       staveGap=max(staveGap,i.staveGap);
       fall=max(fall,i.fall);
+			
     }
     width=gridAt=furthestAt(voiceList);
     this.rise=rise;
