@@ -47,8 +47,7 @@ final public class Bar extends Tracer{
     i.close();
     List<Voice>toneVoices=new ArrayList();
     for(Tone t:i.tones)toneVoices.add(t.voice);
-    int gridAt=incipit.barAt=furthestAt(toneVoices,i.eighthAt);
-    return gridAt;
+    return incipit.barAt=furthestAt(toneVoices,i.eighthAt);
   }
   int furthestAt(Iterable<Voice>voices,int eighthAt){
     int jump=eighthAt-furthest,gap=jump<=1?0:jump-1;
