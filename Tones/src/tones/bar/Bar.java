@@ -56,7 +56,6 @@ final public class Bar extends Tracer{
       partAts.put(voice,partAts.get(voice)-WIDTH_SPACE_SHRINK*gap);
     int furthest=0;
     for(Voice voice:voices)furthest=max(furthest,partAts.get(voice));
-    thenAt=furthest;
     return furthest;
   }
   @Override
