@@ -21,7 +21,7 @@ final public class Bar extends Tracer{
   public final Set<Incipit>incipits;
   public final Soundings endSoundings;
   private final Map<Voice,Integer>partAts=new HashMap();
-  private int furthest=0;
+  private int gridAt=0;
   Bar(int barAt,List<Incipit>incipits,int barEighths){
     this.at=barAt;
     if(incipits==null)throw new IllegalStateException(
@@ -30,12 +30,12 @@ final public class Bar extends Tracer{
     for(Voice voice:voiceList)partAts.put(voice,START_AT);
     int rise=-1,staveGap=-1,fall=-1;
     for(Incipit i:incipits){
-      furthest=readIncipit(i);
+      gridAt=readIncipit(i);
       rise=max(rise,i.rise);
       staveGap=max(staveGap,i.staveGap);
       fall=max(fall,i.fall);
     }
-    width=furthest=furthestAt(voiceList,barEighths);
+    width=gridAt=furthestAt(voiceList,barEighths);
     this.rise=rise;
     this.staveGap=staveGap;
     this.fall=fall;
@@ -46,9 +46,9 @@ final public class Bar extends Tracer{
     i.close();
     List<Voice>toneVoices=new ArrayList();
     for(Tone t:i.tones)toneVoices.add(t.voice);
-    int furthest=furthestAt(toneVoices,i.eighthAt);
-    for(Tone t:i.tones)partAts.put(t.voice,furthest+t.eighths*Tone.WIDTH_NOTE);
-    return incipit.barAt=furthest;
+    int gridAt=incipit.barAt=furthestAt(toneVoices,i.eighthAt);
+    for(Tone t:i.tones)partAts.put(t.voice,gridAt+t.eighths*Tone.WIDTH_NOTE);
+    return gridAt;
   }
   int furthestAt(Iterable<Voice>voices,int eighthAt){
     int jump=eighthAt-furthest,gap=jump<=1?0:jump-1;
