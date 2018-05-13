@@ -102,13 +102,6 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		staveGap=10;
 		fall=6;
 	}
-	public String toString(){
-		return //Debug.info(this)+
-		""+eighthAt
-		//        +" b:"+barAt
-		//        +" tones:"+tones.size()
-		;
-	}
 	public int hashCode(){
 		return Arrays.hashCode(intValues());
 	}
@@ -122,6 +115,13 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 	}
 	private int[] intValues(){
 		return new int[]{eighthAt,fall,staveGap,rise,barAt};
+	}
+	public String toString(){
+		return //Debug.info(this)+
+		""+eighthAt
+		        +" b:"+barAt
+		//        +" tones:"+tones.size()
+		;
 	}
 	DataNode newDebugRoot(){
 		List<Tone> sortTones=new ArrayList(tones);
@@ -143,7 +143,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 					values.split("\n"));
 			if(clashes.values().length>0) Nodes.appendChild(add,clashes);
 		}
-		else nodes.add(soundings.newDebugRoot());
+		else if(false)nodes.add(soundings.newDebugRoot());
 		return nodes.parent;
 	}
 }

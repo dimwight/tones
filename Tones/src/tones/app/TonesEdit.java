@@ -102,7 +102,7 @@ public final class TonesEdit extends TreeTextContenter{
     SAreaTarget debug=(SAreaTarget)viewers[1];
     SIndexing expand=(SIndexing)((Targeted)debug.activeFaceted().attachedFacet()
         ).targets()[0];
-    expand.setIndex(2);
+    expand.setIndex(3);
   }
   private static TreeTextSpecifier newSpecifier(){
     return new TreeTextSpecifier(TonesEdit.class){
