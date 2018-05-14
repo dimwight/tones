@@ -38,7 +38,7 @@ final public class Bar extends Tracer{
 			for(Tone t:i.tones)toneVoices.add(t.voice);
 			gridAt=i.barAt=furthestAt(toneVoices);
 			for(Tone t:i.tones)
-				voiceAts.put(t.voice,gridAt+Tone.gridAfter(t.eighths,WIDTH_NOTE));
+				voiceAts.put(t.voice,gridAt+t.gridAfter(WIDTH_NOTE));
 			rise=max(rise,i.rise);
 			staveGap=max(staveGap,i.staveGap);
 			fall=max(fall,i.fall);
