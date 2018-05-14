@@ -14,6 +14,17 @@
 		public static final short NOTE_WHOLE=8,NOTE_HALF=NOTE_WHOLE/2,
 				NOTE_QUARTER=NOTE_WHOLE/4,NOTE_EIGHTH=NOTE_WHOLE/8,
 				NOTE_DOUBLE=NOTE_WHOLE*2,NOTE_NONE=0;
+		public int gridAfter(int noteWidth)){
+			int basic=eighths*noteWidth,shrink=0;
+			switch (eighths) {
+			case NOTE_DOUBLE:shrink=noteWidth*6/1;break;
+			case NOTE_WHOLE:shrink=noteWidth*4/1;break;
+			case NOTE_HALF:shrink=noteWidth*2/1;break;
+			case NOTE_QUARTER:shrink=1*noteWidth/1;break;
+			case NOTE_EIGHTH:shrink=noteWidth*0/1;break;
+			}
+			return basic-shrink+getOffset();
+		}
 		public static class Dissonance{
 			public final Interval interval;
 			public final Tone sounding;
@@ -42,9 +53,6 @@
 			intValues=pitch==ScaleNote.PITCH_REST?new int[]{barAt,eighthAt,eighths}
 					:new int[]{barAt,eighthAt,eighths,pitch};
 		}
-		public static int gridAfter(int eighths,int noteWidth)){
-			return eighths*noteWidth
-		}
 		public void checkTied(Tone before){
 			if(before==null||before.isRest()||isRest()||before.pitch!=pitch
 					||!isOnBeat(NOTE_HALF))return;
@@ -64,13 +72,13 @@
 		public ScaleNote pitchNote(){
 			return ScaleNote.pitchNote(pitch);
 		}
-		public void checkBarOffset(Incipit i,int barNoteWidth){
+		public void checkBarOffset(Incipit i,int noteWidth){
 			for(Tone that:i.tones)
 				if(that!=this&&Math.abs(that.pitch-pitch)<2){
 					boolean isOffset=that.eighths>eighths&&that.eighths>NOTE_QUARTER?true
 							:that.eighths==eighths?that.pitch==pitch&&eighths<NOTE_WHOLE?false
 									:!that.marks.isEmpty():false;
-					if(isOffset)offset=barNoteWidth
+					if(isOffset)offset=noteWidth
 							*(that.eighths==NOTE_WHOLE?7:that.eighths%3==0?9:5)/5;
 				}
 		}
