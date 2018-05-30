@@ -132,7 +132,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			}
 		});
 		NodeList nodes=new NodeList(Bars.newDebugRoot(getClass(),toString()),true);
-		if(false) for(Tone tone:sortTones){
+		if(true) for(Tone tone:sortTones){
 			if(tone.isRest()) continue;
 			DataNode add=tone.newDebugNode();
 			nodes.add(add);
@@ -141,7 +141,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			String values=got==null?"":Objects.toLines(got.toArray());
 			TypedNode clashes=Bars.newDebugRoot(Dissonance.class,""+count,
 					values.split("\n"));
-			if(clashes.values().length>0) Nodes.appendChild(add,clashes);
+			if(clashes.values().length>1) Nodes.appendChild(add,clashes);
 		}
 		else if(false)nodes.add(soundings.newDebugRoot());
 		return nodes.parent;

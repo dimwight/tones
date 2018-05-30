@@ -75,6 +75,7 @@ public final class Bars extends Tracer implements Titled{
 				thenPart=parts.replace(nowPart.voice,nowPart);
 		selectPart(nowPart.voice);
 		int count=bars.size();
+		boolean equals=true;
 		for(int start=true?0:count-5,stop=false?2:count,barAt=start;true;barAt++){
 			List<Tone> thenTones=thenPart.getBarTones(barAt),
 					nowTones=nowPart.getBarTones(barAt);
@@ -82,7 +83,7 @@ public final class Bars extends Tracer implements Titled{
 			if(nowEmpty&&thenTones.isEmpty()) break;
 			barEighths=eighthsCheck&&!nowEmpty?nowTones.remove(0).eighths
 					:VoicePart.BAR_EIGHTHS_DEFAULT;
-			boolean equals=thenTones.equals(nowTones);
+			equals&=thenTones.equals(nowTones);
 			if(!equals){
 				if(false){
 					trace(".updateSelectedPart: barAt="+barAt+" equals="+equals+" now=",

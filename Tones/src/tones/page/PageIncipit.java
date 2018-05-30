@@ -1,5 +1,4 @@
 package tones.page;
-
 import facets.util.Debug;
 import tones.Tone;
 import tones.bar.Bar;

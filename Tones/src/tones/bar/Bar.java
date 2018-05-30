@@ -34,23 +34,23 @@ final public class Bar extends Tracer{
 		int rise=-1,staveGap=-1,fall=-1;
 		for(Incipit i:incipits){
 			i.close();
-			List<Voice>toneVoices=new ArrayList();
-			for(Tone t:i.tones)toneVoices.add(t.voice);
-			gridAt=i.barAt=furthestAt(toneVoices);
-			for(Tone t:i.tones)
-				voiceAts.put(t.voice,gridAt+t.gridAfter(WIDTH_NOTE));
 			rise=max(rise,i.rise);
 			staveGap=max(staveGap,i.staveGap);
 			fall=max(fall,i.fall);
+			List<Voice>toneVoices=new ArrayList();
+			for(Tone t:i.tones)toneVoices.add(t.voice);
+			gridAt=i.barAt=nextAt(toneVoices);
+			for(Tone t:i.tones)
+				voiceAts.put(t.voice,gridAt+t.gridAfter(WIDTH_NOTE));
 		}
-		width=gridAt=furthestAt(voiceList);
+		width=gridAt=nextAt(voiceList);
 		this.rise=rise;
 		this.staveGap=staveGap;
 		this.fall=fall;
 		endSoundings=incipits.get(incipits.size()-1).soundings();
 		
 	}
-	int furthestAt(Iterable<Voice>voices){
+	private int nextAt(Iterable<Voice>voices){
 		int furthest=0;
 		for(Voice voice:voices)
 			furthest=max(furthest,voiceAts.get(voice));

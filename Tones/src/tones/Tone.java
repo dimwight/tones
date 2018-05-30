@@ -1,10 +1,12 @@
 	package tones;
 	import static tones.ScaleNote.*;
 	import static tones.bar.Bars.*;
-	import facets.util.Objects;
+import facets.util.Debug;
+import facets.util.Objects;
 	import facets.util.Strings;
 	import facets.util.Tracer;
-	import facets.util.tree.DataNode;
+import facets.util.Util;
+import facets.util.tree.DataNode;
 	import java.util.Arrays;
 	import java.util.HashSet;
 	import tones.Mark.Tie;
@@ -14,17 +16,6 @@
 		public static final short NOTE_WHOLE=8,NOTE_HALF=NOTE_WHOLE/2,
 				NOTE_QUARTER=NOTE_WHOLE/4,NOTE_EIGHTH=NOTE_WHOLE/8,
 				NOTE_DOUBLE=NOTE_WHOLE*2,NOTE_NONE=0;
-		public int gridAfter(int noteWidth)){
-			int basic=eighths*noteWidth,shrink=0;
-			switch (eighths) {
-			case NOTE_DOUBLE:shrink=noteWidth*6/1;break;
-			case NOTE_WHOLE:shrink=noteWidth*4/1;break;
-			case NOTE_HALF:shrink=noteWidth*2/1;break;
-			case NOTE_QUARTER:shrink=1*noteWidth/1;break;
-			case NOTE_EIGHTH:shrink=noteWidth*0/1;break;
-			}
-			return basic-shrink+getOffset();
-		}
 		public static class Dissonance{
 			public final Interval interval;
 			public final Tone sounding;
@@ -37,13 +28,13 @@
 				return sounding.voice.code+":"+interval;
 			}
 		}
-		public final HashSet<Mark> marks=new HashSet();
+		public final HashSet<Mark>marks=new HashSet();
 		public final int barAt;
 		public final Voice voice;
 		public final byte pitch;
 		public final short eighths;
 		private final int eighthAt,intValues[];
-		private int offset;
+		private int offset=-1;
 		public Tone(Voice voice,int barAt,int eighthAt,byte pitch,short eighths){
 			this.voice=voice;
 			this.barAt=barAt;
@@ -73,17 +64,56 @@
 			return ScaleNote.pitchNote(pitch);
 		}
 		public void checkBarOffset(Incipit i,int noteWidth){
+			if(offset>0)throw new IllegalStateException("Existing offset="+offset);
+			else offset=0;
 			for(Tone that:i.tones)
 				if(that!=this&&Math.abs(that.pitch-pitch)<2){
-					boolean isOffset=that.eighths>eighths&&that.eighths>NOTE_QUARTER?true
-							:that.eighths==eighths?that.pitch==pitch&&eighths<NOTE_WHOLE?false
-									:!that.marks.isEmpty():false;
-					if(isOffset)offset=noteWidth
+					Tie thatTie=that.getTie(),thisTie=getTie();
+					boolean isOffset=thisTie!=null&&this.eighths<that.eighths;
+					if(false) {
+						isOffset&=!(that.eighths>eighths&&that.eighths==NOTE_QUARTER);
+						if(that.eighths==eighths)isOffset&=!(that.pitch==pitch&&eighths<NOTE_WHOLE);
+					}
+					if(false)trace(".checkBarOffset: isOffset="+isOffset);
+					offset=!isOffset?0:noteWidth
 							*(that.eighths==NOTE_WHOLE?7:that.eighths%3==0?9:5)/5;
+					if(false&&isOffset)trace(".checkBarOffset: offset=",offset);
 				}
 		}
+		public String toString(){
+			ScaleNote note=pitchNote();
+			return Debug.info(this)+" "+voice+" "+pitchNote()+(false?(" "+eighths):(": "+Strings.intsString(intValues)));
+		}
+		@Override
+		protected void traceOutput(String msg){
+			if(barAt==6)Util.printOut(this+msg);
+		}
+		private Tie getTie(){
+			for(Mark mark:marks)
+				if(mark.getClass()==Tie.class)return(Tie)mark;
+			return null;
+		}
+		public DataNode newDebugNode(){
+			int markCount=marks.size();
+			return newDebugRoot(getClass(),
+					toString()+" offset="+getOffset(),
+					newDebugRoot(Mark.class,"marks="+markCount,
+							Objects.toLines(marks.toArray()).split("\n")));
+		}
 		public int getOffset(){
-			return offset;
+			if(offset<0)throw new IllegalStateException("Offset not checked in "+this);
+			else return offset;
+		}
+		public int gridAfter(int noteWidth){
+			int basic=eighths*noteWidth,shrink=0;
+			switch (eighths) {
+			case NOTE_DOUBLE:shrink=noteWidth*6/1;break;
+			case NOTE_WHOLE:shrink=noteWidth*4/1;break;
+			case NOTE_HALF:shrink=noteWidth*3/2;break;
+			case NOTE_QUARTER:shrink=noteWidth*1/3;break;
+			case NOTE_EIGHTH:shrink=noteWidth*-1/3;break;
+			}
+			return basic-(true?0:shrink)+getOffset();
 		}
 		public int hashCode(){
 			return Arrays.hashCode(intValues);
@@ -92,16 +122,5 @@
 			Tone that=(Tone)o;
 			return this==that||(voice==that.voice
 					&&Arrays.equals(intValues,that.intValues));
-		}
-		public String toString(){
-			ScaleNote note=pitchNote();
-			return voice+" "+pitchNote()+(true?(" "+eighths):(": "+Strings.intsString(intValues)));
-		}
-		public DataNode newDebugNode(){
-			int markCount=marks.size();
-			return true||markCount==0?newDebugRoot(getClass(),
-					voice+" "+pitchNote()+" "+eighths)
-					:newDebugRoot(Mark.class,"marks="+markCount,
-							Objects.toLines(marks.toArray()).split("\n"));
 		}
 	}
