@@ -24,14 +24,13 @@ final public class Bar extends Tracer{
 	public final Set<Incipit>incipits;
 	public final Soundings endSoundings;
 	private final Map<Voice,Integer>voiceAts=new HashMap();
-	private int gridAt=false?0:START_AT;
 	Bar(int barAt,List<Incipit>incipits,int barEighths){
 		this.at=barAt;
 		if(incipits==null)throw new IllegalStateException(
 				"Null incipits in "+Debug.info(this));
 		else this.incipits=new HashSet(incipits);
 		for(Voice voice:voiceList)voiceAts.put(voice,START_AT);
-		int rise=-1,staveGap=-1,fall=-1;
+		int rise=-1,staveGap=-1,fall=-1,gridAt=false?0:START_AT;
 		for(Incipit i:incipits){
 			i.close();
 			rise=max(rise,i.rise);
