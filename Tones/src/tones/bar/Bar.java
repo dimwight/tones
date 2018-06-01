@@ -23,7 +23,6 @@ final public class Bar extends Tracer{
 	public final int at,rise,staveGap,fall,width;
 	public final Set<Incipit>incipits;
 	public final Soundings endSoundings;
-	private final Map<Voice,Integer>voiceAts=new HashMap();
 	Bar(int barAt,List<Incipit>incipits,int barEighths){
 		this.at=barAt;
 		if(incipits==null)throw new IllegalStateException(
@@ -32,7 +31,7 @@ final public class Bar extends Tracer{
 		for(Voice voice:voiceList)voiceAts.put(voice,START_AT);
 		int rise=-1,staveGap=-1,fall=-1,gridAt=false?0:START_AT;
 		for(Incipit i:incipits){
-			i.close();
+			gridAt+=i.close(gridAt);
 			rise=max(rise,i.rise);
 			staveGap=max(staveGap,i.staveGap);
 			fall=max(fall,i.fall);
