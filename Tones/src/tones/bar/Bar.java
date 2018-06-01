@@ -24,6 +24,8 @@ final public class Bar extends Tracer{
 	public final Soundings endSoundings;
 	Bar(int barAt,List<Incipit>incipits,int barEighths){
 		this.at=barAt;
+		final int expectedWidth=WIDTH_NOTE*barEighths,
+		eighthAts=incipits.size();
 		if(incipits==null)throw new IllegalStateException(
 				"Null incipits in "+Debug.info(this));
 		else this.incipits=new HashSet(incipits);
