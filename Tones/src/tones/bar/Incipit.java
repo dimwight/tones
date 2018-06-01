@@ -96,7 +96,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		}
 		return set;
 	}
-	void close(int barAt,double spread){
+	int close(int barAt,double spread){
 		if(eighthAt>0)
 			this.barAt=Max(barAt,eighthAt*spread);
 		int maxOffset=0;
