@@ -25,11 +25,10 @@ final public class Bar extends Tracer{
 	Bar(int barAt,List<Incipit>incipits,int barEighths){
 		this.at=barAt;
 		final int expectedWidth=WIDTH_NOTE*barEighths,
-		eighthAts=incipits.size();
+		spread=expectedWidth/incipits.size();
 		if(incipits==null)throw new IllegalStateException(
 				"Null incipits in "+Debug.info(this));
 		else this.incipits=new HashSet(incipits);
-		for(Voice voice:voiceList)voiceAts.put(voice,START_AT);
 		int rise=-1,staveGap=-1,fall=-1,gridAt=false?0:START_AT;
 		for(Incipit i:incipits){
 			gridAt+=i.close(gridAt);
@@ -37,7 +36,6 @@ final public class Bar extends Tracer{
 			staveGap=max(staveGap,i.staveGap);
 			fall=max(fall,i.fall);
 			}
-		int spread=gridAt
 		width=gridAt;
 		this.rise=rise;
 		this.staveGap=staveGap;
