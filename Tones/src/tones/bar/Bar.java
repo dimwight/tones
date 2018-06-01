@@ -31,7 +31,7 @@ final public class Bar extends Tracer{
 		else this.incipits=new HashSet(incipits);
 		int rise=-1,staveGap=-1,fall=-1,gridAt=false?0:START_AT;
 		for(Incipit i:incipits){
-			gridAt+=i.close(gridAt);
+			gridAt+=i.close(gridAt,spread);
 			rise=max(rise,i.rise);
 			staveGap=max(staveGap,i.staveGap);
 			fall=max(fall,i.fall);
