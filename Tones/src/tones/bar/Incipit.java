@@ -96,8 +96,9 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		}
 		return set;
 	}
-	void close(int gridAt,double spread){
-		barAt=gridAt*spread;
+	void close(int barAt,double spread){
+		if(eighthAt>0)
+			this.barAt=Max(barAt,eighthAt*spread);
 		int maxOffset=0;
 		for(Tone t:tones)
 			maxOffset=Max(maxOffset,t.checkBarOffset(this,Bar.WIDTH_NOTE));
