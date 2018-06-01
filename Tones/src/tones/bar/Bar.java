@@ -35,12 +35,7 @@ final public class Bar extends Tracer{
 			rise=max(rise,i.rise);
 			staveGap=max(staveGap,i.staveGap);
 			fall=max(fall,i.fall);
-			List<Voice>toneVoices=new ArrayList();
-			for(Tone t:i.tones)toneVoices.add(t.voice);
-			gridAt=i.barAt=nextAt(toneVoices);
-			for(Tone t:i.tones)
-				voiceAts.put(t.voice,gridAt+t.gridAfter(WIDTH_NOTE));
-		}
+			}
 		width=gridAt=nextAt(voiceList);
 		this.rise=rise;
 		this.staveGap=staveGap;
@@ -48,13 +43,7 @@ final public class Bar extends Tracer{
 		endSoundings=incipits.get(incipits.size()-1).soundings();
 		
 	}
-	private int nextAt(Iterable<Voice>voices){
-		int furthest=0;
-		for(Voice voice:voices)
-			furthest=max(furthest,voiceAts.get(voice));
-		return furthest;
-	}
-	@Override
+		@Override
 	public boolean equals(Object obj){
 		Bar that=(Bar)obj;
 		return this==that||incipits.equals(that.incipits);
