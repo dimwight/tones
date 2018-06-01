@@ -18,8 +18,7 @@ import tones.Voice;
 import tones.bar.Incipit.Soundings;
 final public class Bar extends Tracer{
 	public static final int WIDTH_NOTE=8;
-	private static final int WIDTH_SPACE_SHRINK=(false?0:WIDTH_NOTE*2/3),
-		START_AT=Bar.WIDTH_NOTE/2;
+	private static final int START_AT=Bar.WIDTH_NOTE/2;
 	public final int at,rise,staveGap,fall,width;
 	public final Set<Incipit>incipits;
 	public final Soundings endSoundings;
@@ -36,6 +35,7 @@ final public class Bar extends Tracer{
 			staveGap=max(staveGap,i.staveGap);
 			fall=max(fall,i.fall);
 			}
+		int spread=gridAt
 		width=gridAt;
 		this.rise=rise;
 		this.staveGap=staveGap;
