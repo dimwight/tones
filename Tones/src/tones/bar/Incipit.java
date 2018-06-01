@@ -98,14 +98,14 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 	}
 	int close(int barAt,double spread){
 		if(eighthAt>0)
-			this.barAt=Max(barAt,eighthAt*spread);
+			barAt=Max(barAt,eighthAt*spread);
 		int maxOffset=0;
 		for(Tone t:tones)
 			maxOffset=Max(maxOffset,t.checkBarOffset(this,Bar.WIDTH_NOTE));
 		rise=6;
 		staveGap=10;
 		fall=6; 
-		return Bar.WIDTH_NOTE+maxOffset;
+		return this.barAt=barAt+Bar.WIDTH_NOTE+maxOffset;
 	}
 	public int hashCode(){
 		return Arrays.hashCode(intValues());
