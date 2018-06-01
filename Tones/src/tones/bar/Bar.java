@@ -28,7 +28,7 @@ final public class Bar extends Tracer{
 		if(incipits==null)throw new IllegalStateException(
 				"Null incipits in "+Debug.info(this));
 		else this.incipits=new HashSet(incipits);
-		int rise=-1,staveGap=-1,fall=-1,gridAt=false?0:START_AT;
+		int rise=-1,staveGap=-1,fall=-1,gridAt=START_AT;
 		for(Incipit i:incipits){
 			gridAt+=i.close(gridAt,spread);
 			rise=max(rise,i.rise);
