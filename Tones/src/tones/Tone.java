@@ -63,7 +63,7 @@ import facets.util.tree.DataNode;
 		public ScaleNote pitchNote(){
 			return ScaleNote.pitchNote(pitch);
 		}
-		public void checkBarOffset(Incipit i,int noteWidth){
+		public int checkBarOffset(Incipit i,int noteWidth){
 			if(offset>0)throw new IllegalStateException("Existing offset="+offset);
 			else offset=0;
 			for(Tone that:i.tones)
@@ -79,7 +79,8 @@ import facets.util.tree.DataNode;
 					offset=!isOffset?0:noteWidth
 							*(that.eighths==NOTE_WHOLE?7:that.eighths%3==0?9:5)/5;
 					if(false&&isOffset)trace(".checkBarOffset: offset=",offset);
-				}
+				} 
+			return offset;
 		}
 		public String toString(){
 			ScaleNote note=pitchNote();
