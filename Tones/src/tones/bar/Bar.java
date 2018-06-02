@@ -23,11 +23,11 @@ final public class Bar extends Tracer{
 	public final Set<Incipit>incipits;
 	public final Soundings endSoundings;
 	Bar(int barAt,List<Incipit>incipits,int barEighths){
-		this.at=barAt;
-		final double spread=WIDTH_NOTE*barEighths/incipits.size();
 		if(incipits==null)throw new IllegalStateException(
 				"Null incipits in "+Debug.info(this));
 		else this.incipits=new HashSet(incipits);
+		this.at=barAt;
+		final double spread=WIDTH_NOTE*barEighths/incipits.size();
 		int rise=-1,staveGap=-1,fall=-1,gridAt=START_AT;
 		for(Incipit i:incipits){
 			gridAt=i.close(gridAt,spread);
