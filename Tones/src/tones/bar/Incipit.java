@@ -65,8 +65,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		}
 	}
 	int close(int barAtNext,double spread){
-		if(false&&eighthAt>0)
-			barAtNext=Max(barAtNext,eighthAt*spread);
+		barAtNext=Math.Max(barAtNext,true?0:eighthAt*spread);
 		barAt=barAtNext;
 		int maxOffset=0;
 		for(Tone t:tones)
