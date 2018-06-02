@@ -64,7 +64,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			return nodes.parent;
 		}
 	}
-	int close(int barAtNext,BiSupplier eighthSpacedGridAt){
+	int close(int barAtNext,BiFunction<int,int,int>eighthSpacedGridAt){
 		barAt=eighthSpacedGridAt.apply(barAtNext,eighthAt);
 		int maxOffset=0;
 		for(Tone t:tones)
