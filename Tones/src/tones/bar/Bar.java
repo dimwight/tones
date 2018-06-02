@@ -30,7 +30,6 @@ final public class Bar extends Tracer{
 		this.at=barAt;
 		BiSupplier eighthSpacedGridAt=
 			(int gridAt,int eighthAt)=>Math.Max(gridAt,true?0:eighthAt*spread);
-	}
 		final double spread=SPREAD_BASE*barEighths/incipits.size();
 		int rise=-1,staveGap=-1,fall=-1,gridAt=START_AT;
 		for(Incipit i:incipits){
