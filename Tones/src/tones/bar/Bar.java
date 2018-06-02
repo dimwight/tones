@@ -19,7 +19,7 @@ import tones.bar.Incipit.Soundings;
 final public class Bar extends Tracer{
 	public static final int WIDTH_NOTE=8;
 	private static final int START_AT=WIDTH_NOTE/2;
-	private static final double SPREAD_BASE=WIDTH_NOTE*1.0;
+	private static final double SPREAD_BASE=WIDTH_NOTE*0.1;
 	public final int at,rise,staveGap,fall,width;
 	public final Set<Incipit>incipits;
 	public final Soundings endSoundings;
