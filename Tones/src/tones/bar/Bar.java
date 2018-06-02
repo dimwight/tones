@@ -46,7 +46,7 @@ final public class Bar extends Tracer{
 	static int eighthSpacedGridAt(int gridAt,int eighthAt,double spread){
 		return Math.Max(gridAt,true?0:eighthAt*spread);
 	}
-		@Override
+	@Override
 	public boolean equals(Object obj){
 		Bar that=(Bar)obj;
 		return this==that||incipits.equals(that.incipits);
