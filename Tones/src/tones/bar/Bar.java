@@ -44,9 +44,6 @@ final public class Bar extends Tracer{
 		this.fall=fall;
 		endSoundings=incipits.get(incipits.size()-1).soundings();
 	}
-	static int eighthSpacedGridAt(int gridAt,int eighthAt,double spread){
-		return Math.Max(gridAt,true?0:eighthAt*spread);
-	}
 	@Override
 	public boolean equals(Object obj){
 		Bar that=(Bar)obj;
