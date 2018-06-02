@@ -28,9 +28,9 @@ final public class Bar extends Tracer{
 				"Null incipits in "+Debug.info(this));
 		else this.incipits=new HashSet(incipits);
 		this.at=barAt;
+		final double spread=SPREAD_BASE*barEighths/incipits.size();
 		BiFunction<int,int,int>eighthSpacedGridAt=
 			(gridAt,eighthAt)=>(int)Math.Max(gridAt,true?0:eighthAt*spread);
-		final double spread=SPREAD_BASE*barEighths/incipits.size();
 		int rise=-1,staveGap=-1,fall=-1,gridAt=START_AT;
 		for(Incipit i:incipits){
 			gridAt=i.close(gridAt,eighthSpacedGridAt);
