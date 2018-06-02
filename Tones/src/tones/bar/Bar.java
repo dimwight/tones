@@ -27,7 +27,7 @@ final public class Bar extends Tracer{
 				"Null incipits in "+Debug.info(this));
 		else this.incipits=new HashSet(incipits);
 		this.at=barAt;
-		final double spread=WIDTH_NOTE*barEighths/incipits.size();
+		final double spread=barEighths/incipits.size();
 		int rise=-1,staveGap=-1,fall=-1,gridAt=START_AT;
 		for(Incipit i:incipits){
 			gridAt=i.close(gridAt,spread);
