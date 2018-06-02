@@ -64,8 +64,8 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			return nodes.parent;
 		}
 	}
-	int close(int barAtNext,double spread){
-		barAt=Bar.eighthSpacedGridAt(barAtNext,eighthAt,spread);
+	int close(int barAtNext,BiSupplier eighthSpacedGridAt){
+		barAt=eighthSpacedGridAt.apply(barAtNext,eighthAt);
 		int maxOffset=0;
 		for(Tone t:tones)
 			maxOffset=Max(maxOffset,t.checkBarOffset(this,Bar.WIDTH_NOTE));
