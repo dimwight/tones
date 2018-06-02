@@ -18,7 +18,8 @@ import tones.Voice;
 import tones.bar.Incipit.Soundings;
 final public class Bar extends Tracer{
 	public static final int WIDTH_NOTE=8;
-	private static final int START_AT=WIDTH_NOTE/2,SPREAD_BASE=WIDTH_NOTE*1.0;
+	private static final int START_AT=WIDTH_NOTE/2;
+	private static final double SPREAD_BASE=WIDTH_NOTE*1.0;
 	public final int at,rise,staveGap,fall,width;
 	public final Set<Incipit>incipits;
 	public final Soundings endSoundings;
@@ -27,7 +28,7 @@ final public class Bar extends Tracer{
 				"Null incipits in "+Debug.info(this));
 		else this.incipits=new HashSet(incipits);
 		this.at=barAt;
-		final double spread=barEighths/incipits.size();
+		final double spread=SPREAD_BASE*barEighths/incipits.size();
 		int rise=-1,staveGap=-1,fall=-1,gridAt=START_AT;
 		for(Incipit i:incipits){
 			gridAt=i.close(gridAt,spread);
