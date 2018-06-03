@@ -1,25 +1,19 @@
 package tones.bar;
 import static java.lang.Math.*;
-import static tones.Tone.*;
-import static tones.Voice.*;
-import static tones.bar.Bar.*;
 import facets.util.Debug;
 import facets.util.Objects;
 import facets.util.Tracer;
-import java.util.ArrayList;
+import facets.util.Util;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import tones.Tone;
-import tones.Voice;
+import java.util.function.BiFunction;
 import tones.bar.Incipit.Soundings;
 final public class Bar extends Tracer{
 	public static final int WIDTH_NOTE=8;
 	private static final int START_AT=WIDTH_NOTE/2;
-	private static final double SPREAD_BASE=WIDTH_NOTE*0.1;
+	private static final double SPREAD_BASE=WIDTH_NOTE*1.0;
 	public final int at,rise,staveGap,fall,width;
 	public final Set<Incipit>incipits;
 	public final Soundings endSoundings;
@@ -28,9 +22,11 @@ final public class Bar extends Tracer{
 				"Null incipits in "+Debug.info(this));
 		else this.incipits=new HashSet(incipits);
 		this.at=barAt;
-		final double spread=SPREAD_BASE*barEighths/incipits.size();
-		BiFunction<int,int,int>eighthSpacedGridAt=
-			(gridAt,eighthAt)->(int)Math.Max(gridAt,true?0:eighthAt*spread);
+		if(false)trace(": ",this);
+		double spread=sqrt(SPREAD_BASE*barEighths/incipits.size());
+		trace(": spread=",Util.fx(spread));
+		BiFunction<Integer,Short,Integer>eighthSpacedGridAt=
+			(gridAt,eighthAt)->(int)max(gridAt,(true?0:eighthAt*spread));
 		int rise=-1,staveGap=-1,fall=-1,gridAt=START_AT;
 		for(Incipit i:incipits){
 			gridAt=i.close(gridAt,eighthSpacedGridAt);
@@ -38,7 +34,7 @@ final public class Bar extends Tracer{
 			staveGap=max(staveGap,i.staveGap);
 			fall=max(fall,i.fall);
 		}
-		width=eighthSpacedGridAt.apply(gridAt,barEighths);
+		width=eighthSpacedGridAt.apply(gridAt,(short)barEighths);
 		this.rise=rise;
 		this.staveGap=staveGap;
 		this.fall=fall;

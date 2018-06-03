@@ -1,5 +1,7 @@
 package tones.bar;
+import static java.lang.Math.*;
 import static tones.ScaleNote.*;
+import static tones.bar.Bar.*;
 import facets.util.Objects;
 import facets.util.Tracer;
 import facets.util.tree.DataNode;
@@ -16,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 import tones.Interval;
 import tones.ScaleNote;
 import tones.Tone;
@@ -64,21 +67,22 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			return nodes.parent;
 		}
 	}
-	int close(int barAtNext,BiFunction<int,int,int>eighthSpacedGridAt){
+	int close(int barAtNext,BiFunction<Integer,Short,Integer>eighthSpacedGridAt){
 		barAt=eighthSpacedGridAt.apply(barAtNext,eighthAt);
-		int maxOffset=0;
+		int offset=0;
 		for(Tone t:tones)
-			maxOffset=Max(maxOffset,t.checkBarOffset(this,Bar.WIDTH_NOTE));
+			offset=max(offset,t.checkBarOffset(this,WIDTH_NOTE));
 		rise=6;
 		staveGap=10;
 		fall=6; 
-		return barAt+Bar.WIDTH_NOTE+maxOffset;
+		if(false&&offset>0)trace(".close: "+this+" +"+offset);
+		return barAt+WIDTH_NOTE+offset;
 	}
-	public final Set<Tone> tones=new HashSet();
+	public final Set<Tone>tones=new HashSet();
 	public final short eighthAt;
 	public int barAt=-1;
 	int rise,staveGap,fall;
-	final private Map<Tone,Collection<Dissonance>> againsts=new HashMap();
+	final private Map<Tone,Collection<Dissonance>>againsts=new HashMap();
 	private Soundings soundings;
 	Incipit(short eighthAt){
 		this.eighthAt=eighthAt;
@@ -95,7 +99,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			throw new IllegalStateException("Null soundings in "+this);
 		return soundings;
 	}
-	public Collection<Dissonance> getDissonances(Tone t){
+	public Collection<Dissonance>getDissonances(Tone t){
 		Set<Dissonance> set=new HashSet();
 		for(Voice v:Voice.values()){
 			Tone sounding=soundings.soundings.get(v);
@@ -117,14 +121,12 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 	public int compareTo(Incipit i){
 		return new Integer(eighthAt).compareTo(new Integer(i.eighthAt));
 	}
-	private int[] intValues(){
+	private int[]intValues(){
 		return new int[]{eighthAt,fall,staveGap,rise,barAt};
 	}
 	public String toString(){
-		return //Debug.info(this)+
-		""+eighthAt
-		        +" b:"+barAt
-		//        +" tones:"+tones.size()
+		return //Debug.info(this)+""+
+		eighthAt+" b:"+barAt//+" tones:"+tones.size()
 		;
 	}
 	DataNode newDebugRoot(){
@@ -136,16 +138,16 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			}
 		});
 		NodeList nodes=new NodeList(Bars.newDebugRoot(getClass(),toString()),true);
-		if(true) for(Tone tone:sortTones){
+		if(true)for(Tone tone:sortTones){
 			if(tone.isRest()) continue;
 			DataNode add=tone.newDebugNode();
 			nodes.add(add);
 			Collection<Dissonance> got=againsts.get(tone);
 			int count=got==null?0:got.size();
 			String values=got==null?"":Objects.toLines(got.toArray());
-			TypedNode clashes=Bars.newDebugRoot(Dissonance.class,""+count,
+			TypedNode clashes=true?null:Bars.newDebugRoot(Dissonance.class,""+count,
 					values.split("\n"));
-			if(clashes.values().length>1) Nodes.appendChild(add,clashes);
+			if(clashes!=null&&clashes.values().length>1) Nodes.appendChild(add,clashes);
 		}
 		else if(false)nodes.add(soundings.newDebugRoot());
 		return nodes.parent;

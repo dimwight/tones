@@ -66,7 +66,7 @@ import facets.util.tree.DataNode;
 		public int checkBarOffset(Incipit i,int noteWidth){
 			if(offset>0)throw new IllegalStateException("Existing offset="+offset);
 			else offset=0;
-			for(Tone that:i.tones)
+			if(!isRest())for(Tone that:i.tones)
 				if(that!=this&&Math.abs(that.pitch-pitch)<2){
 					Tie thatTie=that.getTie();
 					boolean isOffset=this.eighths<that.eighths
@@ -84,7 +84,8 @@ import facets.util.tree.DataNode;
 		}
 		public String toString(){
 			ScaleNote note=pitchNote();
-			return Debug.info(this)+" "+voice+" "+pitchNote()+(false?(" "+eighths):(": "+Strings.intsString(intValues)));
+			return //Debug.info(this)+" "+
+					voice+" "+pitch+(false?(" "+eighths):(": "+Strings.intsString(intValues)));
 		}
 		@Override
 		protected void traceOutput(String msg){
@@ -97,9 +98,11 @@ import facets.util.tree.DataNode;
 		}
 		public DataNode newDebugNode(){
 			int markCount=marks.size();
-			return newDebugRoot(getClass(),
-					toString()+" offset="+getOffset(),
-					newDebugRoot(Mark.class,"marks="+markCount,
+			Class type=getClass();
+			String title=toString()+" offset="+getOffset();
+			return true?newDebugRoot(type,title)
+					:newDebugRoot(type,title,
+							newDebugRoot(Mark.class,"marks="+markCount,
 							Objects.toLines(marks.toArray()).split("\n")));
 		}
 		public int getOffset(){

@@ -36,7 +36,7 @@ public final class Bars extends Tracer implements Titled{
 		barEighths=0;
 		while(true){
 			Bar bar=newPartsBar(barAt++);
-			if(bar!=null) bars.add(bar);
+			if(bar!=null)bars.add(bar);
 			else break;
 		}
 		if(false) trace(": bars="+bars.size()+" barAt="+barAt);
