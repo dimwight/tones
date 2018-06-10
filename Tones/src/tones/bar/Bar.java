@@ -9,11 +9,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import tones.bar.Incipit.Soundings;
 final public class Bar extends Tracer{
 	public static final int WIDTH_NOTE=8;
 	private static final int START_AT=WIDTH_NOTE/2;
-	private static final double SPREAD_BASE=WIDTH_NOTE*1.0;
 	public final int at,rise,staveGap,fall,width;
 	public final Set<Incipit>incipits;
 	public final Soundings endSoundings;
@@ -23,21 +23,20 @@ final public class Bar extends Tracer{
 		else this.incipits=new HashSet(incipits);
 		this.at=barAt;
 		if(false)trace(": ",this);
-		double byIncipits=SPREAD_BASE*barEighths/incipits.size(),
-				spread=(pow(byIncipits,0.5)*1.5);
-		if(true)trace(": spread=",Util.fx(spread));
-		BiFunction<Integer,Short,Integer>eighthSpacedGridAt=
-			(gridAt,eighthAt)->
-			false?(int)max(gridAt,(true?0:eighthAt*spread))
-				:gridAt+(eighthAt==0?0:(int)spread);
 		int rise=-1,staveGap=-1,fall=-1,gridAt=START_AT;
+		int eighthsThen=0,jumpBase=0;
+		Function<Integer,Integer>jumpMod=base->
+			max(WIDTH_NOTE,(int)pow(WIDTH_NOTE*base,0.55)*3);
 		for(Incipit i:incipits){
-			gridAt=i.close(gridAt,eighthSpacedGridAt);
+			final int eighthsNow=i.eighthAt;
+			jumpBase=eighthsNow-eighthsThen;
+			gridAt=i.close(gridAt+(eighthsNow==0?0:jumpMod.apply(jumpBase)));
+			eighthsThen=eighthsNow;
 			rise=max(rise,i.rise);
 			staveGap=max(staveGap,i.staveGap);
 			fall=max(fall,i.fall);
 		}
-		width=eighthSpacedGridAt.apply(gridAt,(short)barEighths);
+		width=gridAt+jumpMod.apply(jumpBase);
 		this.rise=rise;
 		this.staveGap=staveGap;
 		this.fall=fall;
