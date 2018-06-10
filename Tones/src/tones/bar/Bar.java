@@ -26,7 +26,7 @@ final public class Bar extends Tracer{
 		int rise=-1,staveGap=-1,fall=-1,gridAt=START_AT;
 		int eighthsThen=0,jumpBase=0;
 		Function<Integer,Integer>jumpMod=base->
-			max(WIDTH_NOTE,(int)pow(WIDTH_NOTE*base,0.55)*3);
+			max(WIDTH_NOTE,(int)(pow(WIDTH_NOTE*base,0.55)*3.5));
 		for(Incipit i:incipits){
 			final int eighthsNow=i.eighthAt;
 			jumpBase=eighthsNow-eighthsThen;
