@@ -23,10 +23,13 @@ final public class Bar extends Tracer{
 		else this.incipits=new HashSet(incipits);
 		this.at=barAt;
 		if(false)trace(": ",this);
-		double spread=sqrt(SPREAD_BASE*barEighths/incipits.size());
-		trace(": spread=",Util.fx(spread));
+		double byIncipits=SPREAD_BASE*barEighths/incipits.size(),
+				spread=(pow(byIncipits,0.5)*1.5);
+		if(true)trace(": spread=",Util.fx(spread));
 		BiFunction<Integer,Short,Integer>eighthSpacedGridAt=
-			(gridAt,eighthAt)->(int)max(gridAt,(true?0:eighthAt*spread));
+			(gridAt,eighthAt)->
+			false?(int)max(gridAt,(true?0:eighthAt*spread))
+				:gridAt+(eighthAt==0?0:(int)spread);
 		int rise=-1,staveGap=-1,fall=-1,gridAt=START_AT;
 		for(Incipit i:incipits){
 			gridAt=i.close(gridAt,eighthSpacedGridAt);
