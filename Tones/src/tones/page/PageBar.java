@@ -9,6 +9,7 @@ public class PageBar extends PageItem{
 	public final double pageX,pageYs[],staveGap,pageXScale,staveWidth;
 	public final Bar content;
 	private final Voice selectedVoice;
+	private final Map<Voice,Clef>voiceClefs=new HashMap();
 	public PageBar(Bar content,double pageX,double pageY,double staveGap,
 			double pageXScale,Voice selectedVoice){
 		this.content=content;
