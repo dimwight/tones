@@ -6,6 +6,12 @@ import facets.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 public abstract class Mark extends Tracer{
+	public static final class ClefMark extends Mark{
+		public final Clef clef;
+		public ClefMark(Clef clef){
+			this.clef=clef;
+		}
+	}
 	public static final class Tie extends Mark{
 		public final Tone before,after;
 		public Tie(Tone before,Tone after){

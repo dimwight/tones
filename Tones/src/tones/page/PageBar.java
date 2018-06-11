@@ -1,8 +1,11 @@
 package tones.page;
 import facets.util.ItemList;
+import java.util.HashMap;
+import java.util.Map;
 import tones.Clef;
 import tones.Tone;
 import tones.Voice;
+import tones.Mark.ClefMark;
 import tones.bar.Bar;
 import tones.bar.Incipit;
 public class PageBar extends PageItem{
@@ -20,7 +23,7 @@ public class PageBar extends PageItem{
 		staveWidth=content.width*pageXScale;
 		pageYs=new double[]{pageY,pageY+STAVE_GRID+staveGap};
 		for(Voice v:Voice.values())
-			voiceClefs.put(v,Clef.forVoice(voice));
+			voiceClefs.put(v,Clef.forVoice(v));
 	}
 	private Clef clefForTone(Tone t){
 		Voice v=t.voice;

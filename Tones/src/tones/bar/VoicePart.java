@@ -25,7 +25,7 @@ import tones.Voice;
 public final class VoicePart extends Tracer{
 	private static final char CODE_SCALE='s',CODE_OCTAVE_UP='+',CODE_OCTAVE_DOWN='-',
       CODE_TIE='T',CODE_BEAM='B',CODE_BAR_SIZE='Z';
-  public static final int BAR_EIGHTHS_DEFAULT=16;
+  public static final int BAR_EIGHTHS_DEFAULT=Tone.NOTE_WHOLE*2;
   public static final String CODES_NOTE="abcdefgx";
   private static final String tone_="[a-gx]",octave_="[+-]",eighths_="([123468]|(12)|(16))",
 	scale_="(s[a-g])",markClef_="(mc[BT])",

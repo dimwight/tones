@@ -10,9 +10,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import tones.Tone;
 import tones.bar.Incipit.Soundings;
 final public class Bar extends Tracer{
-	public static final int WIDTH_NOTE=8;
+	public static final int WIDTH_NOTE=false?Tone.NOTE_WHOLE:8;
 	private static final int START_AT=WIDTH_NOTE/2;
 	public final int at,rise,staveGap,fall,width;
 	public final Set<Incipit>incipits;
