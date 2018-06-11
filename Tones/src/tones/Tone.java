@@ -68,7 +68,7 @@ import facets.util.tree.DataNode;
 			else offset=0;
 			if(!isRest())for(Tone that:i.tones)
 				if(that!=this&&Math.abs(that.pitch-pitch)<2){
-					Tie thatTie=that.getTie();
+					Tie thatTie=that.getMark(Tie.class);
 					boolean isOffset=this.eighths<that.eighths
 							||(thatTie!=null&&that==thatTie.before);
 					if(true){
