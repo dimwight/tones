@@ -47,7 +47,7 @@ public class PageNote extends PageItem{
     Point tailFrom=new Point(tailFrom(tone.eighths,tailsUp
         ).at().scaled(scaleToNoteWidth)),
       tailTo=tailFrom.shifted(new Vector(0,tailHeight*(tailsUp?-1:1)));
-    tail=tone.eighths>6?null:new Line(tailFrom,tailTo);
+    tail=tone.eighths>3*NOTE_QUARTER?null:new Line(tailFrom,tailTo);
     tailSwag=tone.eighths>NOTE_EIGHTH?null
         :new Line(tailTo,tailTo.shifted(new Vector(3,5)));
   }
