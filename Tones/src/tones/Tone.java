@@ -13,7 +13,7 @@ import facets.util.tree.DataNode;
 	import tones.bar.Bar;
 	import tones.bar.Incipit;
 	public final class Tone extends Tracer{
-		public static final short NOTE_WHOLE=false?8:16,NOTE_HALF=NOTE_WHOLE/2,
+		public static final short NOTE_WHOLE=false?16:8,NOTE_HALF=NOTE_WHOLE/2,
 				NOTE_QUARTER=NOTE_WHOLE/4,NOTE_EIGHTH=NOTE_WHOLE/8,
 				NOTE_DOUBLE=NOTE_WHOLE*2,NOTE_NONE=0;
 		public static class Dissonance{
