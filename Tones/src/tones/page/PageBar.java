@@ -19,6 +19,8 @@ public class PageBar extends PageItem{
 		this.selectedVoice=selectedVoice;
 		staveWidth=content.width*pageXScale;
 		pageYs=new double[]{pageY,pageY+STAVE_GRID+staveGap};
+		for(Voice v:Voice.values())
+			voiceClefs.put(v,Clef.forVoice(voice));
 	}
 	private Clef clefForTone(Tone t){
 		if(t.marks.isEmpty())return voiceClefs.get(t.voice);
