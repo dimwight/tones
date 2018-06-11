@@ -39,9 +39,8 @@ public class PageBar extends PageItem{
 		for(PageIncipit incipit:incipits)
 			for(Tone t:incipit.content.tones){
 				Clef clef=clefForTone(t);
-				PageNote note=new PageNote(this,t,incipit,pageYs[clef.staveAt],clef,
-						t.voice==selectedVoice);
-				 items.add(note);
+				items.add(new PageNote(this,t,incipit,pageYs[clef.staveAt],clef,
+						t.voice==selectedVoice));
 			}
 		if(false)trace(".newItems: items=",items.size());
 		return items.items();
