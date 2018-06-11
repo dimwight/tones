@@ -23,9 +23,11 @@ public class PageBar extends PageItem{
 			voiceClefs.put(v,Clef.forVoice(voice));
 	}
 	private Clef clefForTone(Tone t){
-		Clef c=voiceClefs.get(t.voice);
+		Voice v=t.voice;
+		Clef c=voiceClefs.get(v);
 		ClefMark m=t.getMark(ClefMark.class);
 		if(m==null)return c;
+		voiceClefs.put(v,m.clef);
 		return c;
 	}
 	public PageItem[]newItems(){
@@ -35,11 +37,10 @@ public class PageBar extends PageItem{
 		ItemList<PageItem>items=new ItemList(PageItem.class);
 		items.addItem(this);
 		for(PageIncipit incipit:incipits)
-			for(Tone tone:incipit.content.tones){
-				Voice voice=tone.voice;
-				Clef clef=Clef.forVoice(voice);
+			for(Tone t:incipit.content.tones){
+				Clef clef=clefForTone(t);
 				PageNote note=new PageNote(this,tone,incipit,pageYs[clef.staveAt],clef,
-						voice==selectedVoice);
+						t.voice==selectedVoice);
 				 items.add(note);
 			}
 		if(false)trace(".newItems: items=",items.size());
