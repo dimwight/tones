@@ -91,7 +91,7 @@ import facets.util.tree.DataNode;
 		protected void traceOutput(String msg){
 			if(barAt==6)Util.printOut(this+msg);
 		}
-		private Mark getMark(Class<? extends Mark>type){
+		public <T extends Mark> getMark(T type){
 			for(Mark mark:marks)
 				if(mark.getClass()==type)return mark;
 			return null;
