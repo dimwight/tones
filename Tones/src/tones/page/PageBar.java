@@ -23,8 +23,10 @@ public class PageBar extends PageItem{
 			voiceClefs.put(v,Clef.forVoice(voice));
 	}
 	private Clef clefForTone(Tone t){
-		if(t.marks.isEmpty())return voiceClefs.get(t.voice);
-		return clef;
+		Clef c=voiceClefs.get(t.voice);
+		ClefMark m=t.getMark(ClefMark.class);
+		if(m==null)return c;
+		return c;
 	}
 	public PageItem[]newItems(){
 		ItemList<PageIncipit>incipits=new ItemList(PageIncipit.class);
