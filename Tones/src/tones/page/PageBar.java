@@ -19,6 +19,9 @@ public class PageBar extends PageItem{
 		staveWidth=content.width*pageXScale;
 		pageYs=new double[]{pageY,pageY+STAVE_GRID+staveGap};
 	}
+	private Clef clefForTone{
+		return clef;
+	}
 	public PageItem[]newItems(){
 		ItemList<PageIncipit>incipits=new ItemList(PageIncipit.class);
 		for(Incipit bar:content.incipits)
