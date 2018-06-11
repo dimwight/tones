@@ -20,7 +20,8 @@ public class PageBar extends PageItem{
 		staveWidth=content.width*pageXScale;
 		pageYs=new double[]{pageY,pageY+STAVE_GRID+staveGap};
 	}
-	private Clef clefForTone{
+	private Clef clefForTone(Tone t){
+		if(t.marks.isEmpty())return voiceClefs.get(t.voice);
 		return clef;
 	}
 	public PageItem[]newItems(){
