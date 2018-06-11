@@ -27,7 +27,8 @@ public final class VoicePart extends Tracer{
       CODE_TIE='T',CODE_BEAM='B',CODE_BAR_SIZE='Z';
   public static final int BAR_EIGHTHS_DEFAULT=16;
   public static final String CODES_NOTE="abcdefgx";
-  private static final String tone_="[a-gx123468-]",octave_="\\+",eighths_="(\\d\\d?)",scale_="(s[a-g])",markClef_="(mc[BT])",
+  private static final String tone_="[a-gx123468-]",octave_="\\+",eighths_="(\\d\\d?)",
+	scale_="(s[a-g])",markClef_="(mc[BT])",
 	code_=tone_+"|"+octave_+"|"+eighths_+"|"+scale_+"|"+markClef_;
   public static final String[]TEST_CODES={
           "e:16," 
