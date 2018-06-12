@@ -36,7 +36,7 @@ public final class BarPainters extends PagePainters{
 		Line line=new Line(new double[]{x+width,trebleY,x+width,bassY+8*unitY});
 		return false?p.backgroundLines(new Line[]{line},Shades.gray)
 				:p.line(line,Shades.lightGray,
-					false?PainterSource.HAIRLINE:(int)unitX,false);
+					false?PainterSource.HAIRLINE:false?(int)unitX:1,false);
 	}
 	public Painter[]newPickPainters(){
 		return new Painter[]{p.rectangle(x,trebleY-rise*unitY,width,height,Shades.green)};

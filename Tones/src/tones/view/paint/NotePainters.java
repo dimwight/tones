@@ -57,7 +57,7 @@ public final class NotePainters extends PagePainters{
 	}
 	private Painter[]newBeadPainters(Shade shade){
 		Dot dotAt=note.dotAt;
-		double time=note.tone.eighths;
+		double time=note.tone.beats;
 		if(false&&time<NOTE_QUARTER)shade=Shades.gray;
 		SvgPath dot=dotAt==Dot.NONE?Empty
 					:dotAt==Dot.BELOW?DotBelow:DotLevel,

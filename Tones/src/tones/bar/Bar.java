@@ -1,5 +1,6 @@
 package tones.bar;
 import static java.lang.Math.*;
+import static tones.Tone.*;
 import facets.util.Debug;
 import facets.util.Objects;
 import facets.util.Tracer;
@@ -13,7 +14,8 @@ import java.util.function.Function;
 import tones.Tone;
 import tones.bar.Incipit.Soundings;
 final public class Bar extends Tracer{
-	public static final int WIDTH_NOTE=false?Tone.NOTE_WHOLE:8;
+	public static final int WIDTH_BEAT=SIXTEENTHS?4:8,
+			WIDTH_NOTE=SIXTEENTHS?16:8;
 	private static final int START_AT=WIDTH_NOTE/2;
 	public final int at,rise,staveGap,fall,width;
 	public final Set<Incipit>incipits;
@@ -25,19 +27,20 @@ final public class Bar extends Tracer{
 		this.at=barAt;
 		if(false)trace(": ",this);
 		int rise=-1,staveGap=-1,fall=-1,gridAt=START_AT;
-		int eighthsThen=0,jumpBase=0;
-		Function<Integer,Integer>jumpMod=base->
-			max(WIDTH_NOTE,(int)(pow(WIDTH_NOTE*base,0.55)*3.5));
+		int beatsThen=0,jumpBeats=0;
+		Function<Integer,Integer>jumpMod=beats->
+			max(WIDTH_NOTE,(int)(pow(WIDTH_BEAT*beats,0.55)*3.5));
 		for(Incipit i:incipits){
-			final int eighthsNow=i.eighthAt;
-			jumpBase=eighthsNow-eighthsThen;
-			gridAt=i.close(gridAt+(eighthsNow==0?0:jumpMod.apply(jumpBase)));
-			eighthsThen=eighthsNow;
+			final int beatsNow=i.beatAt;
+			jumpBeats=beatsNow-beatsThen;
+			if(this.at<6)trace(": ",WIDTH_BEAT*jumpBeats);
+			gridAt=i.close(gridAt+(beatsNow==0?0:jumpMod.apply(jumpBeats)));
+			beatsThen=beatsNow;
 			rise=max(rise,i.rise);
 			staveGap=max(staveGap,i.staveGap);
 			fall=max(fall,i.fall);
 		}
-		width=gridAt+jumpMod.apply(jumpBase);
+		width=gridAt+jumpMod.apply(jumpBeats);
 		this.rise=rise;
 		this.staveGap=staveGap;
 		this.fall=fall;

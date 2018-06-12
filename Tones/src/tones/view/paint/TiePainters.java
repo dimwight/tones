@@ -61,7 +61,7 @@ public final class TiePainters extends PagePainters{
 			stretch=(isBoth?toAfter:toBarEnd)/bounds.x;
 		Painter painter=p.mastered(path);
 		p.applyTransforms(new Transform[]{
-			p.transformAt(x*unitX+(isBoth?(tie.before.tone.eighths==NOTE_QUARTER?-2:-1):2)
+			p.transformAt(x*unitX+(isBoth?(tie.before.tone.beats==NOTE_QUARTER?-2:-1):2)
 					+(tailsUp?2:-2),
 					y*unitY-noteHeight*(tailsUp?1.5:-1.5)),
 			p.transformScale(noteHeight*stretch,noteHeight*(tailsUp?1:-1)),

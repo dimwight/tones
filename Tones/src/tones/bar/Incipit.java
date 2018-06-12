@@ -27,35 +27,35 @@ import tones.Voice;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
 	static class Soundings{
 		private final Map<Voice,Tone> soundings;
-		private final short eighthAt,barEighths;
-		private Soundings(short barEighths,short eighthAt,
+		private final short beatAt,barBeats;
+		private Soundings(short barBeats,short beatAt,
 				Map<Voice,Tone> soundings){
-			this.eighthAt=eighthAt;
-			this.barEighths=barEighths;
+			this.beatAt=beatAt;
+			this.barBeats=barBeats;
 			this.soundings=soundings;
 		}
-		static Soundings newEmpty(short barEighths){
-			return new Soundings(barEighths,(short)0,new HashMap());
+		static Soundings newEmpty(short barBeats){
+			return new Soundings(barBeats,(short)0,new HashMap());
 		}
 		Soundings newUpdated(Incipit i){
 			Map<Voice,Tone> nowTones=new HashMap(),nowSoundings=new HashMap();
 			for(Tone t:i.tones)
 				if(!t.isRest()) nowTones.put(t.voice,t);
-			int incipitAt=i.eighthAt;
+			int incipitAt=i.beatAt;
 			for(Voice v:Voice.values()){
 				Tone now=nowTones.get(v),s=soundings.get(v);
 				if(now!=null) nowSoundings.put(v,now);
 				else if(s!=null){
-					int trim=(incipitAt>0?incipitAt:barEighths)-eighthAt;
+					int trim=(incipitAt>0?incipitAt:barBeats)-beatAt;
 					s=s.newSounding(trim);
-					if(s.eighths%barEighths>0) nowSoundings.put(v,s);
+					if(s.beats%barBeats>0) nowSoundings.put(v,s);
 				}
 			}
-			return new Soundings(barEighths,(short)incipitAt,nowSoundings);
+			return new Soundings(barBeats,(short)incipitAt,nowSoundings);
 		}
 		DataNode newDebugRoot(){
 			NodeList nodes=new NodeList(Bars.newDebugRoot(getClass(),""//+soundings.size()+" "
-					+(false?"":eighthAt)),true);
+					+(false?"":beatAt)),true);
 			List<Tone> values=new ArrayList(soundings.values());
 			Collections.sort(values,new Comparator<Tone>(){
 				@Override
@@ -79,13 +79,13 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		return barAt+offset*2/3;
 	}
 	public final Set<Tone>tones=new HashSet();
-	public final short eighthAt;
+	public final short beatAt;
 	public int barAt=-1;
 	int rise,staveGap,fall;
 	final private Map<Tone,Collection<Dissonance>>againsts=new HashMap();
 	private Soundings soundings;
-	Incipit(short eighthAt){
-		this.eighthAt=eighthAt;
+	Incipit(short beatAt){
+		this.beatAt=beatAt;
 	}
 	public void addTone(Tone tone){
 		tones.add(tone);
@@ -119,14 +119,14 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 	}
 	@Override
 	public int compareTo(Incipit i){
-		return new Integer(eighthAt).compareTo(new Integer(i.eighthAt));
+		return new Integer(beatAt).compareTo(new Integer(i.beatAt));
 	}
 	private int[]intValues(){
-		return new int[]{eighthAt,fall,staveGap,rise,barAt};
+		return new int[]{beatAt,fall,staveGap,rise,barAt};
 	}
 	public String toString(){
 		return //Debug.info(this)+""+
-		eighthAt+" b:"+barAt//+" tones:"+tones.size()
+		beatAt+" b:"+barAt//+" tones:"+tones.size()
 		;
 	}
 	DataNode newDebugRoot(){

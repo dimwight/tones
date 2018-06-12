@@ -26,7 +26,7 @@ public class PageNote extends PageItem{
     this.bar=bar;
     this.tone=tone;
 		this.incipit=incipit;
-    intValues=new int[]{tone.pitch,tone.eighths};
+    intValues=new int[]{tone.pitch,tone.beats};
     this.selected=selected;
     pageX=incipit.tonePageX(tone);
     final int stavePitch=tone.pitch-clef.staveMidPitch,
@@ -39,16 +39,16 @@ public class PageNote extends PageItem{
         :beyondStave/2*(aboveMidPitch?1:-1);
     ledgerLineShift=aboveMidPitch?beyondStave%2+1:(beyondStave+1)%2;
     boolean tailsUp=tone.voice.tailsUp;
-    dotAt=tone.eighths%3!=0?NONE:stavePitch%2==0&&ledgerLines==0?ABOVE:LEVEL;
+    dotAt=tone.beats%3!=0?NONE:stavePitch%2==0&&ledgerLines==0?ABOVE:LEVEL;
     debugString=tone.pitchNote()+
       " stavePitch="+stavePitch+" aboveMidPitch="+aboveMidPitch
       +" beyondStave="+beyondStave;
-    double tailHeight=tone.eighths>NOTE_QUARTER?4.7:5;
-    Point tailFrom=new Point(tailFrom(tone.eighths,tailsUp
+    double tailHeight=tone.beats>NOTE_QUARTER?4.7:5;
+    Point tailFrom=new Point(tailFrom(tone.beats,tailsUp
         ).at().scaled(scaleToNoteWidth)),
       tailTo=tailFrom.shifted(new Vector(0,tailHeight*(tailsUp?-1:1)));
-    tail=tone.eighths>3*NOTE_QUARTER?null:new Line(tailFrom,tailTo);
-    tailSwag=tone.eighths>NOTE_EIGHTH?null
+    tail=tone.beats>3*NOTE_QUARTER?null:new Line(tailFrom,tailTo);
+    tailSwag=tone.beats>NOTE_EIGHTH?null
         :new Line(tailTo,tailTo.shifted(new Vector(3,5)));
   }
   public Point tailFrom(short note,boolean tailsUp){

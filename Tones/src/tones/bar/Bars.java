@@ -16,12 +16,12 @@ import tones.Voice;
 import tones.app.TonesViewable;
 import tones.bar.Incipit.Soundings;
 public final class Bars extends Tracer implements Titled{
-	public static final boolean eighthsCheck=false;
+	public static final boolean beatsCheck=false;
 	private final List<Bar>bars=new ArrayList();
 	private final Map<Voice,VoicePart> parts=new HashMap();
 	private final TonesViewable viewable;
 	private VoicePart selectedPart;
-	private short barEighths;
+	private short barBeats;
 	private Soundings soundings;
 	public Bars(TonesViewable viewable){
 		this.viewable=viewable;
@@ -33,7 +33,7 @@ public final class Bars extends Tracer implements Titled{
 		}
 		if(selectedPart==null) selectPart(Empty);
 		int barAt=0;
-		barEighths=0;
+		barBeats=0;
 		while(true){
 			Bar bar=newPartsBar(barAt++);
 			if(bar!=null)bars.add(bar);
@@ -47,28 +47,28 @@ public final class Bars extends Tracer implements Titled{
 			List<Tone> partTones=part.getBarTones(barAt);
 			if(false&&part.voice==Bass)
 				trace(".newPartsBar: partTones="+partTones.size()+" barAt="+barAt);
-			int barEighthsNow=partTones.isEmpty()?barEighths
-					:(eighthsCheck?partTones.remove(0):partTones.get(0)).eighths;
+			int barBeatsNow=partTones.isEmpty()?barBeats
+					:(beatsCheck?partTones.remove(0):partTones.get(0)).beats;
 			if(partTones.isEmpty()) continue;
-			if(eighthsCheck&&barEighths!=0&&barEighthsNow!=barEighths)
-				throw new IllegalStateException("New barEighths="+barEighths
-						+", barEighthsNow="+barEighthsNow+" in "+Debug.info(part));
-			else barEighths=(short)barEighthsNow;
-			if(soundings==null)soundings=Soundings.newEmpty(barEighths);
-			int eighthAt=0;
+			if(beatsCheck&&barBeats!=0&&barBeatsNow!=barBeats)
+				throw new IllegalStateException("New barBeats="+barBeats
+						+", barBeatsNow="+barBeatsNow+" in "+Debug.info(part));
+			else barBeats=(short)barBeatsNow;
+			if(soundings==null)soundings=Soundings.newEmpty(barBeats);
+			int beatAt=0;
 			for(Tone tone:partTones){
 				Incipit i;
-				if((i=incipits.get(eighthAt))==null)
-					incipits.put(eighthAt,i=new Incipit((short)eighthAt));
+				if((i=incipits.get(beatAt))==null)
+					incipits.put(beatAt,i=new Incipit((short)beatAt));
 				i.addTone(tone);
-				eighthAt+=tone.eighths;
+				beatAt+=tone.beats;
 			}
 		}
 		for(Incipit i:incipits.values())soundings=i.readSoundings(soundings);
 		return incipits.isEmpty()?null
 				:new Bar(barAt++,
 						Collections.unmodifiableList(new ArrayList(incipits.values())),
-						barEighths);
+						barBeats);
 	}
 	public void updatePart(String src){
 		VoicePart nowPart=new VoicePart(src),
@@ -81,8 +81,8 @@ public final class Bars extends Tracer implements Titled{
 					nowTones=nowPart.getBarTones(barAt);
 			boolean nowEmpty=nowTones.isEmpty();
 			if(nowEmpty&&thenTones.isEmpty()) break;
-			barEighths=eighthsCheck&&!nowEmpty?nowTones.remove(0).eighths
-					:VoicePart.BAR_EIGHTHS_DEFAULT;
+			barBeats=beatsCheck&&!nowEmpty?nowTones.remove(0).beats
+					:VoicePart.BAR_BEATS_DEFAULT;
 			equals&=thenTones.equals(nowTones);
 			if(!equals){
 				if(false){
