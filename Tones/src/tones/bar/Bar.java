@@ -35,6 +35,7 @@ final public class Bar extends Tracer{
 			jumpBeats=beatsNow-beatsThen;
 			if(false&&this.at<6)trace(": ",beatsNow);
 			gridAt=i.close(gridAt+(beatsNow==0?0:jumpMod.apply(jumpBeats)));
+			if(false)trace(": i.barAt="+i.barAt+ " gridAt="+gridAt);
 			beatsThen=beatsNow;
 			rise=max(rise,i.rise);
 			staveGap=max(staveGap,i.staveGap);

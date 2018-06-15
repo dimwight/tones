@@ -44,7 +44,7 @@ import facets.util.tree.DataNode;
 			this.beats=beats;
 			intValues=pitch==ScaleNote.PITCH_REST?new int[]{barAt,beatAt,beats}
 					:new int[]{barAt,beatAt,beats,pitch};
-			if(voice==Voice.BASS)Util.printOut(beats/NOTE_EIGHTH);
+			if(false&&voice==Voice.Tenor)Util.printOut("",beats/NOTE_EIGHTH);
 		}
 		public void checkTied(Tone before){
 			if(before==null||before.isRest()||isRest()||before.pitch!=pitch
