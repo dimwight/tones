@@ -65,9 +65,11 @@ public final class Bars extends Tracer implements Titled{
 			}
 		}
 		for(Incipit i:incipits.values())soundings=i.readSoundings(soundings);
+		List<Incipit>forBar=new ArrayList(incipits.values());
+		Collections.sort(forBar);
 		return incipits.isEmpty()?null
 				:new Bar(barAt++,
-						Collections.unmodifiableList(new ArrayList(incipits.values())),
+						Collections.unmodifiableList(forBar),
 						barBeats);
 	}
 	public void updatePart(String src){

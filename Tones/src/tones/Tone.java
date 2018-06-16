@@ -13,7 +13,7 @@ import facets.util.tree.DataNode;
 	import tones.bar.Bar;
 	import tones.bar.Incipit;
 	public final class Tone extends Tracer{
-		public static final boolean SIXTEENTHS=false;
+		public static final boolean SIXTEENTHS=true;
 		public static final short NOTE_WHOLE=SIXTEENTHS?16:8,NOTE_HALF=NOTE_WHOLE/2,
 				NOTE_QUARTER=NOTE_WHOLE/4,NOTE_EIGHTH=NOTE_WHOLE/8,
 				NOTE_DOUBLE=NOTE_WHOLE*2,NOTE_NONE=0;
@@ -87,7 +87,7 @@ import facets.util.tree.DataNode;
 		public String toString(){
 			ScaleNote note=pitchNote();
 			return //Debug.info(this)+" "+
-					voice+" "+pitch+(false?(" "+beats):(": "+Strings.intsString(intValues)));
+					voice+" "+pitchNote()+(true?(" "+beats):(": "+Strings.intsString(intValues)));
 		}
 		@Override
 		protected void traceOutput(String msg){
@@ -101,7 +101,8 @@ import facets.util.tree.DataNode;
 		public DataNode newDebugNode(){
 			int markCount=marks.size();
 			Class type=getClass();
-			String title=toString()+" offset="+getOffset();
+			String title=toString()//+" offset="+getOffset()
+			;
 			return true?newDebugRoot(type,title)
 					:newDebugRoot(type,title,
 							newDebugRoot(Mark.class,"marks="+markCount,

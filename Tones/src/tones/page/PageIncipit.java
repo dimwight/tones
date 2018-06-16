@@ -8,7 +8,7 @@ public final class PageIncipit extends PageItem{
   private final double scaledPageX;
   PageIncipit(Incipit content,double barPageX,double pageXScale){
     this.content=content;
-    scaledPageX=(int)(barPageX+content.barAt*pageXScale);
+    scaledPageX=(int)(barPageX+content.gridAt*pageXScale);
   }
   double tonePageX(Tone tone){
     if(scaledPageX<0)throw new IllegalStateException(

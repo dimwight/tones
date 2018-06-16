@@ -28,14 +28,15 @@ final public class Bar extends Tracer{
 		if(false)trace(": ",this);
 		int rise=-1,staveGap=-1,fall=-1,gridAt=START_AT;
 		int beatsThen=0,jumpBeats=0;
-		Function<Integer,Integer>jumpMod=beats->true?WIDTH_NOTE:
-			max(WIDTH_NOTE,(int)(pow(WIDTH_BEAT*beats,0.55)*3.5));
+		Function<Integer,Integer>jumpMod=beats->
+			max(WIDTH_NOTE,(int)(pow(WIDTH_BEAT*beats,0.5)*3.5*NOTE_EIGHTH));
+		if(false)trace(".Bar: incipits=",incipits);
 		for(Incipit i:incipits){
 			final int beatsNow=i.beatAt;
 			jumpBeats=beatsNow-beatsThen;
 			if(false&&this.at<6)trace(": ",beatsNow);
 			gridAt=i.close(gridAt+(beatsNow==0?0:jumpMod.apply(jumpBeats)));
-			if(false)trace(": i.barAt="+i.barAt+ " gridAt="+gridAt);
+			if(false)trace(": ",i);
 			beatsThen=beatsNow;
 			rise=max(rise,i.rise);
 			staveGap=max(staveGap,i.staveGap);

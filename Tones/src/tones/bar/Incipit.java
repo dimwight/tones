@@ -1,6 +1,7 @@
 package tones.bar;
 import static java.lang.Math.*;
 import static tones.ScaleNote.*;
+import static tones.Tone.*;
 import static tones.bar.Bar.*;
 import facets.util.Objects;
 import facets.util.Tracer;
@@ -67,8 +68,8 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			return nodes.parent;
 		}
 	}
-	int close(int barAtNext){
-		barAt=barAtNext;
+	int close(int gridAtNext){
+		gridAt=gridAtNext;
 		int offset=0;
 		for(Tone t:tones)
 			offset=max(offset,t.checkBarOffset(this,WIDTH_NOTE));
@@ -76,16 +77,17 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		staveGap=10;
 		fall=6; 
 		if(false&&offset>0)trace(".close: "+this+" +"+offset);
-		return barAt+offset*2/3;
+		return gridAt+offset*2/3;
 	}
 	public final Set<Tone>tones=new HashSet();
 	public final short beatAt;
-	public int barAt=-1;
+	public int gridAt=-1;
 	int rise,staveGap,fall;
 	final private Map<Tone,Collection<Dissonance>>againsts=new HashMap();
 	private Soundings soundings;
 	Incipit(short beatAt){
 		this.beatAt=beatAt;
+		if(false)trace(": ",this);
 	}
 	public void addTone(Tone tone){
 		tones.add(tone);
@@ -122,11 +124,12 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		return new Integer(beatAt).compareTo(new Integer(i.beatAt));
 	}
 	private int[]intValues(){
-		return new int[]{beatAt,fall,staveGap,rise,barAt};
+		return new int[]{beatAt,fall,staveGap,rise,gridAt};
 	}
 	public String toString(){
-		return //Debug.info(this)+""+
-		beatAt+" b:"+barAt//+" tones:"+tones.size()
+		return //Debug.info(this)+
+				"b "+beatAt/NOTE_EIGHTH+" g "+gridAt/NOTE_EIGHTH
+				//+" tones:"+tones.size()
 		;
 	}
 	DataNode newDebugRoot(){
