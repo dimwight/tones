@@ -129,12 +129,15 @@ public final class TonesViewable extends TreeTextViewable{
 	}
 	@Override
 	protected SSelection newNonTreeViewerSelection(SViewer viewer){
-		bars.selectPart(new VoicePart(selectedNode().getString(0)).voice);
+		ValueNode node = selectedNode();
+		String src = node.getString(0);
+		bars.selectPart(new VoicePart(src).voice);
 		SView view=viewer.view();
 		SSelection selection=selection();
 		if(view instanceof AvatarView){
 			page=(PageView)view;
-			return page.avatars().newAvatarSelection(viewer,new SSelection(){//?
+			return page.avatars().newAvatarSelection(viewer,
+					new SSelection(){//?
 				@Override
 				public Object content(){
 					return bars;

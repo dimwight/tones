@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Facets">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/OneDrive/Documents/Tray/Facets.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../Facets/src" />
+    </SOURCES>
+  </library>
+</component>
