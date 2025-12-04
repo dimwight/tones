@@ -106,6 +106,10 @@ public final class TonesEdit extends TreeTextContenter{
   }
   private static TreeTextSpecifier newSpecifier(){
     return new TreeTextSpecifier(TonesEdit.class){
+      @Override
+      public boolean isFileApp() {
+        return false;
+      }
       protected FileSpecifier[]fileSpecifiers(){
         return new FileSpecifier[]{
           new FileSpecifier("tones.txt","Tones"),
