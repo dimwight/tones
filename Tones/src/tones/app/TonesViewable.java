@@ -16,6 +16,7 @@ import facets.core.superficial.app.SSelection;
 import facets.facet.app.FacetAppSurface;
 import facets.util.Debug;
 import facets.util.Regex;
+import facets.util.tree.DataNode;
 import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
 import java.util.List;
@@ -129,9 +130,10 @@ public final class TonesViewable extends TreeTextViewable{
 	}
 	@Override
 	protected SSelection newNonTreeViewerSelection(SViewer viewer){
-		ValueNode node = selectedNode();
-		String src = node.getString(0);
-		bars.selectPart(new VoicePart(src).voice);
+		ValueNode node = selectedNode();//!
+		if(false)System.out.println("node = " + node);
+		ValueNode src = (ValueNode)(!node.type().equals("TextLine")? node.children()[0].children()[0]:node);
+		bars.selectPart(new VoicePart(src.getString(0)).voice);
 		SView view=viewer.view();
 		SSelection selection=selection();
 		if(view instanceof AvatarView){
@@ -152,8 +154,8 @@ public final class TonesViewable extends TreeTextViewable{
 				}
 			});
 		}
-		return ((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(//?
-				bars.newDebugRoot(barStart,page==null?0:page.barStop())));
+		DataNode root = bars.newDebugRoot(barStart, page == null ? 0 : page.barStop());//?
+		return ((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(root));
 	}
 	@Override
 	protected void nonTreeViewerSelectionChanged(SViewer viewer,
