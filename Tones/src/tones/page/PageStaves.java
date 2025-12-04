@@ -100,12 +100,17 @@ public final class PageStaves{
 					content.selectedPart().voice);
 			bar=block.endBar;
 			double blockHeight=PageItem.STAVE_GRID*2+block.staveGap+block.fall;
-			if(((pageY+=block.rise)+blockHeight)*unitY>useHeight)break;
+			if(((pageY+=block.rise)+blockHeight)*unitY>useHeight){
+				break;
+			}
 			double scaleUpdate=pageWidth/(block.pageXUsed*unitX);
 			pageXScale=bars.hasNext()?scaleUpdate:Math.min(scaleUpdate,pageXScale);
 			List<Bar>blockBars=block.thisBars;
-			if(!blockBars.isEmpty())lastBarAt=blockBars.get(blockBars.size()-1).at;
-			items.addItems(block.newItems(pageY,pageXScale));
+			if(!blockBars.isEmpty()){
+				lastBarAt=blockBars.get(blockBars.size()-1).at;
+			}
+			PageItem[] pageItems = block.newItems(pageY, pageXScale);
+			items.addItems(pageItems);
 			pageY+=blockHeight;
 		}
 		page.setBarStop(lastBarAt+1);
