@@ -42,7 +42,8 @@ public final class NotePainters extends PagePainters{
 		tail=note.tail;
 		dissonances=note.incipit.content.getDissonances(note.tone);
 		boolean selected=note.selected;
-		shade=selectionShade(selected,!dissonances.isEmpty());
+		shade=selectionShade(selected,false&&
+				!dissonances.isEmpty());
 		if(false&&firstInBar)Util.printOut("NotePainters: ",note+", x="+fx(x)+", y="+fx(y));
 		firstInBar=false;
 	}

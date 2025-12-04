@@ -29,7 +29,9 @@ public final class Bars extends Tracer implements Titled{
 		for(TypedNode child:children){
 			VoicePart part=new VoicePart((String)child.values()[0]);
 			parts.put(part.voice,part);
-			if(child==viewable.selection().single()) selectPart(part.voice);
+			if(child==viewable.selection().single()){
+				selectPart(part.voice);
+			}
 		}
 		if(selectedPart==null) selectPart(Empty);
 		int barAt=0;

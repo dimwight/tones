@@ -134,7 +134,7 @@ public final class TonesViewable extends TreeTextViewable{
 		ValueNode src = (ValueNode)(!node.type().equals("TextLine")? node.children()[0].children()[0]:node);
 		bars.selectPart(new VoicePart(src.getString(0)).voice);
 		SView view=viewer.view();
-		if(true)System.out.println("view = " + view);
+		if(false)System.out.println("view = " + view);
 		SSelection selection=selection();
 		if(view instanceof AvatarView){
 			page=(PageView)view;

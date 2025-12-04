@@ -27,12 +27,10 @@ import applicable.treetext.TreeTextContenter;
 import applicable.treetext.TreeTextFeatures;
 import applicable.treetext.TreeTextSpecifier;
 import applicable.treetext.TreeTextViewable;
+import facets.util.tree.TypedNode;
 import tones.bar.VoicePart;
 import tones.view.PageView;
 public final class TonesEdit extends TreeTextContenter{
-  public static void main(String[]args){
-    newSpecifier().buildAndLaunchApp(args);
-  }
   public static final String ARG_BAR_FROM="barFrom",ARG_RESCALE="rescale";
   public TonesEdit(Object source,FacetAppSurface app){
     super(source,app);
@@ -104,26 +102,38 @@ public final class TonesEdit extends TreeTextContenter{
         ).targets()[0];
     expand.setIndex(3);
   }
-  private static TreeTextSpecifier newSpecifier(){
-    return new TreeTextSpecifier(TonesEdit.class){
+
+  @Override
+  public FileSpecifier[] sinkFileSpecifiers() {
+    Object sink=sink();
+    String name=sink instanceof File?((File)sink).getName() :title();
+    FileSpecifier[] specs = ((TreeTextSpecifier) app.spec).fileSpecifiers();
+    return false?FileSpecifier.filterByName(specs,name):specs;
+  }
+
+  public static void main(String[]args){
+    new TreeTextSpecifier(TonesEdit.class) {
       @Override
       public boolean isFileApp() {
-        return false;
+        return true;
       }
-      protected FileSpecifier[]fileSpecifiers(){
+
+      public FileSpecifier[] fileSpecifiers() {
         return new FileSpecifier[]{
-          new FileSpecifier("tones.txt","Tones"),
+                new FileSpecifier("tones.txt", "Tones"),
         };
       }
+
       @Override
-      protected Object getInternalContentSource(){
-        File file=new File(Util.runDir(),"E major.tones.txt");
-        return file.exists()?file:VoicePart.TEST_CODES;
+      protected Object getInternalContentSource() {
+        File file = new File(Util.runDir(), "E major.tones.txt");
+        return file.exists() ? file : VoicePart.TEST_CODES;
       }
+
       @Override
-      protected TreeTextContenter newContenter(Object source,FacetAppSurface app){
-        return new TonesEdit(source,app);
+      protected TreeTextContenter newContenter(Object source, FacetAppSurface app) {
+        return new TonesEdit(source, app);
       }
-    };
+    }.buildAndLaunchApp(args);
   }
 }
