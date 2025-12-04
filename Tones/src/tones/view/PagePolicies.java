@@ -36,8 +36,9 @@ final class PagePolicies extends AvatarPolicies{
 		if(timing)Times.printElapsed("PagePolicies.newAvatarSelection~");
 		return PathSelection.newMinimal(items);
 	}
-	public AvatarPolicy avatarPolicy(SViewer viewer,final AvatarContent content,
-			final PainterSource p){
+	@Override
+	public AvatarPolicy viewerPolicy(SViewer viewer, final AvatarContent content,
+									 final PainterSource p){
 		PageView view=(PageView)viewer.view();
 		PageItem item=(PageItem)content;
 		final PagePainters painters=
