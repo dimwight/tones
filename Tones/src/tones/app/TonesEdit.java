@@ -1,10 +1,9 @@
 package tones.app;
+import static facets.core.app.AppSurface.ContentStyle.*;
 import static facets.facet.FacetFactory.*;
-import facets.core.app.AreaRoot;
-import facets.core.app.SAreaTarget;
-import facets.core.app.SContentAreaTargeter;
-import facets.core.app.SViewer;
-import facets.core.app.TreeView;
+
+import facets.core.app.*;
+import facets.core.app.AppSurface.ContentStyle;
 import facets.core.superficial.SFacet;
 import facets.core.superficial.SFrameTarget;
 import facets.core.superficial.SIndexing;
@@ -27,7 +26,6 @@ import applicable.treetext.TreeTextContenter;
 import applicable.treetext.TreeTextFeatures;
 import applicable.treetext.TreeTextSpecifier;
 import applicable.treetext.TreeTextViewable;
-import facets.util.tree.TypedNode;
 import tones.bar.VoicePart;
 import tones.view.PageView;
 public final class TonesEdit extends TreeTextContenter{
@@ -105,14 +103,18 @@ public final class TonesEdit extends TreeTextContenter{
 
   @Override
   public FileSpecifier[] sinkFileSpecifiers() {
-    Object sink=sink();
-    String name=sink instanceof File?((File)sink).getName() :title();
-    FileSpecifier[] specs = ((TreeTextSpecifier) app.spec).fileSpecifiers();
-    return false?FileSpecifier.filterByName(specs,name):specs;
+    return ((TreeTextSpecifier) app.spec).fileSpecifiers();
   }
 
   public static void main(String[]args){
     new TreeTextSpecifier(TonesEdit.class) {
+      @Override
+      public ContentStyle contentStyle() {
+        return false?
+                ContentStyle.values()[args().getOrPutInt(NATURE_KEY,0)]
+                :DESKTOP;
+      }
+
       @Override
       public boolean isFileApp() {
         return true;
