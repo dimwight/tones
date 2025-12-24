@@ -1,8 +1,8 @@
 	package tones;
 	import static tones.ScaleNote.*;
 	import static tones.bar.Bars.*;
-import facets.util.Debug;
-import facets.util.Objects;
+
+    import facets.util.Objects;
 	import facets.util.Strings;
 	import facets.util.Tracer;
 import facets.util.Util;
@@ -10,8 +10,7 @@ import facets.util.tree.DataNode;
 	import java.util.Arrays;
 	import java.util.HashSet;
 	import tones.Mark.Tie;
-	import tones.bar.Bar;
-	import tones.bar.Incipit;
+    import tones.bar.Incipit;
 	public final class Tone extends Tracer{
 		public static final boolean SIXTEENTHS=true;
 		public static final short NOTE_WHOLE=SIXTEENTHS?16:8,NOTE_HALF=NOTE_WHOLE/2,
@@ -103,9 +102,9 @@ import facets.util.tree.DataNode;
 			Class type=getClass();
 			String title=toString()//+" offset="+getOffset()
 			;
-			return true?newDebugRoot(type,title)
-					:newDebugRoot(type,title,
-							newDebugRoot(Mark.class,"marks="+markCount,
+			return true? newDataRoot(type,title)
+					: newDataRoot(type,title,
+							newDataRoot(Mark.class,"marks="+markCount,
 							Objects.toLines(marks.toArray()).split("\n")));
 		}
 		public int getOffset(){

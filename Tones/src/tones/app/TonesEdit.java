@@ -53,7 +53,8 @@ public final class TonesEdit extends TreeTextContenter{
     final FacetFactory ff=app.ff;
     ViewerAreaMaster vam=new ViewerAreaMaster(){
       protected ViewerAreaMaster newChildMaster(SAreaTarget child){
-        return !(((SViewer)child.activeFaceted()).view()instanceof PageView)?null
+        SView view = ((SViewer) child.activeFaceted()).view();
+        return !(view instanceof PageView)?null
             :new ViewerAreaMaster(){
           protected SFacet newViewTools(STargeter viewTargeter){
             STargeter elements[]=viewTargeter.elements(),
@@ -110,14 +111,14 @@ public final class TonesEdit extends TreeTextContenter{
     new TreeTextSpecifier(TonesEdit.class) {
       @Override
       public ContentStyle contentStyle() {
-        return false?
+        return true?
                 ContentStyle.values()[args().getOrPutInt(NATURE_KEY,0)]
                 :DESKTOP;
       }
 
       @Override
       public boolean isFileApp() {
-        return true;
+        return false;
       }
 
       public FileSpecifier[] fileSpecifiers() {
@@ -129,7 +130,8 @@ public final class TonesEdit extends TreeTextContenter{
       @Override
       protected Object getInternalContentSource() {
         File file = new File(Util.runDir(), "E major.tones.txt");
-        return file.exists() ? file : VoicePart.TEST_CODES;
+        return false&&
+                file.exists() ? file : VoicePart.TEST_CODES;
       }
 
       @Override

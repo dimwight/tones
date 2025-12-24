@@ -11,7 +11,6 @@ import facets.core.app.avatar.AvatarView;
 import facets.core.superficial.SFrameTarget;
 import facets.core.superficial.STarget;
 import facets.core.superficial.STextual;
-import facets.core.superficial.STextual.Coupler;
 import facets.core.superficial.app.SSelection;
 import facets.facet.app.FacetAppSurface;
 import facets.util.Debug;
@@ -135,7 +134,6 @@ public final class TonesViewable extends TreeTextViewable{
 		bars.selectPart(new VoicePart(src.getString(0)).voice);
 		SView view=viewer.view();
 		if(false)System.out.println("view = " + view);
-		SSelection selection=selection();
 		if(view instanceof AvatarView){
 			page=(PageView)view;
 			return page.avatars().newAvatarSelection(viewer,
@@ -154,7 +152,7 @@ public final class TonesViewable extends TreeTextViewable{
 				}
 			});
 		}
-		DataNode root = bars.newDebugRoot(barStart, page == null ? 0 : page.barStop());//?
+		DataNode root = bars.newDataTree(barStart, page == null ? 0 : page.barStop());//?
 		return ((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(root));
 	}
 	@Override

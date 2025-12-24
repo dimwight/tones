@@ -117,8 +117,9 @@ public final class VoicePart extends Tracer{
     else if(false)trace(".VoicePart: barCodes=",barCodes.size());
   }
   public static String mergeBarCodes(List<String> barCodes){
-    return Objects.toString(barCodes.toArray()
-        ).replaceAll("\\s*,\\s*,\\s*",",").replaceAll(",$","");
+    return Objects.toString(barCodes.toArray())
+            .replaceAll("\\s*,\\s*,\\s*",",")
+            .replaceAll(",$","");
   }
   private static Voice parseSource(String src,List<List<Tone>>barTones,
       List<String> barCodes){

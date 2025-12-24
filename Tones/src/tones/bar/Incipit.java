@@ -1,6 +1,5 @@
 package tones.bar;
 import static java.lang.Math.*;
-import static tones.ScaleNote.*;
 import static tones.Tone.*;
 import static tones.bar.Bar.*;
 import facets.util.Objects;
@@ -19,9 +18,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiFunction;
+
 import tones.Interval;
-import tones.ScaleNote;
 import tones.Tone;
 import tones.Tone.Dissonance;
 import tones.Voice;
@@ -55,7 +53,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			return new Soundings(barBeats,(short)incipitAt,nowSoundings);
 		}
 		DataNode newDebugRoot(){
-			NodeList nodes=new NodeList(Bars.newDebugRoot(getClass(),""//+soundings.size()+" "
+			NodeList nodes=new NodeList(Bars.newDataRoot(getClass(),""//+soundings.size()+" "
 					+(false?"":beatAt)),true);
 			List<Tone> values=new ArrayList(soundings.values());
 			Collections.sort(values,new Comparator<Tone>(){
@@ -140,7 +138,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 				return t1.voice.compareTo(t2.voice);
 			}
 		});
-		NodeList nodes=new NodeList(Bars.newDebugRoot(getClass(),toString()),true);
+		NodeList nodes=new NodeList(Bars.newDataRoot(getClass(),toString()),true);
 		if(true)for(Tone tone:sortTones){
 			if(tone.isRest()) continue;
 			DataNode add=tone.newDebugNode();
@@ -148,7 +146,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			Collection<Dissonance> got=againsts.get(tone);
 			int count=got==null?0:got.size();
 			String values=got==null?"":Objects.toLines(got.toArray());
-			TypedNode clashes=true?null:Bars.newDebugRoot(Dissonance.class,""+count,
+			TypedNode clashes=true?null:Bars.newDataRoot(Dissonance.class,""+count,
 					values.split("\n"));
 			if(clashes!=null&&clashes.values().length>1) Nodes.appendChild(add,clashes);
 		}

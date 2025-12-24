@@ -68,7 +68,7 @@ final class PagePolicies extends AvatarPolicies{
 	public Painter getBackgroundPainter(SViewer viewer, 
 			PainterSource p){
 		PlaneView plane=(PlaneView)viewer.view();
-		double margin=INSET*0.75;
+		double margin=INSET*0.95;
 		return false?Painter.EMPTY:p.bar(
 				-margin,-margin,plane.showWidth()-2*(INSET-margin),
 				plane.showHeight()-2*(INSET-margin),Shades.white,false
