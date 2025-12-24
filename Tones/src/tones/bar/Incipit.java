@@ -119,7 +119,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 	}
 	@Override
 	public int compareTo(Incipit i){
-		return new Integer(beatAt).compareTo(new Integer(i.beatAt));
+		return Integer.valueOf(beatAt).compareTo(Integer.valueOf(i.beatAt));
 	}
 	private int[]intValues(){
 		return new int[]{beatAt,fall,staveGap,rise,gridAt};
@@ -130,14 +130,9 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 				//+" tones:"+tones.size()
 		;
 	}
-	DataNode newDebugRoot(){
-		List<Tone> sortTones=new ArrayList(tones);
-		Collections.sort(sortTones,new Comparator<Tone>(){
-			@Override
-			public int compare(Tone t1,Tone t2){
-				return t1.voice.compareTo(t2.voice);
-			}
-		});
+	DataNode newDataTree(){
+		List<Tone> sortTones=new ArrayList<>(tones);
+		sortTones.sort((t1, t2) -> t1.voice.compareTo(t2.voice));
 		NodeList nodes=new NodeList(Bars.newDataRoot(getClass(),toString()),true);
 		if(true)for(Tone tone:sortTones){
 			if(tone.isRest()) continue;

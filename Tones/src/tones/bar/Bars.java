@@ -23,6 +23,15 @@ public final class Bars extends Tracer implements Titled{
 	private VoicePart selectedPart;
 	private short barBeats;
 	private Soundings soundings;
+	public Bars(DataNode tree) {
+		viewable=null;
+		for(var barTree:tree.children()){
+			for(var incipitTree:tree.children()){
+				List<Incipit>forBar=new ArrayList<>();
+
+			}
+		}
+	}
 	public Bars(TonesViewable viewable){
 		this.viewable=viewable;
 		TypedNode[] children=viewable.contentTree().children();
@@ -43,6 +52,7 @@ public final class Bars extends Tracer implements Titled{
 		}
 		if(false) trace(": bars="+bars.size()+" barAt="+barAt);
 	}
+
 	private Bar newPartsBar(int barAt){
 		Map<Integer,Incipit> incipits=new HashMap();
 		for(VoicePart part:parts.values()){
@@ -70,7 +80,7 @@ public final class Bars extends Tracer implements Titled{
 		List<Incipit>forBar=new ArrayList(incipits.values());
 		Collections.sort(forBar);
 		return incipits.isEmpty()?null
-				:new Bar(barAt++,
+				:new Bar(barAt,
 						Collections.unmodifiableList(forBar),
 						barBeats);
 	}
@@ -108,6 +118,7 @@ public final class Bars extends Tracer implements Titled{
 		if(false) trace(".updatePart: bars=",bars.size());
 	}
 	public void selectPart(Voice voice){
+		if (viewable==null)throw new RuntimeException("No viewable");
 		selectedPart=parts.get(voice);
 		for(TypedNode child:viewable.contentTree().children())
 			if(new VoicePart((String)child.values()[0]).voice
@@ -124,24 +135,24 @@ public final class Bars extends Tracer implements Titled{
 		return bars.subList(at,bars.size());
 	}
 	public String title(){
-		return viewable.title();
+		return viewable==null?"From tree" :viewable.title();
 	}
-	public DataNode newDebugRoot(int start,int stop){
-		NodeList barsList=new NodeList(newDebugRoot(getClass(),title()),true);
+	public DataNode newDebugTree(int start, int stop){
+		NodeList barsList=new NodeList(newDataRoot(getClass(),title()),true);
 		for(Bar bar:barsFrom(start)){
-			if(bar.at==stop) break;
+			if(stop>0&&bar.at==stop) break;
 			NodeList barList=new NodeList(
-					newDebugRoot(Bar.class,"at="+bar.at+(true?"":" width="+bar.width)),
+					newDataRoot(Bar.class,"at="+bar.at+(true?"":" width="+bar.width)),
 					true);
 			barsList.add(barList.parent);
 			List<Incipit> incipits=new ArrayList<Incipit>(bar.incipits);
 			Collections.sort(incipits);
 			for(Incipit incipit:incipits)
-				barList.add(incipit.newDebugRoot());
+				barList.add(incipit.newDataTree());
 		}
 		return barsList.parent;
 	}
-	static public DataNode newDebugRoot(Class type,String title,Object...values){
+	static public DataNode newDataRoot(Class type, String title, Object...values){
 		return new DataNode(type.getSimpleName(),title,values);
 	}
 }

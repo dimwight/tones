@@ -45,7 +45,10 @@ public final class TonesViewable extends TreeTextViewable{
 	};
 	TonesViewable(TypedNode tree,ClipperSource clipperSource,FacetAppSurface app){
 		super(tree,clipperSource,app);
-		bars=new Bars(this);
+		Bars fromTones,fromTree;
+		fromTones=new Bars(this);
+		fromTree=new Bars(fromTones.newDebugTree(0,0));
+		bars=false? fromTree:fromTones;
 	}
 	private int barStart,checkShowThen[];
 	private PageView page;
@@ -152,7 +155,7 @@ public final class TonesViewable extends TreeTextViewable{
 				}
 			});
 		}
-		DataNode root = bars.newDataTree(barStart, page == null ? 0 : page.barStop());//?
+		DataNode root = bars.newDebugTree(barStart, page == null ? 0 : page.barStop());//?
 		return ((TreeView)view).newViewerSelection(viewer,PathSelection.newMinimal(root));
 	}
 	@Override
