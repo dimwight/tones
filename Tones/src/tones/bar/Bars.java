@@ -20,16 +20,20 @@ public final class Bars extends Tracer implements Titled{
 	private final List<Bar>bars=new ArrayList();
 	private final Map<Voice,VoicePart> parts=new HashMap();
 	private final TonesViewable viewable;
-	private VoicePart selectedPart;
+	private VoicePart selectedPart= new VoicePart("");
 	private short barBeats;
 	private Soundings soundings;
-	public Bars(DataNode tree) {
-		viewable=null;
+	public Bars(TonesViewable viewable, DataNode tree) {
+		soundings=Soundings.newEmpty(barBeats);
+		this.viewable=viewable;
+		int barAt = 0;
 		for(var barTree:tree.children()){
-			for(var incipitTree:tree.children()){
-				List<Incipit>forBar=new ArrayList<>();
-
+			List<Incipit>forBar=new ArrayList<>();
+			for(var incipitTree:barTree.children()){
+				forBar.add(new Incipit((DataNode) incipitTree));
 			}
+			bars.add(new Bar(barAt++,
+					Collections.unmodifiableList(forBar),8));
 		}
 	}
 	public Bars(TonesViewable viewable){
@@ -66,7 +70,8 @@ public final class Bars extends Tracer implements Titled{
 				throw new IllegalStateException("New barBeats="+barBeats
 						+", barBeatsNow="+barBeatsNow+" in "+Debug.info(part));
 			else barBeats=(short)barBeatsNow;
-			if(soundings==null)soundings=Soundings.newEmpty(barBeats);
+			if(soundings==null)
+				soundings=Soundings.newEmpty(barBeats);
 			int beatAt=0;
 			for(Tone tone:partTones){
 				Incipit i;
@@ -76,7 +81,8 @@ public final class Bars extends Tracer implements Titled{
 				beatAt+=tone.beats;
 			}
 		}
-		for(Incipit i:incipits.values())soundings=i.readSoundings(soundings);
+		for(Incipit i:incipits.values())
+			soundings=i.readSoundings(soundings);
 		List<Incipit>forBar=new ArrayList(incipits.values());
 		Collections.sort(forBar);
 		return incipits.isEmpty()?null
@@ -120,6 +126,7 @@ public final class Bars extends Tracer implements Titled{
 	public void selectPart(Voice voice){
 		if (viewable==null)throw new RuntimeException("No viewable");
 		selectedPart=parts.get(voice);
+		if (false)
 		for(TypedNode child:viewable.contentTree().children())
 			if(new VoicePart((String)child.values()[0]).voice
 					.equals(selectedPart.voice))

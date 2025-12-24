@@ -47,8 +47,9 @@ public final class TonesViewable extends TreeTextViewable{
 		super(tree,clipperSource,app);
 		Bars fromTones,fromTree;
 		fromTones=new Bars(this);
-		fromTree=new Bars(fromTones.newDebugTree(0,0));
-		bars=false? fromTree:fromTones;
+		fromTree=new Bars(this,
+				fromTones.newDebugTree(0,0));
+		bars=true? fromTree:fromTones;
 	}
 	private int barStart,checkShowThen[];
 	private PageView page;

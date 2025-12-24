@@ -5,6 +5,7 @@ import facets.util.Strings;
 import facets.util.Tracer;
 import facets.util.Util;
 import facets.util.tree.DataNode;
+import facets.util.tree.TypedNode;
 import tones.Mark.Tie;
 import tones.bar.Incipit;
 
@@ -36,6 +37,29 @@ public final class Tone extends Tracer {
     }
 
     public final HashSet<Mark> marks = new HashSet();
+
+    public Tone(TypedNode data) {
+        String[] split = data.title().split(" ");
+        voice=Voice.valueOf(split[0]);
+        String[] psplit = split[1].split("");
+        byte pNote=switch (psplit[0]){
+            case "C" -> 0;
+            case "D" -> 1;
+            case "E" -> 2;
+            case "F" -> 3;
+            case "G" -> 4;
+            case "A" -> 5;
+            case "B" -> 6;
+            default -> throw new IllegalStateException("Unexpected value: " + psplit[0]);
+        };
+        byte pOctave = Byte.valueOf(psplit[1]);
+        pitch = (byte) (pNote+pOctave*7-3*7);
+        beats=Short.valueOf(split[2]);
+        String check = newDataNode().title();
+        barAt=-1;
+        beatAt = -1;
+        intValues=null;
+    }
     public final int barAt;
     public final Voice voice;
     public final byte pitch;
@@ -49,7 +73,7 @@ public final class Tone extends Tracer {
         this.beatAt = beatAt;
         this.pitch = pitch;
         this.beats = beats;
-        intValues = pitch == ScaleNote.PITCH_REST ? new int[]{barAt, beatAt, beats}
+        intValues = pitch == PITCH_REST ? new int[]{barAt, beatAt, beats}
                 : new int[]{barAt, beatAt, beats, pitch};
         if (false && voice == Voice.Tenor) Util.printOut("", beats / NOTE_EIGHTH);
     }
@@ -72,10 +96,6 @@ public final class Tone extends Tracer {
 
     public Tone newSounding(int trim) {
         return new Tone(voice, barAt, beatAt, pitch, (short) (this.beats - trim));
-    }
-
-    public ScaleNote pitchNote() {
-        return ScaleNote.pitchNote(pitch);
     }
 
     public int checkBarOffset(Incipit i, int noteWidth) {
@@ -104,6 +124,9 @@ public final class Tone extends Tracer {
                 + (true ? (" " + beats) : (": " + Strings.intsString(intValues)));
     }
 
+    public ScaleNote pitchNote() {
+        return ScaleNote.pitchNote(pitch);
+    }
     private int octaveAt() {
         int midCat=3*7, abs=midCat+pitch;
         return abs / 7;
@@ -120,7 +143,7 @@ public final class Tone extends Tracer {
         return null;
     }
 
-    public DataNode newDebugNode(){
+    public DataNode newDataNode(){
         int markCount = marks.size();
         Class type = getClass();
         String title = toString()//+" offset="+getOffset()

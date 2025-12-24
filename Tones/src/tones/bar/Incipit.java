@@ -24,7 +24,15 @@ import tones.Tone;
 import tones.Tone.Dissonance;
 import tones.Voice;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
-	static class Soundings{
+	public Incipit(TypedNode tree) {
+		String[] split = tree.title().split(" ");
+		beatAt=Short.valueOf(split[1]);
+		gridAt=Short.valueOf(split[3]);
+		for (var forTone:tree.children())
+			addTone(new Tone(forTone));
+	}
+
+    static class Soundings{
 		private final Map<Voice,Tone> soundings;
 		private final short beatAt,barBeats;
 		private Soundings(short barBeats,short beatAt,
@@ -82,7 +90,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 	public int gridAt=-1;
 	int rise,staveGap,fall;
 	final private Map<Tone,Collection<Dissonance>>againsts=new HashMap();
-	private Soundings soundings;
+	private Soundings soundings=Soundings.newEmpty((short) 0);
 	Incipit(short beatAt){
 		this.beatAt=beatAt;
 		if(false)trace(": ",this);
@@ -136,14 +144,15 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		NodeList nodes=new NodeList(Bars.newDataRoot(getClass(),toString()),true);
 		if(true)for(Tone tone:sortTones){
 			if(tone.isRest()) continue;
-			DataNode add=tone.newDebugNode();
+			DataNode add=tone.newDataNode();
 			nodes.add(add);
 			Collection<Dissonance> got=againsts.get(tone);
 			int count=got==null?0:got.size();
 			String values=got==null?"":Objects.toLines(got.toArray());
 			TypedNode clashes=true?null:Bars.newDataRoot(Dissonance.class,""+count,
 					values.split("\n"));
-			if(clashes!=null&&clashes.values().length>1) Nodes.appendChild(add,clashes);
+			if(clashes!=null&&clashes.values().length>1)
+				Nodes.appendChild(add,clashes);
 		}
 		else if(false)nodes.add(soundings.newDebugRoot());
 		return nodes.parent;

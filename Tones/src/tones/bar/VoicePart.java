@@ -109,6 +109,10 @@ public final class VoicePart extends Tracer{
   public final List<String>barCodes=new ArrayList();
   public VoicePart(String src){
     this.src=src.replaceAll(",$","");
+    if (src.isEmpty()){
+      voice=null;
+      return;
+    }
     voice=parseSource(this.src,barTones,barCodes);
     String checkCodes=mergeBarCodes(barCodes);
     if(!checkCodes.equals(this.src))
