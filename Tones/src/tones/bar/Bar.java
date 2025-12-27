@@ -4,14 +4,13 @@ import static tones.Tone.*;
 import facets.util.Debug;
 import facets.util.Objects;
 import facets.util.Tracer;
-import facets.util.Util;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.BiFunction;
 import java.util.function.Function;
-import tones.Tone;
+
 import tones.bar.Incipit.Soundings;
 final public class Bar extends Tracer{
 	public static final int WIDTH_BEAT=SIXTEENTHS?4:8,
@@ -20,7 +19,7 @@ final public class Bar extends Tracer{
 	public final int at,rise,staveGap,fall,width;
 	public final Set<Incipit>incipits;
 	public final Soundings endSoundings;
-	Bar(int barAt,List<Incipit>incipits,int barEighths){
+	Bar(int barAt,List<Incipit>incipits){
 		if(incipits==null)throw new IllegalStateException(
 				"Null incipits in "+Debug.info(this));
 		else this.incipits=new HashSet(incipits);

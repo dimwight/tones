@@ -30,12 +30,15 @@ import tones.bar.VoicePart;
 import tones.view.PageView;
 public final class TonesEdit extends TreeTextContenter{
   public static final String ARG_BAR_FROM="barFrom",ARG_RESCALE="rescale";
+  public static final String ARG_TREE="tree";
   public TonesEdit(Object source,FacetAppSurface app){
     super(source,app);
   }
   @Override
-  protected TreeTextViewable newViewable(DataNode tree){
-    return new TonesViewable(tree,app.ff.statefulClipperSource(false),app);
+  protected TreeTextViewable newViewable(DataNode data){
+    boolean useTree = app.spec.args().getBoolean(ARG_TREE);
+    return new TonesViewable(data,useTree,
+            app.ff.statefulClipperSource(false),app);
   }
   @Override
   protected SFrameTarget[]newViewTargets(TreeView debugTree,boolean liveViews){

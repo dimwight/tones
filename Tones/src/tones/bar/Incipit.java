@@ -60,7 +60,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			}
 			return new Soundings(barBeats,(short)incipitAt,nowSoundings);
 		}
-		DataNode newDebugRoot(){
+		DataNode newDataTree(){
 			NodeList nodes=new NodeList(Bars.newDataRoot(getClass(),""//+soundings.size()+" "
 					+(false?"":beatAt)),true);
 			List<Tone> values=new ArrayList(soundings.values());
@@ -142,19 +142,19 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 		List<Tone> sortTones=new ArrayList<>(tones);
 		sortTones.sort((t1, t2) -> t1.voice.compareTo(t2.voice));
 		NodeList nodes=new NodeList(Bars.newDataRoot(getClass(),toString()),true);
-		if(true)for(Tone tone:sortTones){
+		for(Tone tone:sortTones){
 			if(tone.isRest()) continue;
-			DataNode add=tone.newDataNode();
+			DataNode add=tone.newDataTree();
 			nodes.add(add);
 			Collection<Dissonance> got=againsts.get(tone);
 			int count=got==null?0:got.size();
 			String values=got==null?"":Objects.toLines(got.toArray());
-			TypedNode clashes=true?null:Bars.newDataRoot(Dissonance.class,""+count,
+			TypedNode clashes=false?null:Bars.newDataRoot(Dissonance.class,""+count,
 					values.split("\n"));
 			if(clashes!=null&&clashes.values().length>1)
 				Nodes.appendChild(add,clashes);
 		}
-		else if(false)nodes.add(soundings.newDebugRoot());
+		nodes.add(soundings.newDataTree());
 		return nodes.parent;
 	}
 }

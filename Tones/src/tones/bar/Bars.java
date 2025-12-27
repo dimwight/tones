@@ -33,7 +33,7 @@ public final class Bars extends Tracer implements Titled{
 				forBar.add(new Incipit((DataNode) incipitTree));
 			}
 			bars.add(new Bar(barAt++,
-					Collections.unmodifiableList(forBar),8));
+					Collections.unmodifiableList(forBar)));
 		}
 	}
 	public Bars(TonesViewable viewable){
@@ -87,8 +87,8 @@ public final class Bars extends Tracer implements Titled{
 		Collections.sort(forBar);
 		return incipits.isEmpty()?null
 				:new Bar(barAt,
-						Collections.unmodifiableList(forBar),
-						barBeats);
+						Collections.unmodifiableList(forBar)
+		);
 	}
 	public void updatePart(String src){
 		VoicePart nowPart=new VoicePart(src),

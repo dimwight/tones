@@ -55,7 +55,7 @@ public final class Tone extends Tracer {
         byte pOctave = Byte.valueOf(psplit[1]);
         pitch = (byte) (pNote+pOctave*7-3*7);
         beats=Short.valueOf(split[2]);
-        String check = newDataNode().title();
+        String check = newDataTree().title();
         barAt=-1;
         beatAt = -1;
         intValues=null;
@@ -143,12 +143,12 @@ public final class Tone extends Tracer {
         return null;
     }
 
-    public DataNode newDataNode(){
+    public DataNode newDataTree(){
         int markCount = marks.size();
         Class type = getClass();
         String title = toString()//+" offset="+getOffset()
                 ;
-        return true ? newDataRoot(type, title)
+        return false ? newDataRoot(type, title)
                 : newDataRoot(type, title,
                 newDataRoot(Mark.class, "marks=" + markCount,
                         Objects.toLines(marks.toArray()).split("\n")));
