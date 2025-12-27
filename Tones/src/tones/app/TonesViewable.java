@@ -1,6 +1,7 @@
 package tones.app;
 import static facets.core.app.ActionViewerTarget.Action.*;
-
+import static java.lang.Math.*;
+import static tones.bar.VoicePart.*;
 import facets.core.app.PathSelection;
 import facets.core.app.SView;
 import facets.core.app.SViewer;
@@ -8,12 +9,17 @@ import facets.core.app.TreeView;
 import facets.core.app.ViewableAction;
 import facets.core.app.avatar.AvatarView;
 import facets.core.superficial.SFrameTarget;
+import facets.core.superficial.STarget;
 import facets.core.superficial.STextual;
 import facets.core.superficial.app.SSelection;
 import facets.facet.app.FacetAppSurface;
+import facets.util.Debug;
+import facets.util.Regex;
 import facets.util.tree.DataNode;
 import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
+import java.util.List;
+import java.util.Objects;
 import applicable.treetext.TreeTextViewable;
 import tones.Voice;
 import tones.bar.Bars;
@@ -41,8 +47,8 @@ public final class TonesViewable extends TreeTextViewable{
 		super(tree,clipperSource,app);
 		Bars fromTones,fromTree;
 		fromTones=new Bars(this);
-		fromTree=true?null: new Bars(this,
-				fromTones.newDebugTree(0,0));
+		fromTree=!useTree?null:
+				new Bars(this,fromTones.newDebugTree(0,0));
 		bars=useTree? fromTree:fromTones;
 	}
 	private int barStart,checkShowThen[];
@@ -52,7 +58,12 @@ public final class TonesViewable extends TreeTextViewable{
 	private Voice voiceThen;
 	private STextual textual;
 	public SFrameTarget selectionFrame(){
-		return new SFrameTarget(title(),"selectionFrame"){};
+		barStart=page.barStart();
+		return new SFrameTarget(selection().single()){
+			protected STarget[]lazyElements(){
+				return new STarget[]{};
+			}
+		};
 	}
 	private void doUndoableEdit(ValueNode selected,String src){
 		selected.setValues(new String[]{src});
