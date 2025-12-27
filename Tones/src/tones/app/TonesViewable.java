@@ -15,6 +15,7 @@ import facets.core.superficial.app.SSelection;
 import facets.facet.app.FacetAppSurface;
 import facets.util.Debug;
 import facets.util.Regex;
+import facets.util.Titled;
 import facets.util.tree.DataNode;
 import facets.util.tree.TypedNode;
 import facets.util.tree.ValueNode;
@@ -58,56 +59,7 @@ public final class TonesViewable extends TreeTextViewable{
 	private Voice voiceThen;
 	private STextual textual;
 	public SFrameTarget selectionFrame(){
-		VoicePart selected=bars.selectedPart();
-		Voice voice=selected.voice;
-		if(voice!=voiceThen)show=null;
-		List<String>codes=selected.barCodes;
-		barStart=page.barStart();
-		int codesCount=codes.size(),codeStop=min(page.barStop(),codesCount);
-		if(false) trace(".selectionFrame: codesCount="+codesCount+" "
-				+barStart+","+codeStop);
-		int[]checkShow={codesCount,barStart,codeStop};
-		if(!Objects.deepEquals(checkShow,checkShowThen)||show==null){
-			checkShowThen=checkShow;
-			before=mergeBarCodes(codes.subList(0,min(barStart,codesCount)));
-			if(show==null)show=barStart>=codeStop?"":mergeBarCodes(codes.subList(barStart,codeStop));
-			after=codeStop>=codesCount?"":mergeBarCodes(codes.subList(codeStop,codesCount));
-			if(false)trace(".selectionFrame: show=",show);
-			if(false)Debug.printStackTrace(50);
-		}
-		textual=new STextual("Codes",show.isEmpty()?NO_CODES:show,
-				new STextual.Coupler(){
-			@Override
-			public boolean updateInterim(STextual t){
-				return true;
-			}
-			@Override
-			public void textSet(STextual t){
-				String text=t.text(),edit=Regex.replaceAll(text,
-						"([^,])$",",$1",
-						",,",",",
-						"","");
-				if(false)trace(".textSet: text="+text+" edit="+edit);
-				String src=(before+","+edit+","+after).trim().replaceAll("^,","");
-				try{
-					VoicePart.checkSource(src);
-					show=edit;
-					if(false)trace(".textSet: show=",show);
-				}catch(Exception e){
-					trace(".textSet: bad edit=",edit);
-					show=text;
-					return;
-				}
-				TonesViewable.this.doUndoableEdit((ValueNode)framed,src);
-				t.notifyParent(Impact.CONTENT);
-			}
-		});
-		textual.setLive(!textual.text().equals(NO_CODES));
-		return new SFrameTarget(selection().single()){
-			protected STarget[]lazyElements(){
-				return new STarget[]{textual};
-			}
-		};
+		return new SFrameTarget(title(),"selectionFrame"){};
 	}
 	private void doUndoableEdit(ValueNode selected,String src){
 		selected.setValues(new String[]{src});

@@ -82,10 +82,11 @@ public final class TonesEdit extends TreeTextContenter{
   @Override
   protected TreeTextFeatures newFeatures(SContentAreaTargeter area){
     final STargeter selection=area.selection(),
-        code=selection.elements()[0];
+        code=true?null: selection.elements()[0];
     return new TreeTextFeatures(app,area){
       @Override
       protected SFacet[]adjustToolbarItems(ItemList<SFacet>facets){
+        if (true) return facets.items();
         if(false)facets.clear();
         facets.add(0,rowPanel(selection,textualField(code,45,HINT_NONE)));
         return facets.items();

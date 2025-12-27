@@ -96,8 +96,13 @@ public final class PageStaves{
 		ItemList<PageItem>items=new ItemList(PageItem.class);
 		Bar bar=null;
 		while(bars.hasNext()||bar!=null){
-			PageStaves block=new PageStaves(bars,bar,pageWidth/unitX,
-					content.selectedPart().voice);
+			PageStaves block=new PageStaves(bars,
+					bar,
+					pageWidth/unitX,
+					false? content.selectedPart().voice
+							:Voice.Empty
+
+			);
 			bar=block.endBar;
 			double blockHeight=PageItem.STAVE_GRID*2+block.staveGap+block.fall;
 			if(((pageY+=block.rise)+blockHeight)*unitY>useHeight){
