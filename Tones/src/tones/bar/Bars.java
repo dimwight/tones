@@ -22,9 +22,8 @@ public final class Bars extends Tracer implements Titled{
 	private final TonesViewable viewable;
 	private VoicePart selectedPart= new VoicePart("");
 	private short barBeats=32;
-	private Soundings soundings;
+	private Soundings soundings=Soundings.newEmpty(barBeats);
 	public Bars(TonesViewable viewable, DataNode tree) {
-		soundings=Soundings.newEmpty(barBeats);
 		this.viewable=viewable;
 		int barAt = 0;
 		for(var barTree:tree.children()){
@@ -42,18 +41,13 @@ public final class Bars extends Tracer implements Titled{
 		for(TypedNode child:children){
 			VoicePart part=new VoicePart((String)child.values()[0]);
 			parts.put(part.voice,part);
-			if(child==viewable.selection().single()){
-				selectPart(part.voice);
-			}
 		}
-		if(selectedPart==null) selectPart(Empty);
 		int barAt=0;
 		while(true){
 			Bar bar=newPartsBar(barAt++);
 			if(bar!=null)bars.add(bar);
 			else break;
 		}
-		if(false) trace(": bars="+bars.size()+" barAt="+barAt);
 	}
 
 	private Bar newPartsBar(int barAt){
@@ -89,50 +83,6 @@ public final class Bars extends Tracer implements Titled{
 				:new Bar(barAt, Collections.unmodifiableList(forBar)
 		);
 	}
-	public void updatePart(String src){
-		VoicePart nowPart=new VoicePart(src),
-				thenPart=parts.replace(nowPart.voice,nowPart);
-		selectPart(nowPart.voice);
-		int count=bars.size();
-		boolean equals=true;
-		for(int start=true?0:count-5,stop=false?2:count,barAt=start;true;barAt++){
-			List<Tone> thenTones=thenPart.getBarTones(barAt),
-					nowTones=nowPart.getBarTones(barAt);
-			boolean nowEmpty=nowTones.isEmpty();
-			if(nowEmpty&&thenTones.isEmpty()) break;
-			barBeats=beatsCheck&&!nowEmpty?nowTones.remove(0).beats
-					:VoicePart.BAR_BEATS_DEFAULT;
-			equals&=thenTones.equals(nowTones);
-			if(!equals){
-				if(false){
-					trace(".updateSelectedPart: barAt="+barAt+" equals="+equals+" now=",
-							nowTones);
-					trace(" then=",thenTones);
-				}
-				if(barAt<bars.size())bars.remove(barAt);
-				if(barAt>0)soundings=bars.get(barAt-1).endSoundings;
-				bars.add(barAt,newPartsBar(barAt));
-			}
-		}
-		int stop=bars.size();
-		for(int at=0;at<stop;at++)
-			if(bars.get(at)==null){
-				bars.remove(at--);
-				stop--;
-			}
-		if(false) trace(".updatePart: bars=",bars.size());
-	}
-	public void selectPart(Voice voice){
-		if (viewable==null)throw new RuntimeException("No viewable");
-		selectedPart=parts.get(voice);
-		if (false) for(TypedNode child:viewable.contentTree().children())
-			if(new VoicePart((String)child.values()[0]).voice
-					.equals(selectedPart.voice))
-				viewable.defineSelection(child);
-	}
-	public VoicePart selectedPart(){
-		return selectedPart;
-	}
 	public int barCount(){
 		return bars.size();
 	}
@@ -140,9 +90,9 @@ public final class Bars extends Tracer implements Titled{
 		return bars.subList(at,bars.size());
 	}
 	public String title(){
-		return viewable==null?"From tree" :viewable.title();
+		return viewable.title();
 	}
-	public DataNode newDebugTree(int start, int stop){
+	public DataNode newDataTree(int start, int stop){
 		NodeList barsList=new NodeList(newDataRoot(getClass(),title()),true);
 		for(Bar bar:barsFrom(start)){
 			if(stop>0&&bar.at==stop) break;

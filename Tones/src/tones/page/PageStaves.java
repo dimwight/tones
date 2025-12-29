@@ -98,9 +98,7 @@ public final class PageStaves{
 		while(bars.hasNext()||bar!=null){
 			PageStaves block=new PageStaves(bars,
 					bar,
-					pageWidth/unitX,
-					false? content.selectedPart().voice
-							:Voice.Empty
+					pageWidth/unitX,Voice.Empty
 
 			);
 			bar=block.endBar;
