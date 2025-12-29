@@ -35,8 +35,8 @@ public class PageBar extends PageItem{
 	}
 	public PageItem[]newItems(){
 		ItemList<PageIncipit>incipits=new ItemList(PageIncipit.class);
-		for(Incipit bar:content.incipits)
-			incipits.addItem(new PageIncipit(bar,pageX,pageXScale));
+		for(Incipit i:content.incipits)
+			incipits.addItem(new PageIncipit(i,pageX,pageXScale));
 		ItemList<PageItem>items=new ItemList(PageItem.class);
 		items.addItem(this);
 		for(PageIncipit incipit:incipits)

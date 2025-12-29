@@ -113,7 +113,8 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			Tone sounding=soundings.soundings.get(v);
 			if(v!=t.voice&&sounding!=null){
 				Interval i=Interval.between(t,sounding);
-				if(i.isDissonant(sounding)) set.add(new Dissonance(i,sounding));
+				if(i.isDissonant(sounding))
+					set.add(new Dissonance(i,sounding));
 			}
 		}
 		return set;
@@ -134,7 +135,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 	}
 	public String toString(){
 		return //Debug.info(this)+
-				"b "+beatAt/NOTE_EIGHTH+" g "+gridAt/NOTE_EIGHTH
+				"b "+beatAt+" g "+gridAt
 				//+" tones:"+tones.size()
 		;
 	}
@@ -149,12 +150,12 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			Collection<Dissonance> got=againsts.get(tone);
 			int count=got==null?0:got.size();
 			String values=got==null?"":Objects.toLines(got.toArray());
-			TypedNode clashes=false?null:Bars.newDataRoot(Dissonance.class,""+count,
+			TypedNode clashes=true?null:Bars.newDataRoot(Dissonance.class,""+count,
 					values.split("\n"));
 			if(clashes!=null&&clashes.values().length>1)
 				Nodes.appendChild(add,clashes);
 		}
-		nodes.add(soundings.newDataTree());
+		if (false) nodes.add(soundings.newDataTree());
 		return nodes.parent;
 	}
 }

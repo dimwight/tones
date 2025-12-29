@@ -21,7 +21,7 @@ public final class Bars extends Tracer implements Titled{
 	private final Map<Voice,VoicePart> parts=new HashMap();
 	private final TonesViewable viewable;
 	private VoicePart selectedPart= new VoicePart("");
-	private short barBeats;
+	private short barBeats=32;
 	private Soundings soundings;
 	public Bars(TonesViewable viewable, DataNode tree) {
 		soundings=Soundings.newEmpty(barBeats);
@@ -30,7 +30,7 @@ public final class Bars extends Tracer implements Titled{
 		for(var barTree:tree.children()){
 			List<Incipit>forBar=new ArrayList<>();
 			for(var incipitTree:barTree.children()){
-				forBar.add(new Incipit((DataNode) incipitTree));
+				forBar.add(new Incipit(incipitTree));
 			}
 			bars.add(new Bar(barAt++,
 					Collections.unmodifiableList(forBar)));
@@ -48,7 +48,6 @@ public final class Bars extends Tracer implements Titled{
 		}
 		if(selectedPart==null) selectPart(Empty);
 		int barAt=0;
-		barBeats=0;
 		while(true){
 			Bar bar=newPartsBar(barAt++);
 			if(bar!=null)bars.add(bar);
@@ -69,7 +68,8 @@ public final class Bars extends Tracer implements Titled{
 			if(beatsCheck&&barBeats!=0&&barBeatsNow!=barBeats)
 				throw new IllegalStateException("New barBeats="+barBeats
 						+", barBeatsNow="+barBeatsNow+" in "+Debug.info(part));
-			else barBeats=(short)barBeatsNow;
+			else if (false)
+				barBeats=(short)barBeatsNow;
 			if(soundings==null)
 				soundings=Soundings.newEmpty(barBeats);
 			int beatAt=0;
@@ -86,8 +86,7 @@ public final class Bars extends Tracer implements Titled{
 		List<Incipit>forBar=new ArrayList(incipits.values());
 		Collections.sort(forBar);
 		return incipits.isEmpty()?null
-				:new Bar(barAt,
-						Collections.unmodifiableList(forBar)
+				:new Bar(barAt, Collections.unmodifiableList(forBar)
 		);
 	}
 	public void updatePart(String src){
@@ -126,8 +125,7 @@ public final class Bars extends Tracer implements Titled{
 	public void selectPart(Voice voice){
 		if (viewable==null)throw new RuntimeException("No viewable");
 		selectedPart=parts.get(voice);
-		if (false)
-		for(TypedNode child:viewable.contentTree().children())
+		if (false) for(TypedNode child:viewable.contentTree().children())
 			if(new VoicePart((String)child.values()[0]).voice
 					.equals(selectedPart.voice))
 				viewable.defineSelection(child);
