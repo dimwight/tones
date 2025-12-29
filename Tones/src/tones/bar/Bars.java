@@ -33,6 +33,7 @@ public final class Bars extends Tracer implements Titled{
 			}
 			bars.add(new Bar(barAt++,
 					Collections.unmodifiableList(forBar)));
+
 		}
 	}
 	public Bars(TonesViewable viewable){

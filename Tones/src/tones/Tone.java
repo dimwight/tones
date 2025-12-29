@@ -38,6 +38,13 @@ public final class Tone extends Tracer {
 
     public final HashSet<Mark> marks = new HashSet();
 
+    public final int barAt;
+    public final Voice voice;
+    public final byte pitch;
+    public final short beats;
+    private final int beatAt, intValues[];
+    private int offset = -1;
+
     public Tone(TypedNode data) {
         String[] split = data.title().split(" ");
         voice=Voice.valueOf(split[0]);
@@ -60,13 +67,6 @@ public final class Tone extends Tracer {
         beatAt = -1;
         intValues=null;
     }
-    public final int barAt;
-    public final Voice voice;
-    public final byte pitch;
-    public final short beats;
-    private final int beatAt, intValues[];
-    private int offset = -1;
-
     public Tone(Voice voice, int barAt, int beatAt, byte pitch, short beats) {
         this.voice = voice;
         this.barAt = barAt;
@@ -148,10 +148,11 @@ public final class Tone extends Tracer {
         Class type = getClass();
         String title = toString()//+" offset="+getOffset()
                 ;
-        return false ? newDataRoot(type, title)
-                : newDataRoot(type, title,
+        if (markCount < 1) return newDataRoot(type, title);
+        String lines = Objects.toLines(marks.toArray());
+        return newDataRoot(type, title,
                 newDataRoot(Mark.class, "marks=" + markCount,
-                        Objects.toLines(marks.toArray()).split("\n")));
+                        lines.split("\n")));
     }
 
     public int getOffset() {
