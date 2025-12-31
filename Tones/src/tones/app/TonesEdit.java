@@ -29,15 +29,15 @@ import applicable.treetext.TreeTextViewable;
 import tones.bar.VoicePart;
 import tones.view.PageView;
 public final class TonesEdit extends TreeTextContenter{
-  public static final String ARG_BAR_FROM="barFrom",ARG_RESCALE="rescale";
-  public static final String ARG_TREE="tree";
+  public static final String ARG_BAR_FROM="barFrom",
+          ARG_RESCALE="rescale",
+          ARG_TREE="tree";
   public TonesEdit(Object source,FacetAppSurface app){
     super(source,app);
   }
   @Override
   protected TreeTextViewable newViewable(DataNode data){
-    boolean useTree = app.spec.args().getBoolean(ARG_TREE);
-    return new TonesViewable(data,useTree,
+    return new TonesViewable(data,
             app.ff.statefulClipperSource(false),app);
   }
   @Override
@@ -116,26 +116,30 @@ public final class TonesEdit extends TreeTextContenter{
       @Override
       public ContentStyle contentStyle() {
         return true?
-                ContentStyle.values()[args().getOrPutInt(NATURE_KEY,0)]
+                values()[args().getOrPutInt(NATURE_KEY,0)]
                 :DESKTOP;
       }
 
       @Override
       public boolean isFileApp() {
-        return false;
+        return true;
       }
 
+      @Override
       public FileSpecifier[] fileSpecifiers() {
         return new FileSpecifier[]{
-                new FileSpecifier("tones.xml","Tones tree"),
+            new FileSpecifier("tones.xml","Tones tree"),
+            new FileSpecifier("tones.txt", "Tones"),
         };
       }
 
       @Override
       protected Object getInternalContentSource() {
-        File file = new File(Util.runDir(), "E major.tones.txt");
-        return false&&
-                file.exists() ? file : VoicePart.TEST_CODES;
+        File runDir = Util.runDir(),
+            txt = new File(runDir, "E major.tones.txt"),
+            xml = new File(runDir, "E major.tones.xml");
+        File use = args().getBoolean(ARG_TREE) ? xml : txt;
+        return use.exists() ? use : VoicePart.TEST_CODES;
       }
 
       @Override

@@ -37,12 +37,12 @@ public final class TonesViewable extends TreeTextViewable{
 		}
 	}){
 	};
-	TonesViewable(TypedNode tree, boolean useTree, ClipperSource clipperSource, FacetAppSurface app){
+	TonesViewable(TypedNode tree, ClipperSource clipperSource, FacetAppSurface app){
 		super(tree,clipperSource,app);
-		Bars fromTones,fromTree;
-		fromTones=new Bars(this);
-		fromTree=new Bars(this,fromTones.newDataTree(0,0));
-		bars= useTree ? fromTree : fromTones;
+        Bars fromTxt = new Bars(this);
+		DataNode xml = fromTxt.newDataTree(0, 0);
+		tree.setChildren(xml.children());
+        bars= new Bars(this, (DataNode) tree);
 	}
 	private int barStart,checkShowThen[];
 	private PageView page;
@@ -75,13 +75,8 @@ public final class TonesViewable extends TreeTextViewable{
 				//        MODIFY
 		};
 	}
-	private ValueNode selectedNode(){
-		return (ValueNode)selection().single();
-	}
 	@Override
 	protected SSelection newNonTreeViewerSelection(SViewer viewer){
-		ValueNode node = selectedNode();//!
-		ValueNode src = (ValueNode)(!node.type().equals("TextLine")? node.children()[0].children()[0]:node);
 		SView view=viewer.view();
 		if(view instanceof AvatarView){
 			page=(PageView)view;
