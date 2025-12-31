@@ -127,7 +127,7 @@ public final class TonesEdit extends TreeTextContenter{
 
       public FileSpecifier[] fileSpecifiers() {
         return new FileSpecifier[]{
-                new FileSpecifier("tones.txt", "Tones"),
+                new FileSpecifier("tones.xml","Tones tree"),
         };
       }
 
