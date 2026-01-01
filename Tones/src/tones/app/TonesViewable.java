@@ -1,5 +1,6 @@
 package tones.app;
 import static facets.core.app.ActionViewerTarget.Action.*;
+import static tones.app.TonesEdit.ARG_TREE;
 
 import facets.core.app.PathSelection;
 import facets.core.app.SView;
@@ -39,10 +40,16 @@ public final class TonesViewable extends TreeTextViewable{
 	};
 	TonesViewable(TypedNode tree, ClipperSource clipperSource, FacetAppSurface app){
 		super(tree,clipperSource,app);
-        Bars fromTxt = new Bars(this);
-		DataNode xml = fromTxt.newDataTree(0, 0);
-		tree.setChildren(xml.children());
-        bars= new Bars(this, (DataNode) tree);
+        if (tree.children()[0].children().length==5){
+            Bars fromTxt = new Bars(this);
+			if (!app.spec.args().getBoolean(ARG_TREE)){
+				bars=fromTxt;
+				return;
+			}
+            DataNode xml = fromTxt.newDataTree(0, 0);
+            tree.setChildren(xml.children());
+        }
+		bars= new Bars(this, (DataNode) tree);
 	}
 	private int barStart,checkShowThen[];
 	private PageView page;

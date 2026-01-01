@@ -33,6 +33,7 @@ public final class TonesEdit extends TreeTextContenter{
   public static final String ARG_BAR_FROM="barFrom",
           ARG_RESCALE="rescale",
           ARG_TREE="tree";
+
   public TonesEdit(Object source,FacetAppSurface app){
     super(source,app);
   }
@@ -126,15 +127,16 @@ public final class TonesEdit extends TreeTextContenter{
 
       @Override
       public boolean isFileApp() {
-        return true;
+        return false;
       }
-      
+
       @Override
       protected Object getInternalContentSource() {
         File runDir = Util.runDir(),
             txt = new File(runDir, "E major.tones.txt"),
             xml = new File(runDir, "E major.tones.xml");
-        File use = args().getBoolean(ARG_TREE) ? xml : txt;
+        boolean useTree=args().getBoolean(ARG_TREE);
+        File use = useTree ? xml : txt;
         return use.exists() ? use : VoicePart.TEST_CODES;
       }
 
