@@ -15,6 +15,7 @@ import facets.facet.FacetFactory;
 import facets.facet.SwingPanelFacet;
 import facets.facet.ViewerAreaMaster;
 import facets.facet.app.FacetAppSurface;
+import facets.facet.app.tree.TreeAppSpecifier;
 import facets.util.FileSpecifier;
 import facets.util.ItemList;
 import facets.util.Util;
@@ -108,11 +109,14 @@ public final class TonesEdit extends TreeTextContenter{
 
   @Override
   public FileSpecifier[] sinkFileSpecifiers() {
-    return ((TreeTextSpecifier) app.spec).fileSpecifiers();
+    return new FileSpecifier[]{
+            new FileSpecifier("tones.xml","Tones tree"),
+            new FileSpecifier("tones.txt", "Tones"),
+    };
   }
 
   public static void main(String[]args){
-    new TreeTextSpecifier(TonesEdit.class) {
+    new TreeAppSpecifier(TonesEdit.class) {
       @Override
       public ContentStyle contentStyle() {
         return true?
@@ -124,15 +128,7 @@ public final class TonesEdit extends TreeTextContenter{
       public boolean isFileApp() {
         return true;
       }
-
-      @Override
-      public FileSpecifier[] fileSpecifiers() {
-        return new FileSpecifier[]{
-            new FileSpecifier("tones.xml","Tones tree"),
-            new FileSpecifier("tones.txt", "Tones"),
-        };
-      }
-
+      
       @Override
       protected Object getInternalContentSource() {
         File runDir = Util.runDir(),
