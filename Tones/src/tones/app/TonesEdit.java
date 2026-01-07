@@ -1,34 +1,30 @@
 package tones.app;
-import static facets.core.app.AppSurface.ContentStyle.*;
-import static facets.facet.FacetFactory.*;
 
-import facets.core.app.*;
+import applicable.treeplus.TreePlusFeatures_;
+import applicable.treetext.TreeTextContenter;
+import applicable.treetext.TreeTextFeatures;
+import applicable.treetext.TreeTextViewable;
 import facets.core.app.AppSurface.ContentStyle;
-import facets.core.superficial.SFacet;
-import facets.core.superficial.SFrameTarget;
-import facets.core.superficial.SIndexing;
-import facets.core.superficial.STarget;
+import facets.core.app.*;
+import facets.core.superficial.*;
 import facets.core.superficial.STarget.Targeted;
-import facets.core.superficial.STargeter;
 import facets.facet.AreaFacets;
 import facets.facet.FacetFactory;
 import facets.facet.SwingPanelFacet;
 import facets.facet.ViewerAreaMaster;
 import facets.facet.app.FacetAppSurface;
-import facets.facet.app.tree.TreeAppSpecifier;
 import facets.util.FileSpecifier;
 import facets.util.ItemList;
 import facets.util.Util;
 import facets.util.tree.DataNode;
-import java.io.File;
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import applicable.treetext.TreeTextContenter;
-import applicable.treetext.TreeTextFeatures;
-import applicable.treetext.TreeTextSpecifier;
-import applicable.treetext.TreeTextViewable;
 import tones.bar.VoicePart;
 import tones.view.PageView;
+
+import javax.swing.*;
+import java.io.File;
+
+import static facets.core.app.AppSurface.ContentStyle.*;
+import static facets.facet.FacetFactory.*;
 public final class TonesEdit extends TreeTextContenter{
   public static final String ARG_BAR_FROM="barFrom",
           ARG_RESCALE="rescale",
@@ -37,12 +33,12 @@ public final class TonesEdit extends TreeTextContenter{
   public TonesEdit(Object source,FacetAppSurface app){
     super(source,app);
   }
-  @Override
+  //@Override
   protected TreeTextViewable newViewable(DataNode data){
     return new TonesViewable(data,
             app.ff.statefulClipperSource(false),app);
   }
-  @Override
+  //@Override
   protected SFrameTarget[]newViewTargets(TreeView debugTree,boolean liveViews){
     TonesViewable viewable=(TonesViewable)this.contentFrame();
     int barFrom=app.spec.state().getOrPutInt(TonesEdit.ARG_BAR_FROM,1);
@@ -84,7 +80,7 @@ public final class TonesEdit extends TreeTextContenter{
     };
     ff.areas().attachViewerAreaPanes(area,vam,AreaFacets.PANE_SPLIT_HORIZONTAL);
   }
-  @Override
+  //@Override
   protected TreeTextFeatures newFeatures(SContentAreaTargeter area){
     final STargeter selection=area.selection(),
         code=true?null: selection.elements()[0];
@@ -108,7 +104,7 @@ public final class TonesEdit extends TreeTextContenter{
     expand.setIndex(3);
   }
 
-  @Override
+//  @Override
   public FileSpecifier[] sinkFileSpecifiers() {
     return new FileSpecifier[]{
             new FileSpecifier("tones.xml","Tones tree"),
@@ -117,8 +113,8 @@ public final class TonesEdit extends TreeTextContenter{
   }
 
   public static void main(String[]args){
-    new TreeAppSpecifier(TonesEdit.class) {
-      @Override
+    new facets.facet.app.tree.TreeAppSpecifier(TonesEdit.class) {
+//      @Override
       public ContentStyle contentStyle() {
         return true?
                 values()[args().getOrPutInt(NATURE_KEY,0)]
