@@ -20,7 +20,7 @@ final public class Bar extends Tracer{
 	public final int at,rise,staveGap,fall,width;
 	public final Set<Incipit>incipits;
 	public final Soundings endSoundings;
-	Bar(int barAt,List<Incipit>incipits,int barEighths){
+	Bar(int barAt,List<Incipit>incipits){
 		if(incipits==null)throw new IllegalStateException(
 				"Null incipits in "+Debug.info(this));
 		else this.incipits=new HashSet(incipits);

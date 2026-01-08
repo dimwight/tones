@@ -20,27 +20,37 @@ public final class Bars extends Tracer implements Titled{
 	private final List<Bar>bars=new ArrayList();
 	private final Map<Voice,VoicePart> parts=new HashMap();
 	private final TonesViewable viewable;
-	private VoicePart selectedPart;
-	private short barBeats;
-	private Soundings soundings;
+	private VoicePart selectedPart= new VoicePart("");
+	private short barBeats=32;
+	private Soundings soundings=Soundings.newEmpty(barBeats);
+	public Bars(TonesViewable viewable, DataNode tree) {
+		this.viewable=viewable;
+		int barAt = 0;
+		for(var barTree:tree.children()){
+			List<Incipit>forBar=new ArrayList<>();
+			for(var incipitTree:barTree.children()){
+				forBar.add(new Incipit(incipitTree));
+			}
+			bars.add(new Bar(barAt++,
+					Collections.unmodifiableList(forBar)));
+
+		}
+	}
 	public Bars(TonesViewable viewable){
 		this.viewable=viewable;
 		TypedNode[] children=viewable.contentTree().children();
 		for(TypedNode child:children){
 			VoicePart part=new VoicePart((String)child.values()[0]);
 			parts.put(part.voice,part);
-			if(child==viewable.selection().single()) selectPart(part.voice);
 		}
-		if(selectedPart==null) selectPart(Empty);
 		int barAt=0;
-		barBeats=0;
 		while(true){
 			Bar bar=newPartsBar(barAt++);
 			if(bar!=null)bars.add(bar);
 			else break;
 		}
-		if(false) trace(": bars="+bars.size()+" barAt="+barAt);
 	}
+
 	private Bar newPartsBar(int barAt){
 		Map<Integer,Incipit> incipits=new HashMap();
 		for(VoicePart part:parts.values()){
@@ -53,8 +63,10 @@ public final class Bars extends Tracer implements Titled{
 			if(beatsCheck&&barBeats!=0&&barBeatsNow!=barBeats)
 				throw new IllegalStateException("New barBeats="+barBeats
 						+", barBeatsNow="+barBeatsNow+" in "+Debug.info(part));
-			else barBeats=(short)barBeatsNow;
-			if(soundings==null)soundings=Soundings.newEmpty(barBeats);
+			else if (false)
+				barBeats=(short)barBeatsNow;
+			if(soundings==null)
+				soundings=Soundings.newEmpty(barBeats);
 			int beatAt=0;
 			for(Tone tone:partTones){
 				Incipit i;
@@ -64,56 +76,13 @@ public final class Bars extends Tracer implements Titled{
 				beatAt+=tone.beats;
 			}
 		}
-		for(Incipit i:incipits.values())soundings=i.readSoundings(soundings);
+		for(Incipit i:incipits.values())
+			soundings=i.readSoundings(soundings);
 		List<Incipit>forBar=new ArrayList(incipits.values());
 		Collections.sort(forBar);
 		return incipits.isEmpty()?null
-				:new Bar(barAt++,
-						Collections.unmodifiableList(forBar),
-						barBeats);
-	}
-	public void updatePart(String src){
-		VoicePart nowPart=new VoicePart(src),
-				thenPart=parts.replace(nowPart.voice,nowPart);
-		selectPart(nowPart.voice);
-		int count=bars.size();
-		boolean equals=true;
-		for(int start=true?0:count-5,stop=false?2:count,barAt=start;true;barAt++){
-			List<Tone> thenTones=thenPart.getBarTones(barAt),
-					nowTones=nowPart.getBarTones(barAt);
-			boolean nowEmpty=nowTones.isEmpty();
-			if(nowEmpty&&thenTones.isEmpty()) break;
-			barBeats=beatsCheck&&!nowEmpty?nowTones.remove(0).beats
-					:VoicePart.BAR_BEATS_DEFAULT;
-			equals&=thenTones.equals(nowTones);
-			if(!equals){
-				if(false){
-					trace(".updateSelectedPart: barAt="+barAt+" equals="+equals+" now=",
-							nowTones);
-					trace(" then=",thenTones);
-				}
-				if(barAt<bars.size())bars.remove(barAt);
-				if(barAt>0)soundings=bars.get(barAt-1).endSoundings;
-				bars.add(barAt,newPartsBar(barAt));
-			}
-		}
-		int stop=bars.size();
-		for(int at=0;at<stop;at++)
-			if(bars.get(at)==null){
-				bars.remove(at--);
-				stop--;
-			}
-		if(false) trace(".updatePart: bars=",bars.size());
-	}
-	public void selectPart(Voice voice){
-		selectedPart=parts.get(voice);
-		for(TypedNode child:viewable.contentTree().children())
-			if(new VoicePart((String)child.values()[0]).voice
-					.equals(selectedPart.voice))
-				viewable.defineSelection(child);
-	}
-	public VoicePart selectedPart(){
-		return selectedPart;
+				:new Bar(barAt, Collections.unmodifiableList(forBar)
+		);
 	}
 	public int barCount(){
 		return bars.size();
@@ -124,22 +93,22 @@ public final class Bars extends Tracer implements Titled{
 	public String title(){
 		return viewable.title();
 	}
-	public DataNode newDebugRoot(int start,int stop){
-		NodeList barsList=new NodeList(newDebugRoot(getClass(),title()),true);
+	public DataNode newDataTree(int start, int stop){
+		NodeList barsList=new NodeList(newDataRoot(getClass(),title()),true);
 		for(Bar bar:barsFrom(start)){
-			if(bar.at==stop) break;
+			if(stop>0&&bar.at==stop) break;
 			NodeList barList=new NodeList(
-					newDebugRoot(Bar.class,"at="+bar.at+(true?"":" width="+bar.width)),
+					newDataRoot(Bar.class,"at="+bar.at+(true?"":" width="+bar.width)),
 					true);
 			barsList.add(barList.parent);
 			List<Incipit> incipits=new ArrayList<Incipit>(bar.incipits);
 			Collections.sort(incipits);
 			for(Incipit incipit:incipits)
-				barList.add(incipit.newDebugRoot());
+				barList.add(incipit.newDataTree());
 		}
 		return barsList.parent;
 	}
-	static public DataNode newDebugRoot(Class type,String title,Object...values){
+	static public DataNode newDataRoot(Class type, String title, Object...values){
 		return new DataNode(type.getSimpleName(),title,values);
 	}
 }
