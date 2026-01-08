@@ -1,5 +1,6 @@
 package tones.bar;
 import static java.lang.Math.*;
+import static tones.ScaleNote.*;
 import static tones.Tone.*;
 import static tones.bar.Bar.*;
 import facets.util.Objects;
@@ -18,21 +19,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import java.util.function.BiFunction;
 import tones.Interval;
+import tones.ScaleNote;
 import tones.Tone;
 import tones.Tone.Dissonance;
 import tones.Voice;
 public final class Incipit extends Tracer implements Comparable<Incipit>{
-	public Incipit(TypedNode tree) {
-		String[] split = tree.title().split(" ");
-		beatAt=Short.valueOf(split[1]);
-		gridAt=Short.valueOf(split[3]);
-		for (var forTone:tree.children())
-			addTone(new Tone(forTone));
-	}
-
-    static class Soundings{
+	static class Soundings{
 		private final Map<Voice,Tone> soundings;
 		private final short beatAt,barBeats;
 		private Soundings(short barBeats,short beatAt,
@@ -60,8 +54,8 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			}
 			return new Soundings(barBeats,(short)incipitAt,nowSoundings);
 		}
-		DataNode newDataTree(){
-			NodeList nodes=new NodeList(Bars.newDataRoot(getClass(),""//+soundings.size()+" "
+		DataNode newDebugRoot(){
+			NodeList nodes=new NodeList(Bars.newDebugRoot(getClass(),""//+soundings.size()+" "
 					+(false?"":beatAt)),true);
 			List<Tone> values=new ArrayList(soundings.values());
 			Collections.sort(values,new Comparator<Tone>(){
@@ -90,7 +84,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 	public int gridAt=-1;
 	int rise,staveGap,fall;
 	final private Map<Tone,Collection<Dissonance>>againsts=new HashMap();
-	private Soundings soundings=Soundings.newEmpty((short) 0);
+	private Soundings soundings;
 	Incipit(short beatAt){
 		this.beatAt=beatAt;
 		if(false)trace(": ",this);
@@ -113,8 +107,7 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 			Tone sounding=soundings.soundings.get(v);
 			if(v!=t.voice&&sounding!=null){
 				Interval i=Interval.between(t,sounding);
-				if(i.isDissonant(sounding))
-					set.add(new Dissonance(i,sounding));
+				if(i.isDissonant(sounding)) set.add(new Dissonance(i,sounding));
 			}
 		}
 		return set;
@@ -128,34 +121,38 @@ public final class Incipit extends Tracer implements Comparable<Incipit>{
 	}
 	@Override
 	public int compareTo(Incipit i){
-		return Integer.valueOf(beatAt).compareTo(Integer.valueOf(i.beatAt));
+		return new Integer(beatAt).compareTo(new Integer(i.beatAt));
 	}
 	private int[]intValues(){
 		return new int[]{beatAt,fall,staveGap,rise,gridAt};
 	}
 	public String toString(){
 		return //Debug.info(this)+
-				"b "+beatAt+" g "+gridAt
+				"b "+beatAt/NOTE_EIGHTH+" g "+gridAt/NOTE_EIGHTH
 				//+" tones:"+tones.size()
 		;
 	}
-	DataNode newDataTree(){
-		List<Tone> sortTones=new ArrayList<>(tones);
-		sortTones.sort((t1, t2) -> t1.voice.compareTo(t2.voice));
-		NodeList nodes=new NodeList(Bars.newDataRoot(getClass(),toString()),true);
-		for(Tone tone:sortTones){
+	DataNode newDebugRoot(){
+		List<Tone> sortTones=new ArrayList(tones);
+		Collections.sort(sortTones,new Comparator<Tone>(){
+			@Override
+			public int compare(Tone t1,Tone t2){
+				return t1.voice.compareTo(t2.voice);
+			}
+		});
+		NodeList nodes=new NodeList(Bars.newDebugRoot(getClass(),toString()),true);
+		if(true)for(Tone tone:sortTones){
 			if(tone.isRest()) continue;
-			DataNode add=tone.newDataTree();
+			DataNode add=tone.newDebugNode();
 			nodes.add(add);
 			Collection<Dissonance> got=againsts.get(tone);
 			int count=got==null?0:got.size();
 			String values=got==null?"":Objects.toLines(got.toArray());
-			TypedNode clashes=true?null:Bars.newDataRoot(Dissonance.class,""+count,
+			TypedNode clashes=true?null:Bars.newDebugRoot(Dissonance.class,""+count,
 					values.split("\n"));
-			if(clashes!=null&&clashes.values().length>1)
-				Nodes.appendChild(add,clashes);
+			if(clashes!=null&&clashes.values().length>1) Nodes.appendChild(add,clashes);
 		}
-		if (false) nodes.add(soundings.newDataTree());
+		else if(false)nodes.add(soundings.newDebugRoot());
 		return nodes.parent;
 	}
 }

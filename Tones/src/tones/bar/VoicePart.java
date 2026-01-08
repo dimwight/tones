@@ -109,10 +109,6 @@ public final class VoicePart extends Tracer{
   public final List<String>barCodes=new ArrayList();
   public VoicePart(String src){
     this.src=src.replaceAll(",$","");
-    if (src.isEmpty()){
-      voice=null;
-      return;
-    }
     voice=parseSource(this.src,barTones,barCodes);
     String checkCodes=mergeBarCodes(barCodes);
     if(!checkCodes.equals(this.src))
@@ -121,9 +117,8 @@ public final class VoicePart extends Tracer{
     else if(false)trace(".VoicePart: barCodes=",barCodes.size());
   }
   public static String mergeBarCodes(List<String> barCodes){
-    return Objects.toString(barCodes.toArray())
-            .replaceAll("\\s*,\\s*,\\s*",",")
-            .replaceAll(",$","");
+    return Objects.toString(barCodes.toArray()
+        ).replaceAll("\\s*,\\s*,\\s*",",").replaceAll(",$","");
   }
   private static Voice parseSource(String src,List<List<Tone>>barTones,
       List<String> barCodes){

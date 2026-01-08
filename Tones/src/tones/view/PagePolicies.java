@@ -36,9 +36,9 @@ final class PagePolicies extends AvatarPolicies{
 		if(timing)Times.printElapsed("PagePolicies.newAvatarSelection~");
 		return PathSelection.newMinimal(items);
 	}
-	//@Override
-	public AvatarPolicy viewerPolicy(SViewer viewer, final AvatarContent content,
-									 final PainterSource p){
+	@Override
+	public AvatarPolicy avatarPolicy(SViewer viewer,final AvatarContent content,
+			final PainterSource p){
 		PageView view=(PageView)viewer.view();
 		PageItem item=(PageItem)content;
 		final PagePainters painters=
@@ -68,7 +68,7 @@ final class PagePolicies extends AvatarPolicies{
 	public Painter getBackgroundPainter(SViewer viewer, 
 			PainterSource p){
 		PlaneView plane=(PlaneView)viewer.view();
-		double margin=INSET*0.95;
+		double margin=INSET*0.75;
 		return false?Painter.EMPTY:p.bar(
 				-margin,-margin,plane.showWidth()-2*(INSET-margin),
 				plane.showHeight()-2*(INSET-margin),Shades.white,false

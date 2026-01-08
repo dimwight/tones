@@ -11,6 +11,7 @@ import facets.core.superficial.STextual;
 import facets.core.superficial.SToggling;
 import facets.util.Debug;
 import facets.util.NumberPolicy;
+import facets.util.Times;
 import facets.util.app.AppValues;
 import facets.util.geom.Vector;
 import facets.util.shade.Shades;
@@ -105,7 +106,7 @@ public abstract class PageView extends PlaneViewWorks{
           }
           @Override
           public String[]incrementTitles(){
-            return new String[]{"\u25c4", "\u25ba"};
+            return new String[]{"Bac&k","F&orward"};
           }
         };
       }
